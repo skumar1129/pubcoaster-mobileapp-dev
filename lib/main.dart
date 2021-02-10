@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:NewApp/pages/home.dart';
 import 'package:NewApp/pages/splashscreen.dart';
 import 'package:NewApp/pages/createpost.dart';
+import 'package:NewApp/pages/myposts.dart';
+import 'package:NewApp/pages/signup.dart';
 import 'package:NewApp/pages/locationposts.dart';
 import 'package:NewApp/pages/locbarposts.dart';
 import 'package:NewApp/pages/locnbhoodposts.dart';
 import 'package:NewApp/pages/locuserposts.dart';
-import 'package:NewApp/pages/myposts.dart';
-import 'package:NewApp/pages/signup.dart';
 import 'package:NewApp/pages/singlepost.dart';
 import 'package:NewApp/pages/userposts.dart';
 
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'New App',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -39,8 +39,25 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       initialRoute: '/',
-      routes: {'/': (context) => SplashScreenState()},
-      onGenerateRoute: (RouteSettings settings) {},
+      routes: {
+        '/': (context) => SplashScreen(),
+        '/createpost': (context) => CreatePost(),
+        '/signup': (context) => SignUp(),
+        '/home': (context) => Home(),
+        '/mypost': (context) => MyPosts()
+      },
+      onGenerateRoute: (RouteSettings settings) {
+        var routes = <String, WidgetBuilder>{
+          LocationPosts.route: (context) => LocationPosts(settings.arguments),
+          LocBarPosts.route: (context) => LocBarPosts(settings.arguments),
+          LocNbhoodPosts.route: (context) => LocNbhoodPosts(settings.arguments),
+          LocUserPosts.route: (context) => LocUserPosts(settings.arguments),
+          SinglePost.route: (context) => SinglePost(settings.arguments),
+          UserPosts.route: (context) => UserPosts(settings.arguments)
+        };
+        WidgetBuilder builder = routes[settings.name];
+        return MaterialPageRoute(builder: (context) => builder(context));
+      },
     );
   }
 }
