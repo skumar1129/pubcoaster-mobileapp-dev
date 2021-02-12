@@ -1,13 +1,39 @@
 import 'package:flutter/material.dart';
 
-class BottomNav extends StatefulWidget {
-  @override
-  _BottomNavState createState() => _BottomNavState();
-}
+class BottomNav extends StatelessWidget {
+  _bottomTap(int index) async {
+    switch (index) {
+      case 0:
+        {}
+        break;
+      case 1:
+        {}
+        break;
+      case 2:
+        {}
+        break;
+      case 3:
+        {}
+        break;
+    }
+  }
 
-class _BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Theme(
+      data: Theme.of(context).copyWith(canvasColor: Colors.red),
+      child: BottomNavigationBar(
+        showUnselectedLabels: true,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.comment), label: 'My Posts'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_box), label: 'Profile'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.chevron_right), label: 'Log Out'),
+        ],
+        onTap: _bottomTap,
+      ),
+    );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:NewApp/pages/locationposts.dart';
-import 'package:NewApp/pages/userposts.dart';
+import 'package:NewApp/widget/textbox.dart';
 
 class NavBar extends StatefulWidget {
   @override
@@ -9,16 +9,11 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   String location = '';
-  String user;
-
-  searchUser(String search) {
-    Navigator.pushNamed(context, UserPosts.route, arguments: search);
-  }
 
   clickLocationTab(String location) {
     String routeParam = '';
     switch (location) {
-      case 'Columubs':
+      case 'Columbus':
         {
           routeParam = 'Columbus';
         }
@@ -85,28 +80,31 @@ class _NavBarState extends State<NavBar> {
     );
   }
 
+  bool typing = false;
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text(
-        'Barz BRO',
-        style: TextStyle(fontFamily: 'Oxygen-Regular'),
+      title: typing
+          ? TextBox()
+          : const Text(
+              'NEW APP',
+              style: TextStyle(fontFamily: 'Oxygen-Regular'),
+            ),
+      leading: IconButton(
+        icon: Icon(typing ? Icons.chevron_left : Icons.search),
+        onPressed: () {
+          setState(() {
+            typing = !typing;
+          });
+        },
+        tooltip: 'Search User',
       ),
       backgroundColor: Colors.red,
       actions: <Widget>[
-        Expanded(
-          child: TextField(
-            decoration: InputDecoration(
-                border: UnderlineInputBorder(), hintText: 'Search User'),
-            onChanged: (value) => {
-              if (mounted)
-                {
-                  setState(() => {user = value})
-                }
-            },
-          ),
-        ),
         Container(
+            child: Tooltip(
+          message: 'Search Location',
           child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
             focusColor: Colors.grey,
@@ -137,7 +135,10 @@ class _NavBarState extends State<NavBar> {
             iconEnabledColor: Colors.white,
             isExpanded: false,
           )),
-        ),
+        )),
+        const SizedBox(
+          width: 15,
+        )
       ],
     );
   }
