@@ -1,18 +1,32 @@
 import 'package:flutter/material.dart';
 
-class BottomNav extends StatelessWidget {
+class BottomNav extends StatefulWidget {
+  @override
+  _BottomNavState createState() => _BottomNavState();
+}
+
+class _BottomNavState extends State<BottomNav> {
   _bottomTap(int index) async {
     switch (index) {
       case 0:
-        {}
+        {
+          Navigator.pushReplacementNamed(context, '/home');
+        }
         break;
       case 1:
-        {}
+        {
+          Navigator.pushReplacementNamed(context, '/mypost');
+        }
         break;
       case 2:
-        {}
+        {
+          Navigator.pushReplacementNamed(context, '/createpost');
+        }
         break;
       case 3:
+        {}
+        break;
+      case 4:
         {}
         break;
     }
@@ -27,6 +41,8 @@ class BottomNav extends StatelessWidget {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.comment), label: 'My Posts'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.add_circle), label: 'Add Post'),
           BottomNavigationBarItem(
               icon: Icon(Icons.account_box), label: 'Profile'),
           BottomNavigationBarItem(
