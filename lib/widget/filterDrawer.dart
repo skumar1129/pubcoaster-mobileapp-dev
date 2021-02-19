@@ -39,7 +39,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
           DrawerHeader(
               decoration: BoxDecoration(color: Colors.red),
               child: Text(
-                'Search location by',
+                'Search ${widget.location} by',
                 style: TextStyle(color: Colors.white),
               )),
           TextField(

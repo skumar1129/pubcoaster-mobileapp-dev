@@ -6,9 +6,9 @@ import 'package:NewApp/models/feedpost.dart';
 import 'package:NewApp/models/singlepost.dart';
 import 'dart:async';
 
-List<FeedPost> parseFeedPosts(dateItems) {
+List<FeedPost> parseFeedPosts(dataItems) {
   var response =
-      dateItems.map<FeedPost>((json) => FeedPost.fromJson(json)).toList();
+      dataItems.map<FeedPost>((json) => FeedPost.fromJson(json)).toList();
   return response;
 }
 
@@ -93,7 +93,7 @@ class PostService {
       print(e);
     }
 
-    return compute(parseSinglePost, response);
+    return compute(parseSinglePost, json.decode(response.body));
   }
 
   Future<List<FeedPost>> getLocationPosts(String location, [int page]) async {
@@ -108,7 +108,7 @@ class PostService {
       print(e);
     }
 
-    return compute(parseFeedPosts, response);
+    return compute(parseFeedPosts, json.decode(response.body));
   }
 
   Future<List<FeedPost>> getLocBarPosts(
@@ -123,7 +123,8 @@ class PostService {
     } catch (e) {
       print(e);
     }
-    return response;
+
+    return compute(parseFeedPosts, json.decode(response.body));
   }
 
   Future<List<FeedPost>> getLocNbhoodPosts(
@@ -139,7 +140,7 @@ class PostService {
       print(e);
     }
 
-    return response;
+    return compute(parseFeedPosts, json.decode(response.body));
   }
 
   Future<List<FeedPost>> getLocUserPosts(
@@ -155,7 +156,7 @@ class PostService {
       print(e);
     }
 
-    return response;
+    return compute(parseFeedPosts, json.decode(response.body));
   }
 
   Future<List<FeedPost>> getMyPosts(int page) async {
@@ -170,7 +171,7 @@ class PostService {
       print(e);
     }
 
-    return response;
+    return compute(parseFeedPosts, json.decode(response.body));
   }
 
   Future<List<FeedPost>> getUserPosts(String user, int page) async {
@@ -185,6 +186,6 @@ class PostService {
       print(e);
     }
 
-    return response;
+    return compute(parseFeedPosts, json.decode(response.body));
   }
 }
