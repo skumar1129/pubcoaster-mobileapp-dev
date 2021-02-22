@@ -49,7 +49,7 @@ class _LocationPostsState extends State<LocationPosts> {
       drawer: FilterDrawer(widget.location),
       body: Column(
         children: [
-          Expanded(child: NavBarLoc()),
+          NavBarLoc(),
           FutureBuilder(
               future: posts,
               builder: (context, snapshot) {
@@ -79,7 +79,6 @@ class _LocationPostsState extends State<LocationPosts> {
                                       items.length >= itemsLength) {
                                     offset++;
                                     itemsLength += 3;
-                                    print(offset);
                                     var newPosts = getLocationPosts(
                                         widget.location, offset);
                                     newPosts.then((posts) {
