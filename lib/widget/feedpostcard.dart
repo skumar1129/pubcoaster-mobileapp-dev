@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:strings/strings.dart';
 import 'dart:convert';
+import 'package:NewApp/pages/singlepost.dart';
 
 class FeedPostCard extends StatelessWidget {
   final String bar;
@@ -41,77 +42,97 @@ class FeedPostCard extends StatelessWidget {
     String goodBar = utf8.decode(bar.codeUnits);
     String goodLocation = utf8.decode(location.codeUnits);
     // var date = new DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
-    return Card(
-      color: Colors.black,
-      child: Column(
-        children: [
-          ListTile(
-            title: Text(
-              capitalize(goodBar),
-              style: TextStyle(
-                  color: Colors.white, fontFamily: 'Merriweather-Bold'),
-            ),
-          ),
-          const Divider(
-            color: Colors.white,
-          ),
-          Text(
-            goodContent,
-            style: TextStyle(
-                color: Colors.white, fontFamily: 'Merriweather-Regular'),
-          ),
-          const Divider(
-            color: Colors.white,
-          ),
-          Row(
-            children: [
-              Flexible(
-                child: Text(
-                  'Username',
+    return GestureDetector(
+      child: Card(
+        color: Colors.black,
+        child: Column(
+          children: [
+            // ListTile(
+            Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    capitalize(goodBar),
+                    style: TextStyle(
+                        color: Colors.white, fontFamily: 'Merriweather-Bold'),
+                  ),
+                ),
+                Flexible(
+                    child: Text(
+                  'User Rating: $rating/10',
                   style: TextStyle(
                       color: Colors.white, fontFamily: 'Merriweather-Regular'),
-                ),
-              ),
-              Flexible(
+                ))
+              ],
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ),
+            // ),
+            const Divider(
+              color: Colors.white,
+            ),
+            Text(
+              goodContent,
+              style: TextStyle(
+                  color: Colors.white, fontFamily: 'Merriweather-Regular'),
+            ),
+            const Divider(
+              color: Colors.white,
+            ),
+            Row(
+              children: [
+                Flexible(
                   child: Text(
-                'User Rating: $rating/10',
-                style: TextStyle(
-                    color: Colors.white, fontFamily: 'Merriweather-Regular'),
-              ))
-            ],
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          ),
-          const Divider(
-            color: Colors.black,
-            thickness: 0.5,
-          ),
-          Row(
-            children: [
-              Flexible(
-                child: Text(
-                  // timeago.format(date),
-                  'Yo',
+                    'Username',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Merriweather-Regular'),
+                  ),
+                ),
+                Flexible(
+                    child: Text(
+                  '$numLikes likes',
                   style: TextStyle(
-                      color: Colors.white, fontFamily: 'Merriweather-Italic'),
-                  softWrap: true,
-                ),
-              ),
-              Flexible(
+                      color: Colors.white, fontFamily: 'Merriweather-Regular'),
+                ))
+              ],
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ),
+            const Divider(
+              color: Colors.black,
+              thickness: 0.5,
+            ),
+            Row(
+              children: [
+                Flexible(
                   child: Text(
-                '$goodLocation',
-                style: TextStyle(
-                    color: Colors.white, fontFamily: 'Merriweather-Regular'),
-                softWrap: true,
-              ))
-            ],
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          ),
-          const Divider(
-            color: Colors.black,
-            thickness: 0.5,
-          ),
-        ],
+                    // timeago.format(date),
+                    'Yo',
+                    style: TextStyle(
+                        color: Colors.white, fontFamily: 'Merriweather-Italic'),
+                    softWrap: true,
+                  ),
+                ),
+                Flexible(
+                    child: Text(
+                  '$goodLocation',
+                  style: TextStyle(
+                      color: Colors.white, fontFamily: 'Merriweather-Regular'),
+                  softWrap: true,
+                ))
+              ],
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ),
+            const Divider(
+              color: Colors.black,
+              thickness: 0.5,
+            ),
+          ],
+        ),
       ),
+      onTap: () {
+        Navigator.pushReplacementNamed(context, SinglePost.route,
+            arguments: uuid);
+      },
     );
   }
 }
