@@ -62,7 +62,13 @@ class _LocationPostsState extends State<LocationPosts> {
                     return Expanded(
                         child: Column(
                       children: [
-                        Text('${widget.location}'),
+                        Text(
+                          '${widget.location}',
+                          style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Oxygen-Bold'),
+                        ),
                         Expanded(
                           child: Scrollbar(
                               child: RefreshIndicator(

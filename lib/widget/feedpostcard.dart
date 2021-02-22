@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -41,7 +42,9 @@ class FeedPostCard extends StatelessWidget {
     String goodContent = utf8.decode(content.codeUnits);
     String goodBar = utf8.decode(bar.codeUnits);
     String goodLocation = utf8.decode(location.codeUnits);
-    // var date = new DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+    var newDate = HttpDate.parse(timestamp);
+    // TODO: Look into better way to get real time
+    var date = newDate.add(Duration(hours: 5));
     return GestureDetector(
       child: Card(
         color: Colors.black,
@@ -145,8 +148,7 @@ class FeedPostCard extends StatelessWidget {
               children: [
                 Flexible(
                   child: Text(
-                    // timeago.format(date),
-                    'Yo',
+                    timeago.format(date.toLocal()),
                     style: TextStyle(
                         color: Colors.white, fontFamily: 'Merriweather-Italic'),
                     softWrap: true,
