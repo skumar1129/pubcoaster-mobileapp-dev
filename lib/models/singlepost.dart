@@ -10,8 +10,8 @@ class SinglePost {
   final String createdBy;
   final bool anonymous;
   final String neighborhood;
-  final List<Map<String, String>> comments;
-  final List<Map<String, String>> likes;
+  final List<dynamic> comments;
+  final List<dynamic> likes;
 
   SinglePost(
       {this.uuid,

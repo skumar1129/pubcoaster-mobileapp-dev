@@ -43,7 +43,6 @@ class _SinglePostState extends State<SinglePost> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var item = snapshot.data;
-                  print(item);
                   return SinglePostCard(
                       item.bar,
                       item.location,

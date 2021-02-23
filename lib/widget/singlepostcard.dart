@@ -12,8 +12,8 @@ class SinglePostCard extends StatefulWidget {
   final String uuid;
   final bool anonymous;
   final String description;
-  final List<Map<String, String>> comments;
-  final List<Map<String, String>> likes;
+  final List<dynamic> comments;
+  final List<dynamic> likes;
   SinglePostCard(
       this.bar,
       this.location,
@@ -24,8 +24,8 @@ class SinglePostCard extends StatefulWidget {
       this.editedAt,
       this.picLink,
       this.uuid,
-      this.anonymous,
       this.description,
+      this.anonymous,
       this.comments,
       this.likes);
 
