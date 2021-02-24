@@ -115,8 +115,8 @@ class PostService {
     return compute(parseFeedPosts, json.decode(response.body));
   }
 
-  Future<List<FeedPost>> getLocBarPosts(
-      String location, String bar, int page) async {
+  Future<List<FeedPost>> getLocBarPosts(String location, String bar,
+      [int page]) async {
     String endpoint = '${Config.localUrl}/post/locbar/$location/$bar';
     if (page != null && page > 1) {
       endpoint += '?offset=$page';
@@ -131,8 +131,8 @@ class PostService {
     return compute(parseFeedPosts, json.decode(response.body));
   }
 
-  Future<List<FeedPost>> getLocNbhoodPosts(
-      String location, String nbhood, int page) async {
+  Future<List<FeedPost>> getLocNbhoodPosts(String location, String nbhood,
+      [int page]) async {
     String endpoint = '${Config.localUrl}/post/locnbhood/$location/$nbhood';
     if (page != null && page > 1) {
       endpoint += '?offset=$page';
@@ -147,8 +147,8 @@ class PostService {
     return compute(parseFeedPosts, json.decode(response.body));
   }
 
-  Future<List<FeedPost>> getLocUserPosts(
-      String location, String user, int page) async {
+  Future<List<FeedPost>> getLocUserPosts(String location, String user,
+      [int page]) async {
     String endpoint = '${Config.localUrl}/post/locuser/$location/$user';
     if (page != null && page > 1) {
       endpoint += '?offset=$page';
@@ -163,7 +163,7 @@ class PostService {
     return compute(parseFeedPosts, json.decode(response.body));
   }
 
-  Future<List<FeedPost>> getMyPosts(int page) async {
+  Future<List<FeedPost>> getMyPosts([int page]) async {
     String endpoint = '${Config.localUrl}/mypost/user';
     if (page != null && page > 1) {
       endpoint += '?offset=$page';
@@ -178,7 +178,7 @@ class PostService {
     return compute(parseFeedPosts, json.decode(response.body));
   }
 
-  Future<List<FeedPost>> getUserPosts(String user, int page) async {
+  Future<List<FeedPost>> getUserPosts(String user, [int page]) async {
     String endpoint = '${Config.localUrl}/post/user/$user';
     if (page != null && page > 1) {
       endpoint += '?offset=$page';
