@@ -31,12 +31,15 @@ class PostService {
       'rating': item['rating'],
       'neighborhood': item['nbhood'],
       'description': item['description'],
-      'pickLink': ''
+      'picLink': ''
     };
+
+    // TODO: add more to headers
+    Map<String, String> headers = {'Content-Type': 'application/json'};
 
     bool succeed;
     try {
-      await http.post(endpoint, body: jsonEncode(reqBody));
+      await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
       succeed = true;
     } catch (e) {
       print(e);
@@ -56,10 +59,11 @@ class PostService {
       'description': item['description']
     };
 
+    Map<String, String> headers = {'Content-Type': 'application/json'};
     bool succeed;
 
     try {
-      await http.patch(endpoint, body: jsonEncode(reqBody));
+      await http.patch(endpoint, headers: headers, body: jsonEncode(reqBody));
       succeed = true;
     } catch (e) {
       print(e);

@@ -97,7 +97,8 @@ class _DropDownState extends State<DropDown> {
           'Orlando',
           'Phoenix',
           'Boston',
-          'Los Angeles'
+          'Los Angeles',
+          'Washinton DC'
         ]
             .map((String value) => DropdownMenuItem(
                   child: Text(
