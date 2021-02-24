@@ -165,12 +165,16 @@ class PostService {
 
   Future<List<FeedPost>> getMyPosts([int page]) async {
     String endpoint = '${Config.localUrl}/mypost/user';
+
+    // TODO: update to use local storage
+    Map<String, String> headers = {'username': 'helga'};
+
     if (page != null && page > 1) {
       endpoint += '?offset=$page';
     }
     var response;
     try {
-      response = await http.get(endpoint);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
