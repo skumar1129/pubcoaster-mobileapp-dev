@@ -29,7 +29,10 @@ class _TextBoxState extends State<TextBox> {
               },
             )),
         onChanged: (value) => {
-          setState(() => {user = value})
+          if (mounted)
+            {
+              setState(() => {user = value})
+            }
         },
       ),
     );

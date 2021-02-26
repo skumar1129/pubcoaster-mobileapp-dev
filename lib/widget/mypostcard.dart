@@ -4,6 +4,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:strings/strings.dart';
 import 'dart:convert';
 import 'package:NewApp/pages/singlepost.dart';
+import 'package:NewApp/services/postservice.dart';
 
 class MyPostCard extends StatefulWidget {
   final String bar;
@@ -40,22 +41,56 @@ class MyPostCard extends StatefulWidget {
 }
 
 class _MyPostCardState extends State<MyPostCard> {
+  final postService = new PostService();
   bool editMode = false;
+  String newBar;
+  String newContent;
+  String newNbhood;
+  int newRating = -1;
 
   goToEditMode() {
-    setState(() {
-      editMode = true;
-    });
+    if (mounted) {
+      setState(() {
+        editMode = true;
+      });
+    }
   }
 
   cancelEdit() {
-    setState(() {
-      editMode = false;
-    });
+    if (mounted) {
+      setState(() {
+        newBar = null;
+        newContent = null;
+        newNbhood = null;
+        newRating = null;
+        editMode = false;
+      });
+    }
   }
 
-  deletePost() {}
+  editPost() async {
+    bool succeed;
+    var item = {
+      'nbhood': newNbhood,
+      'rating': newRating,
+      'bar': newBar,
+      'description': newContent
+    };
+    succeed = await postService.updatePost(widget.uuid, item);
+    if (succeed) {
+      Navigator.pushReplacementNamed(context, '/mypost');
+    }
+  }
 
+  deletePost() async {
+    bool succeed;
+    succeed = await postService.deletePost(widget.uuid);
+    if (succeed) {
+      Navigator.pushReplacementNamed(context, '/mypost');
+    }
+  }
+
+  String dropdownValue;
   @override
   Widget build(BuildContext context) {
     String goodContent = utf8.decode(widget.content.codeUnits);
@@ -80,18 +115,13 @@ class _MyPostCardState extends State<MyPostCard> {
                           color: Colors.white, fontFamily: 'Merriweather-Bold'),
                     ),
                   ),
-                  RaisedButton(
+                  IconButton(
                     onPressed: () {
                       goToEditMode();
                     },
-                    child: Text(
-                      'Edit Post',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    tooltip: 'Edit Post',
+                    icon: Icon(Icons.edit),
                     color: Colors.red,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.red)),
                   ),
                   Flexible(
                       child: Text(
@@ -191,7 +221,7 @@ class _MyPostCardState extends State<MyPostCard> {
                     ),
                   ),
                   (() {
-                    if (widget.editedAt != null) {
+                    if (widget.neighborhood != null) {
                       String goodNbhood =
                           utf8.decode(widget.neighborhood.codeUnits);
                       return Flexible(
@@ -272,31 +302,63 @@ class _MyPostCardState extends State<MyPostCard> {
               children: [
                 Flexible(
                     child: TextField(
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: capitalize(goodBar),
-                            labelStyle: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Merriweather-Bold')))),
-                RaisedButton(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Name of bar',
+                      labelStyle: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Merriweather-Bold')),
+                  onChanged: (String value) {
+                    newBar = value;
+                  },
+                  style: TextStyle(
+                      color: Colors.white, fontFamily: 'Merriweather-Bold'),
+                )),
+                IconButton(
                   onPressed: () {
                     cancelEdit();
                   },
-                  child: Text(
-                    'Cancel Edit',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                  icon: Icon(Icons.cancel),
+                  tooltip: 'Cancel Edit',
                   color: Colors.red,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.red)),
                 ),
+                Text('Rating: ',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Merriweather-Regular',
+                    )),
                 Flexible(
-                    child: Text(
-                  'User Rating: ${widget.rating}/10',
-                  style: TextStyle(
-                      color: Colors.white, fontFamily: 'Merriweather-Regular'),
-                ))
+                  child: DropdownButton(
+                    value: dropdownValue != null
+                        ? dropdownValue
+                        : widget.rating.toString(),
+                    dropdownColor: Colors.black,
+                    items: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+                        .map((String value) {
+                      return DropdownMenuItem(
+                          child: Text(
+                            value,
+                            style: TextStyle(
+                                fontFamily: 'Merriweather-Regular',
+                                color: Colors.white),
+                          ),
+                          value: value);
+                    }).toList(),
+                    onChanged: (String value) {
+                      if (mounted) {
+                        setState(() {
+                          dropdownValue = value;
+                          newRating = int.parse(value);
+                        });
+                      }
+                    },
+                  ),
+                ),
+                Text('/10',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Merriweather-Regular',
+                    ))
               ],
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
@@ -316,139 +378,64 @@ class _MyPostCardState extends State<MyPostCard> {
                 return Container();
               }
             }()),
-            Text(
-              goodContent,
+            TextField(
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelStyle: TextStyle(
+                      color: Colors.white, fontFamily: 'Merriweather-Bold'),
+                  labelText: 'Post description'),
+              onChanged: (String value) {
+                newContent = value;
+              },
               style: TextStyle(
-                  color: Colors.white, fontFamily: 'Merriweather-Regular'),
+                  color: Colors.white, fontFamily: 'Merriweather-Bold'),
             ),
             const Divider(
               color: Colors.white,
             ),
             Row(
               children: [
-                (() {
-                  if (widget.username != null) {
-                    String goodUsername =
-                        utf8.decode(widget.username.codeUnits);
-                    return Flexible(
-                      child: Text(
-                        '$goodUsername',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Merriweather-Regular'),
-                      ),
-                    );
-                  } else {
-                    return Container();
-                  }
-                }()),
-                (() {
-                  if (widget.numLikes == 0) {
-                    return Flexible(
-                        child: Text(
-                      'No Likes Yet',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  } else if (widget.numLikes == 1) {
-                    return Flexible(
-                        child: Text(
-                      '${widget.numLikes} like',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  } else {
-                    return Flexible(
-                        child: Text(
-                      '${widget.numLikes} likes',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  }
-                }())
-              ],
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            ),
-            const Divider(
-              color: Colors.black,
-              thickness: 0.5,
-            ),
-            Row(
-              children: [
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    deletePost();
+                  },
+                  color: Colors.red,
+                  tooltip: 'Delete Post',
+                ),
+                IconButton(
+                  icon: Icon(Icons.save),
+                  onPressed: () {
+                    editPost();
+                  },
+                  color: Colors.red,
+                  tooltip: 'Edit Post',
+                ),
                 Flexible(
-                  child: Text(
-                    timeago.format(date.toLocal()),
+                  child: TextField(
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Merriweather-Bold'),
+                        labelText: 'Neighborhood'),
+                    onChanged: (String value) {
+                      newNbhood = value;
+                    },
                     style: TextStyle(
-                        color: Colors.white, fontFamily: 'Merriweather-Italic'),
-                    softWrap: true,
+                        color: Colors.white, fontFamily: 'Merriweather-Bold'),
                   ),
                 ),
-                (() {
-                  if (widget.editedAt != null) {
-                    String goodNbhood =
-                        utf8.decode(widget.neighborhood.codeUnits);
-                    return Flexible(
-                        child: Text(
-                      '${capitalize(goodNbhood)}, $goodLocation',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                      softWrap: true,
-                    ));
-                  } else {
-                    return Flexible(
-                        child: Text(
-                      '$goodLocation',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                      softWrap: true,
-                    ));
-                  }
-                }())
+                Text(
+                  ', $goodLocation',
+                  style: TextStyle(
+                      color: Colors.white, fontFamily: 'Merriweather-Bold'),
+                )
               ],
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
             const Divider(
               color: Colors.white,
-            ),
-            Row(
-              children: [
-                (() {
-                  if (widget.numComments == 0) {
-                    return Flexible(
-                        child: Text(
-                      'No comments yet',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  } else if (widget.numComments == 1) {
-                    return Flexible(
-                        child: Text(
-                      '${widget.numComments} comment',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  } else {
-                    return Flexible(
-                        child: Text(
-                      '${widget.numComments} comments',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  }
-                }())
-              ],
-            ),
-            const Divider(
-              color: Colors.black,
-              thickness: 0.5,
             ),
           ],
         ),

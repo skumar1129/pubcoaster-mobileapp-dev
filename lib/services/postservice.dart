@@ -59,7 +59,7 @@ class PostService {
   Future<bool> updatePost(String uuid, item) async {
     String endpoint = '${Config.localUrl}/post/$uuid';
     var reqBody = {
-      'pickLink': '',
+      'picLink': '',
       'neighborhood': item['nbhood'],
       'rating': item['rating'],
       'bar': item['bar'],
