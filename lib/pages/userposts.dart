@@ -53,6 +53,7 @@ class _UserPostsState extends State<UserPosts> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var items = snapshot.data;
+                  // TODO: find a way to return empty container instead of spinner
                   if (items.length == 0) {
                     return Expanded(
                         child: Text('No posts for ${widget.user} yet'));
