@@ -60,6 +60,7 @@ class _MyPostCardState extends State<MyPostCard> {
     if (mounted) {
       setState(() {
         newBar = null;
+        dropdownValue = null;
         newContent = null;
         newNbhood = null;
         newRating = null;
