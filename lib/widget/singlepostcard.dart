@@ -44,7 +44,7 @@ class SinglePostCard extends StatefulWidget {
 
 class _SinglePostCardState extends State<SinglePostCard> {
   String newComment;
-  bool editComment;
+  bool editCommentVar;
   final postService = new PostService();
 
   likePost() {}
@@ -54,7 +54,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
   sendComment() {}
   
   editComment() {
-    editComment = true;
+    editCommentVar = true;
   }
   
   sendEditComment() {
@@ -326,7 +326,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                                           fontFamily: 'Merriweather-Regular'),
                                     )),
                                 (() {
-                                  if(widget.currentUser == widget.comment[index]['createdBy'] && editComment == false) {
+                                  if(widget.currentUser == widget.comments[index]['createdBy'] && editCommentVar == false) {
                                     return Row(
                                       children: [
                                         IconButton(
