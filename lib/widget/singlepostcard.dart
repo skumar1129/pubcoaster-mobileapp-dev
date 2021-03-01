@@ -44,8 +44,7 @@ class SinglePostCard extends StatefulWidget {
 
 class _SinglePostCardState extends State<SinglePostCard> {
   String newComment;
-  bool userLiked = false;
-  
+  bool editComment;
   final postService = new PostService();
 
   likePost() {}
@@ -53,13 +52,37 @@ class _SinglePostCardState extends State<SinglePostCard> {
   unLikePost() {}
 
   sendComment() {}
-
-  editComment() {}
+  
+  editComment() {
+    editComment = true;
+  }
+  
+  sendEditComment() {
+  }
 
   deleteComment() {}
   
-  userLiked() {
-    
+  bool userLiked() {
+    for(var i=0; i<widget.likes.length; i++) {
+      if(widget.likes[i]['user'] == widget.currentUser && widget.likes[i]['like']) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  Widget likesIcon() {
+    if (userLiked()) { //full icon
+      return IconButton(
+         icon: Icon(Icons.favorite, color: Colors.red),
+         onPressed: unLikePost(),
+      ); 
+    } else {
+      return IconButton(
+         icon: Icon(Icons.favorite_border, color: Colors.white), //TODO: do I specify color here?
+         onPressed: likePost(),
+      ); 
+    }
   }
   
 
@@ -172,10 +195,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                                     color: Colors.white,
                                     fontFamily: 'Merriweather-Regular'),
                               )),
-                          IconButton(
-                            icon: Icon(Icons.favorite, color: Colors.red),
-                            onPressed: null,
-                          )
+                          likesIcon(),                           
                         ],
                       );
                     } else if (widget.likes.length == 1) {
@@ -190,12 +210,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                                     color: Colors.white,
                                     fontFamily: 'Merriweather-Regular'),
                               )),
-                          IconButton(
-                              icon: Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                              ),
-                              onPressed: null)
+                          likesIcon(),
                         ],
                       );
                     } else {
@@ -210,12 +225,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                                     color: Colors.white,
                                     fontFamily: 'Merriweather-Regular'),
                               )),
-                          IconButton(
-                              icon: Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                              ),
-                              onPressed: null)
+                          likesIcon(),
                         ],
                       );
                     }
@@ -315,24 +325,28 @@ class _SinglePostCardState extends State<SinglePostCard> {
                                           color: Colors.white,
                                           fontFamily: 'Merriweather-Regular'),
                                     )),
-                                Row(
-                                  children: [
-                                    IconButton(
-                                        icon: Icon(
-                                          Icons.edit,
-                                          color: Colors.red,
-                                        ),
-                                        tooltip: 'Edit Comment',
-                                        onPressed: editComment()),
-                                    IconButton(
-                                        icon: Icon(
-                                          Icons.delete,
-                                          color: Colors.red,
-                                        ),
-                                        tooltip: 'Delete Comment',
-                                        onPressed: deleteComment())
-                                  ],
-                                )
+                                (() {
+                                  if(widget.currentUser == widget.comment[index]['createdBy'] && editComment == false) {
+                                    return Row(
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.edit,
+                                            color: Colors.red,
+                                          ),
+                                          tooltip: 'Edit Comment',
+                                          onPressed: editComment()),
+                                      IconButton(
+                                          icon: Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                          tooltip: 'Delete Comment',
+                                          onPressed: deleteComment())
+                                    ],
+                                  );
+                                 }
+                                }()),
                               ],
                             );
                           },
