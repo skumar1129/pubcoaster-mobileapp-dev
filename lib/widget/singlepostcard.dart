@@ -19,6 +19,7 @@ class SinglePostCard extends StatefulWidget {
   final String description;
   final List<dynamic> comments;
   final List<dynamic> likes;
+  final String currentUser;
 
   SinglePostCard(
       this.bar,
@@ -33,7 +34,9 @@ class SinglePostCard extends StatefulWidget {
       this.description,
       this.anonymous,
       this.comments,
-      this.likes);
+      this.likes,
+      this.currentUser
+  );
 
   @override
   _SinglePostCardState createState() => _SinglePostCardState();
