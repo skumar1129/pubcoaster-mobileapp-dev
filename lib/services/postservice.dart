@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'config.dart';
 import 'package:NewApp/models/feedpost.dart';
 import 'package:NewApp/models/singlepost.dart';
+import 'package:NewApp/models/mypost.dart';
 import 'dart:async';
 
 List<FeedPost> parseFeedPosts(dataItems) {
@@ -14,6 +15,12 @@ List<FeedPost> parseFeedPosts(dataItems) {
 
 SinglePost parseSinglePost(dataItem) {
   var response = SinglePost.fromJson(dataItem);
+  return response;
+}
+
+List<MyPost> parseMyPosts(dataItems) {
+  var response =
+      dataItems.map<MyPost>((json) => MyPost.fromJson(json)).toList();
   return response;
 }
 
@@ -52,7 +59,7 @@ class PostService {
   Future<bool> updatePost(String uuid, item) async {
     String endpoint = '${Config.localUrl}/post/$uuid';
     var reqBody = {
-      'pickLink': '',
+      'picLink': '',
       'neighborhood': item['nbhood'],
       'rating': item['rating'],
       'bar': item['bar'],
@@ -163,7 +170,7 @@ class PostService {
     return compute(parseFeedPosts, json.decode(response.body));
   }
 
-  Future<List<FeedPost>> getMyPosts([int page]) async {
+  Future<List<MyPost>> getMyPosts([int page]) async {
     String endpoint = '${Config.localUrl}/mypost/user';
 
     // TODO: update to use local storage
@@ -179,7 +186,7 @@ class PostService {
       print(e);
     }
 
-    return compute(parseFeedPosts, json.decode(response.body));
+    return compute(parseMyPosts, json.decode(response.body));
   }
 
   Future<List<FeedPost>> getUserPosts(String user, [int page]) async {
