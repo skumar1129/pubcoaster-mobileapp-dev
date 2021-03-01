@@ -41,6 +41,8 @@ class SinglePostCard extends StatefulWidget {
 
 class _SinglePostCardState extends State<SinglePostCard> {
   String newComment;
+  bool userLiked = false;
+  
   final postService = new PostService();
 
   likePost() {}
@@ -52,6 +54,11 @@ class _SinglePostCardState extends State<SinglePostCard> {
   editComment() {}
 
   deleteComment() {}
+  
+  userLiked() {
+    
+  }
+  
 
   // TODO: Still need logic to determine when a user has liked a post already
   // also need to check the current user like we did for web app
