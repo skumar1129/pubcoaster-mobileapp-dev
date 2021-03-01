@@ -5,8 +5,9 @@ import 'package:NewApp/widget/singlepostcard.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 
 class SinglePost extends StatefulWidget {
-  SinglePost(this.uuid);
+  SinglePost(this.uuid, this.currentUser);
   final String uuid;
+  final String currentUser;
   static const route = '/singlepost';
 
   @override
@@ -56,7 +57,9 @@ class _SinglePostState extends State<SinglePost> {
                       item.description,
                       item.anonymous,
                       item.comments,
-                      item.likes);
+                      item.likes,
+                      widget.currentUser
+                  );
                 } else if (snapshot.hasError) {
                   return Expanded(
                       child: Text(
