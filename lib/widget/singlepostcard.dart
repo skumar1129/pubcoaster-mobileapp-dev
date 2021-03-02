@@ -100,6 +100,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
   sendComment() async {
     var item = {
       'text': newComment,
+      'uuid': widget.uuid
     };
     var comment = {
       'text': newComment,
@@ -107,12 +108,12 @@ class _SinglePostCardState extends State<SinglePostCard> {
       'createdAt': //TODO,
       'uuid': //TODO
     };
-    bool succeeed = await commentService.updateComment(widget.uuid, item);
+    bool succeeed = await commentService.addComment(item);
     if (succeed) {
       setState(() {
         newComment = "";
       }
-      )
+      );
     }
   }
   
@@ -130,12 +131,22 @@ class _SinglePostCardState extends State<SinglePostCard> {
       setState(() {
         widget.comments.removeAt(index);
       }
-      )
+      );
     }
   }
 
   saveComment() async {
-
+    var item = {
+      'text': newComment,
+    };
+    bool succeeed = await commentService.updateComment(widget.uuid, item);
+    if (succeed) {
+      setState(() {
+        editCommentVar = false;
+        editCommentUuid = "";
+        newEditComment = "";
+      });
+    }
   }
 
   cancelComment() {
