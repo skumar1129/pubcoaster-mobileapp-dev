@@ -220,7 +220,7 @@ class FeedPostCard extends StatelessWidget {
       ),
       onTap: () {
         Navigator.pushReplacementNamed(context, SinglePost.route,
-            arguments: uuid);
+            arguments: {'uuid': uuid, 'currentUser': 'helga'} );
       },
     );
   }

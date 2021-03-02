@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
           LocBarPosts.route: (context) => LocBarPosts(settings.arguments),
           LocNbhoodPosts.route: (context) => LocNbhoodPosts(settings.arguments),
           LocUserPosts.route: (context) => LocUserPosts(settings.arguments),
-          SinglePost.route: (context) => SinglePost(settings.arguments),
+          SinglePost.route: (context) => SinglePost(settings.arguments, 'helga'), //temp holder, replace at some point
           UserPosts.route: (context) => UserPosts(settings.arguments)
         };
         WidgetBuilder builder = routes[settings.name];

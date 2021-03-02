@@ -4,6 +4,8 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/material.dart';
 import 'package:strings/strings.dart';
 import 'package:NewApp/services/postservice.dart';
+import 'package:NewApp/services/commentservice.dart';
+import 'package:NewApp/services/likeservice.dart';
 
 class SinglePostCard extends StatefulWidget {
   final String bar;
@@ -44,23 +46,83 @@ class SinglePostCard extends StatefulWidget {
 
 class _SinglePostCardState extends State<SinglePostCard> {
   String newComment;
-  bool editCommentVar;
+  bool editCommentVar = false;
+  String editCommentUuid;
+  String newEditComment;
+  bool userLikedVar;
   final postService = new PostService();
+  final commentService = new CommentService();
+  final likeService = new LikeService();
 
-  likePost() {}
-
-  unLikePost() {}
-
-  sendComment() {}
-  
-  editComment() {
-    editCommentVar = true;
-  }
-  
-  sendEditComment() {
+  @override
+  void initState() {
+    super.initState();
+    userLikedVar = userLiked();
   }
 
-  deleteComment() {}
+  likePost() async {
+    var item = {
+      'username': widget.currentUser,
+      'uuid': widget.uuid
+    };
+    var like = {
+      'user': widget.currentUser,
+      'like': true
+    };
+    bool succeed = await likeService.addLike(item);
+    if (succeed) {
+      setState(() {
+        userLikedVar = true;
+        widget.likes.add(like);
+      });
+    }
+  }
+
+  unLikePost() async {
+    var item = {
+      'username': widget.currentUser,
+      'uuid': widget.uuid
+    };
+    var like = {
+      'user': widget.currentUser,
+      'like': true
+    };
+    bool succeed = await likeService.deleteLike(item);
+    if (succeed) {
+      var index = widget.likes.indexOf(like);
+      setState(() {
+        userLikedVar = false;
+        widget.likes.removeAt(index);
+      });
+    }
+  }
+
+  sendComment() async {
+
+  }
+  
+  editComment(uuid) async {
+    setState(() {
+      editCommentVar = true;
+      editCommentUuid = uuid;
+    });
+  }
+
+  deleteComment() async {
+
+  }
+
+  saveComment() async {
+
+  }
+
+  cancelComment() {
+    setState(() {
+      editCommentVar = false;
+      editCommentUuid = "";
+      newEditComment = "";
+    });
+  }
   
   bool userLiked() {
     for(var i=0; i<widget.likes.length; i++) {
@@ -72,17 +134,17 @@ class _SinglePostCardState extends State<SinglePostCard> {
   }
   
   Widget likesIcon() {
-    if (userLiked()) { //full icon
-      return IconButton(
-         icon: Icon(Icons.favorite, color: Colors.red),
-         onPressed: unLikePost(),
-      ); 
-    } else {
-      return IconButton(
-         icon: Icon(Icons.favorite_border, color: Colors.white), //TODO: do I specify color here?
-         onPressed: likePost(),
-      ); 
-    }
+    return IconButton(
+        icon: Icon(Icons.favorite, color: Colors.red),
+        onPressed: () { unLikePost(); },
+    ); 
+  }
+
+  Widget unlikeIcon() {
+    return IconButton(
+         icon: Icon(Icons.favorite_border, color: Colors.white), 
+         onPressed: () { likePost(); },
+    ); 
   }
   
 
@@ -195,7 +257,13 @@ class _SinglePostCardState extends State<SinglePostCard> {
                                     color: Colors.white,
                                     fontFamily: 'Merriweather-Regular'),
                               )),
-                          likesIcon(),                           
+                          (() 
+                          { if (userLikedVar) {
+                              return likesIcon(); 
+                            } else {
+                              return unlikeIcon();
+                            }
+                          }())                          
                         ],
                       );
                     } else if (widget.likes.length == 1) {
@@ -210,7 +278,13 @@ class _SinglePostCardState extends State<SinglePostCard> {
                                     color: Colors.white,
                                     fontFamily: 'Merriweather-Regular'),
                               )),
-                          likesIcon(),
+                          (() 
+                          { if (userLikedVar) {
+                              return likesIcon(); 
+                            } else {
+                              return unlikeIcon();
+                            }
+                          }())  
                         ],
                       );
                     } else {
@@ -225,7 +299,13 @@ class _SinglePostCardState extends State<SinglePostCard> {
                                     color: Colors.white,
                                     fontFamily: 'Merriweather-Regular'),
                               )),
-                          likesIcon(),
+                          (() 
+                          { if (userLikedVar) {
+                              return likesIcon(); 
+                            } else {
+                              return unlikeIcon();
+                            }
+                          }())  
                         ],
                       );
                     }
@@ -302,9 +382,10 @@ class _SinglePostCardState extends State<SinglePostCard> {
                           itemCount: widget.comments.length,
                           itemBuilder: (BuildContext context, int index) {
                             var newDate = HttpDate.parse(
-                                widget.comments[index]['createdAt']);
+                            widget.comments[index]['createdAt']);
                             // TODO: Look into better way to get real time
                             var date = newDate.add(Duration(hours: 5));
+                            if (editCommentVar == false || editCommentUuid != widget.comments[index]['uuid']) {
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -317,41 +398,94 @@ class _SinglePostCardState extends State<SinglePostCard> {
                                         fontFamily: 'Merriweather-Bold'),
                                   ),
                                 ),
-                                Padding(
-                                    padding: EdgeInsets.only(right: 4),
-                                    child: Text(
-                                      "${timeago.format(date.toLocal())}",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Merriweather-Regular'),
-                                    )),
                                 (() {
-                                  if(widget.currentUser == widget.comments[index]['createdBy'] && editCommentVar == false) {
+                                  if(widget.currentUser == widget.comments[index]['createdBy'] && editCommentVar == false) { //not going to let a user edit multiple comments at once
                                     return Row(
                                       children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 4),
+                                          child: Text(
+                                          "${timeago.format(date.toLocal())}",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'Merriweather-Regular'),
+                                        )),
                                         IconButton(
                                           icon: Icon(
                                             Icons.edit,
                                             color: Colors.red,
                                           ),
                                           tooltip: 'Edit Comment',
-                                          onPressed: editComment()),
+                                          onPressed: () { editComment(widget.comments[index]['uuid']); }),
                                       IconButton(
                                           icon: Icon(
                                             Icons.delete,
                                             color: Colors.red,
                                           ),
                                           tooltip: 'Delete Comment',
-                                          onPressed: deleteComment())
+                                          onPressed: () { deleteComment(); }),
                                     ],
                                   );
+                                 } else {
+                                    return Padding(
+                                      padding: EdgeInsets.only(right: 4),
+                                      child: Text(
+                                      "${timeago.format(date.toLocal())}",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Merriweather-Regular'),
+                                    ));
                                  }
                                 }()),
                               ],
                             );
+                            } else {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [ //TODO: change
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 4),
+                                    child: Text(
+                                      "${widget.comments[index]['createdBy']}:  ",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Merriweather-Bold'),
+                                    ),
+                                  ),
+                                  Expanded(child:
+                                    TextField(
+                                      style: TextStyle(color: Colors.white),
+                                      decoration: InputDecoration(
+                                        labelText: 'New Comment Text',
+                                        labelStyle: TextStyle(color: Colors.white),
+                                        border: OutlineInputBorder(),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8),
+                                      ),
+                                      onChanged: (String value) {
+                                        newEditComment = value;
+                                      })
+                                    ),
+                                    IconButton(
+                                      icon: Icon(
+                                      Icons.save,
+                                      color: Colors.white,
+                                    ),
+                                    tooltip: 'Save new comment',
+                                    onPressed: () { saveComment(); } ),
+                                    IconButton(
+                                      icon: Icon(
+                                      Icons.cancel,
+                                      color: Colors.white,
+                                    ),
+                                    tooltip: 'Cancel new comment',
+                                    onPressed: () { cancelComment(); } )
+                                ],
+                              );
+                            }
                           },
                           separatorBuilder: (BuildContext context, int index) =>
-                              const Divider(color: Colors.blueGrey)));
+                          const Divider(color: Colors.blueGrey)));
                 }
               }()),
               const Divider(
@@ -361,7 +495,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
               Row(
                 children: [
                   Expanded(
-                      child: Padding(
+                    child: Padding(
                     padding: EdgeInsets.only(left: 4),
                     child: TextField(
                         style: TextStyle(color: Colors.white),
@@ -382,7 +516,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                         color: Colors.white,
                       ),
                       tooltip: 'Send comment',
-                      onPressed: sendComment())
+                      onPressed: () { sendComment(); } )
                 ],
               ),
               const Divider(
