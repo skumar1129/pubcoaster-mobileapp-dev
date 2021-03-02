@@ -103,15 +103,15 @@ class _SinglePostCardState extends State<SinglePostCard> {
       'uuid': widget.uuid
     };
     var comment = {
+      //TODO: what to do for the missing pieces?
       'text': newComment,
       'createdBy': widget.currentUser,
-      'createdAt': //TODO,
-      'uuid': //TODO
     };
-    bool succeeed = await commentService.addComment(item);
+    bool succeed = await commentService.addComment(item);
     if (succeed) {
       setState(() {
         newComment = "";
+        widget.comments.add(comment);
       }
       );
     }
@@ -124,12 +124,19 @@ class _SinglePostCardState extends State<SinglePostCard> {
     });
   }
 
-  deleteComment() async {
-    bool succeeed = await commentService.deleteComment(widget.uuid);
+  deleteComment(index, uuid) async {
+    //TODO: is there moer in a comment
+    var comment = {
+      'text': widget.comments[index]['text'],
+      'uuid': uuid,
+      'createdBy': widget.currentUser,
+      'createdAt': widget.comments[index]['createdAt']
+    };
+    bool succeed = await commentService.deleteComment(uuid);
     if (succeed) {
-      var index = widget.comments.indexOf(like);
+      var indexCom = widget.comments.indexOf(comment);
       setState(() {
-        widget.comments.removeAt(index);
+        widget.comments.removeAt(indexCom);
       }
       );
     }
@@ -139,9 +146,10 @@ class _SinglePostCardState extends State<SinglePostCard> {
     var item = {
       'text': newComment,
     };
-    bool succeeed = await commentService.updateComment(widget.uuid, item);
+    bool succeed = await commentService.updateComment(widget.uuid, item);
     if (succeed) {
       setState(() {
+        //TODO: how to update comment
         editCommentVar = false;
         editCommentUuid = "";
         newEditComment = "";
@@ -456,7 +464,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                                             color: Colors.red,
                                           ),
                                           tooltip: 'Delete Comment',
-                                          onPressed: () { deleteComment(); }),
+                                          onPressed: () { deleteComment(index, widget.comments[index]['uuid']); }),
                                     ],
                                   );
                                  } else {
