@@ -98,7 +98,22 @@ class _SinglePostCardState extends State<SinglePostCard> {
   }
 
   sendComment() async {
-
+    var item = {
+      'text': newComment,
+    };
+    var comment = {
+      'text': newComment,
+      'createdBy': widget.currentUser,
+      'createdAt': //TODO,
+      'uuid': //TODO
+    };
+    bool succeeed = await commentService.updateComment(widget.uuid, item);
+    if (succeed) {
+      setState(() {
+        newComment = "";
+      }
+      )
+    }
   }
   
   editComment(uuid) async {
@@ -109,7 +124,14 @@ class _SinglePostCardState extends State<SinglePostCard> {
   }
 
   deleteComment() async {
-
+    bool succeeed = await commentService.deleteComment(widget.uuid);
+    if (succeed) {
+      var index = widget.comments.indexOf(like);
+      setState(() {
+        widget.comments.removeAt(index);
+      }
+      )
+    }
   }
 
   saveComment() async {
