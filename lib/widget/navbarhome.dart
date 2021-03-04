@@ -24,9 +24,11 @@ class _NavBarState extends State<NavBar> {
       leading: IconButton(
         icon: Icon(typing ? Icons.chevron_left : Icons.search),
         onPressed: () {
-          setState(() {
-            typing = !typing;
-          });
+          if (mounted) {
+            setState(() {
+              typing = !typing;
+            });
+          }
         },
         tooltip: 'Search User',
       ),

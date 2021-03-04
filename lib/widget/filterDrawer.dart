@@ -53,7 +53,10 @@ class _FilterDrawerState extends State<FilterDrawer> {
                   },
                 )),
             onChanged: (value) => {
-              setState(() => {bar = value})
+              if (mounted)
+                {
+                  setState(() => {bar = value})
+                }
             },
           ),
           TextField(
@@ -67,7 +70,10 @@ class _FilterDrawerState extends State<FilterDrawer> {
                   },
                 )),
             onChanged: (value) => {
-              setState(() => {nbhood = value})
+              if (mounted)
+                {
+                  setState(() => {nbhood = value})
+                }
             },
           ),
           TextField(
@@ -81,7 +87,10 @@ class _FilterDrawerState extends State<FilterDrawer> {
                   },
                 )),
             onChanged: (value) => {
-              setState(() => {user = value})
+              if (mounted)
+                {
+                  setState(() => {user = value})
+                }
             },
           ),
         ],
