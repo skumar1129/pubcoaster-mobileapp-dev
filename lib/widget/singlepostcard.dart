@@ -125,7 +125,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
   }
 
   deleteComment(index, uuid) async {
-    //TODO: is there moer in a comment
+    //TODO: is there more in a comment?
     var comment = {
       'text': widget.comments[index]['text'],
       'uuid': uuid,

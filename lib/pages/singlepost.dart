@@ -5,9 +5,9 @@ import 'package:NewApp/widget/singlepostcard.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 
 class SinglePost extends StatefulWidget {
-  SinglePost(this.uuid, this.currentUser);
   final String uuid;
   final String currentUser;
+  SinglePost(this.uuid, this.currentUser);
   static const route = '/singlepost';
 
   @override
