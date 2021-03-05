@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'config.dart';
 import 'dart:async';
@@ -9,13 +8,11 @@ class LikeService {
   Future<bool> addLike(item) async {
     String endpoint = "${Config.localUrl}/like/${item['uuid']}";
     // TODO: Add user from local storage
-    var reqBody = {
-      'username': item['username'],
-    };
 
+    Map<String, String> headers = {'username': item['username']};
     bool succeed;
     try {
-      await http.post(endpoint, headers: reqBody);
+      await http.post(endpoint, headers: headers);
       succeed = true;
     } catch (e) {
       print(e);
@@ -28,13 +25,12 @@ class LikeService {
   Future<bool> deleteLike(item) async {
     String endpoint = "${Config.localUrl}/like/${item['uuid']}";
     // TODO: Add user from local storage
-    var reqBody = {
-      'username': item['username'],
-    };
+
     bool succeed;
 
+    Map<String, String> headers = {'username': item['username']};
     try {
-      await http.delete(endpoint, headers: reqBody);
+      await http.delete(endpoint, headers: headers);
       succeed = true;
     } catch (e) {
       print(e);
