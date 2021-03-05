@@ -15,9 +15,9 @@ class SinglePost extends StatefulWidget {
 }
 
 class _SinglePostState extends State<SinglePost> {
-  Future<dynamic> post;
+  Future<dynamic> post = [] as Future;
   final postService = new PostService();
-  
+
   getSinglePost(String uuid) async {
     var response;
     try {
@@ -59,8 +59,7 @@ class _SinglePostState extends State<SinglePost> {
                       item.anonymous,
                       item.comments,
                       item.likes,
-                      widget.currentUser
-                  );
+                      widget.currentUser);
                 } else if (snapshot.hasError) {
                   return Expanded(
                       child: Text(

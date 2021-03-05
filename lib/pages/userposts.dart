@@ -14,7 +14,7 @@ class UserPosts extends StatefulWidget {
 }
 
 class _UserPostsState extends State<UserPosts> {
-  Future<dynamic> posts;
+  Future<dynamic> posts = [] as Future;
   final postService = new PostService();
   getUserPosts(String user, [int offset]) async {
     var response;

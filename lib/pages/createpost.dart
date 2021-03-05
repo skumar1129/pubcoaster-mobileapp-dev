@@ -15,13 +15,13 @@ class _CreatePostState extends State<CreatePost> {
   String location = '';
   String bar = '';
   String neighborhood = '';
-  int rating;
+  int rating = -1;
   String content = '';
   bool anonymous = false;
   String picLink = '';
   final postService = new PostService();
 
-  File _image;
+  // File _image = '' as File;
   final picker = ImagePicker();
 
   Future getImage() async {
@@ -29,7 +29,8 @@ class _CreatePostState extends State<CreatePost> {
 
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        print('nice!');
+        // _image = File(pickedFile.path);
       } else {
         print('No image selected.');
       }

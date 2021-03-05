@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/material.dart';
 import 'package:strings/strings.dart';
+import 'package:NewApp/models/postargs.dart';
+import 'package:NewApp/pages/singlepost.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/services/commentservice.dart';
 import 'package:NewApp/services/likeservice.dart';
@@ -44,11 +46,11 @@ class SinglePostCard extends StatefulWidget {
 }
 
 class _SinglePostCardState extends State<SinglePostCard> {
-  String newComment;
+  String newComment = '';
   bool editCommentVar = false;
-  String editCommentUuid;
-  String newEditComment;
-  bool userLikedVar;
+  String editCommentUuid = '';
+  String newEditComment = '';
+  bool userLikedVar = false;
   final postService = new PostService();
   final commentService = new CommentService();
   final likeService = new LikeService();
@@ -88,19 +90,26 @@ class _SinglePostCardState extends State<SinglePostCard> {
   }
 
   sendComment() async {
-    var item = {'text': newComment, 'uuid': widget.uuid};
-    var comment = {
-      //TODO: what to do for the missing pieces?
+    var item = {
       'text': newComment,
-      'createdBy': widget.currentUser,
+      'uuid': widget.uuid,
+      'createdBy': widget.currentUser
     };
+    // var comment = {
+    //   'uuid': tempUuid.v4(),
+    //   'text': newComment,
+    //   'createdBy': widget.currentUser,
+    // };
     bool succeed = await commentService.addComment(item);
-    // if (succeed) {
-    //   setState(() {
-    //     newComment = "";
-    //     widget.comments.add(comment);
-    //   });
-    // }
+    if (succeed) {
+      //   setState(() {
+      //     newComment = "";
+      //     widget.comments.add(comment);
+      //   });
+      Navigator.pushReplacementNamed(context, SinglePost.route,
+          arguments:
+              PostArgs(uuid: widget.uuid, currentUser: widget.currentUser));
+    }
   }
 
   editComment(uuid) async {
@@ -119,12 +128,13 @@ class _SinglePostCardState extends State<SinglePostCard> {
       'createdAt': widget.comments[index]['createdAt']
     };
     bool succeed = await commentService.deleteComment(uuid);
-    // if (succeed) {
-    //   var indexCom = widget.comments.indexOf(comment);
-    //   setState(() {
-    //     widget.comments.removeAt(indexCom);
-    //   });
-    // }
+    if (succeed) {
+      if (mounted) {
+        setState(() {
+          widget.comments.removeWhere((comment) => comment['uuid'] == uuid);
+        });
+      }
+    }
   }
 
   saveComment() async {

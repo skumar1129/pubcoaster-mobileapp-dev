@@ -16,9 +16,9 @@ class LocUserPosts extends StatefulWidget {
 }
 
 class _LocUserPostsState extends State<LocUserPosts> {
-  String location;
-  String user;
-  Future<dynamic> posts;
+  String location = '';
+  String user = '';
+  Future<dynamic> posts = [] as Future;
   final postService = new PostService();
 
   getLocUserPosts(String loc, String user, [int offset]) async {

@@ -16,9 +16,9 @@ class LocNbhoodPosts extends StatefulWidget {
 }
 
 class _LocNbhoodPostsState extends State<LocNbhoodPosts> {
-  String location;
-  String nbhood;
-  Future<dynamic> posts;
+  String location = '';
+  String nbhood = '';
+  Future<dynamic> posts = [] as Future;
   final postService = new PostService();
 
   getLocNbhoodPosts(String loc, String nbhood, [int offset]) async {

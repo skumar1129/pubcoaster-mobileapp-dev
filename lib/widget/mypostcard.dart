@@ -44,9 +44,9 @@ class MyPostCard extends StatefulWidget {
 class _MyPostCardState extends State<MyPostCard> {
   final postService = new PostService();
   bool editMode = false;
-  String newBar;
-  String newContent;
-  String newNbhood;
+  String newBar = '';
+  String newContent = '';
+  String newNbhood = '';
   int newRating = -1;
 
   goToEditMode() {
@@ -60,11 +60,11 @@ class _MyPostCardState extends State<MyPostCard> {
   cancelEdit() {
     if (mounted) {
       setState(() {
-        newBar = null;
-        dropdownValue = null;
-        newContent = null;
-        newNbhood = null;
-        newRating = null;
+        newBar = '';
+        dropdownValue = '';
+        newContent = '';
+        newNbhood = '';
+        newRating = -1;
         editMode = false;
       });
     }

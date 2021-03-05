@@ -15,7 +15,7 @@ class LocationPosts extends StatefulWidget {
 }
 
 class _LocationPostsState extends State<LocationPosts> {
-  Future<dynamic> posts;
+  Future<dynamic> posts = [] as Future;
   final postService = new PostService();
   getLocationPosts(String location, [int offset]) async {
     var response;
