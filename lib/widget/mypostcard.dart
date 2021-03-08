@@ -44,10 +44,10 @@ class MyPostCard extends StatefulWidget {
 class _MyPostCardState extends State<MyPostCard> {
   final postService = new PostService();
   bool editMode = false;
-  String newBar = '';
-  String newContent = '';
-  String newNbhood = '';
-  int newRating = -1;
+  String? newBar;
+  String? newContent;
+  String? newNbhood;
+  int? newRating;
 
   goToEditMode() {
     if (mounted) {
@@ -60,11 +60,11 @@ class _MyPostCardState extends State<MyPostCard> {
   cancelEdit() {
     if (mounted) {
       setState(() {
-        newBar = '';
-        dropdownValue = '';
-        newContent = '';
-        newNbhood = '';
-        newRating = -1;
+        newBar = null;
+        dropdownValue = null;
+        newContent = null;
+        newNbhood = null;
+        newRating = null;
         editMode = false;
       });
     }
@@ -331,9 +331,9 @@ class _MyPostCardState extends State<MyPostCard> {
                     )),
                 Flexible(
                   child: DropdownButton(
-                    value: dropdownValue != null
-                        ? dropdownValue
-                        : widget.rating.toString(),
+                    value: dropdownValue == null
+                        ? widget.rating.toString()
+                        : dropdownValue,
                     dropdownColor: Colors.black,
                     items: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
                         .map((String value) {

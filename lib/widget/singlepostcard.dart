@@ -95,20 +95,17 @@ class _SinglePostCardState extends State<SinglePostCard> {
       'uuid': widget.uuid,
       'createdBy': widget.currentUser
     };
-    // var comment = {
-    //   'uuid': tempUuid.v4(),
-    //   'text': newComment,
-    //   'createdBy': widget.currentUser,
-    // };
+    var comment = {
+      'createdAt': HttpDate.format(DateTime.now()),
+      'text': newComment,
+      'createdBy': widget.currentUser,
+    };
     bool succeed = await commentService.addComment(item);
     if (succeed) {
-      //   setState(() {
-      //     newComment = "";
-      //     widget.comments.add(comment);
-      //   });
-      Navigator.pushReplacementNamed(context, SinglePost.route,
-          arguments:
-              PostArgs(uuid: widget.uuid, currentUser: widget.currentUser));
+      setState(() {
+        newComment = "";
+        widget.comments.insert(0, comment);
+      });
     }
   }
 
@@ -120,13 +117,6 @@ class _SinglePostCardState extends State<SinglePostCard> {
   }
 
   deleteComment(index, uuid) async {
-    //TODO: is there more in a comment?
-    var comment = {
-      'text': widget.comments[index]['text'],
-      'uuid': uuid,
-      'createdBy': widget.currentUser,
-      'createdAt': widget.comments[index]['createdAt']
-    };
     bool succeed = await commentService.deleteComment(uuid);
     if (succeed) {
       if (mounted) {
@@ -137,19 +127,25 @@ class _SinglePostCardState extends State<SinglePostCard> {
     }
   }
 
-  saveComment() async {
+  saveComment(uuid) async {
     var item = {
       'text': newComment,
     };
-    bool succeed = await commentService.updateComment(widget.uuid, item);
-    // if (succeed) {
-    //   setState(() {
-    //     //TODO: how to update comment
-    //     editCommentVar = false;
-    //     editCommentUuid = "";
-    //     newEditComment = "";
-    //   });
-    // }
+    bool succeed = await commentService.updateComment(uuid, item);
+    if (succeed) {
+      var comment = widget.comments.firstWhere(
+        (comment) => comment['uuid'] == uuid,
+        orElse: () => '',
+      );
+      if (mounted && comment != '') {
+        setState(() {
+          comment['text'] = newEditComment;
+          editCommentVar = false;
+          editCommentUuid = "";
+          newEditComment = "";
+        });
+      }
+    }
   }
 
   cancelComment() {
@@ -531,7 +527,8 @@ class _SinglePostCardState extends State<SinglePostCard> {
                                       ),
                                       tooltip: 'Save new comment',
                                       onPressed: () {
-                                        saveComment();
+                                        saveComment(
+                                            widget.comments[index]['uuid']);
                                       }),
                                   IconButton(
                                       icon: Icon(
