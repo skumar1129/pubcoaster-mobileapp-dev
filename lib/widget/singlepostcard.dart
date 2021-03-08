@@ -12,12 +12,12 @@ import 'package:NewApp/services/likeservice.dart';
 class SinglePostCard extends StatefulWidget {
   final String bar;
   final String location;
-  final String username;
+  final String? username;
   final int rating;
   final String timestamp;
-  final String neighborhood;
-  final String editedAt;
-  final String picLink;
+  final String? neighborhood;
+  final String? editedAt;
+  final String? picLink;
   final String uuid;
   final bool anonymous;
   final String description;
@@ -268,7 +268,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                   (() {
                     if (widget.username != null) {
                       String goodUsername =
-                          utf8.decode(widget.username.codeUnits);
+                          utf8.decode(widget.username!.codeUnits);
                       return Padding(
                         padding: EdgeInsets.only(left: 4),
                         child: Text(
@@ -372,7 +372,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                   (() {
                     if (widget.neighborhood != null) {
                       String goodNbhood =
-                          utf8.decode(widget.neighborhood.codeUnits);
+                          utf8.decode(widget.neighborhood!.codeUnits);
                       return Padding(
                           padding: EdgeInsets.only(right: 4),
                           child: Text(

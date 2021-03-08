@@ -14,12 +14,12 @@ class MyPostCard extends StatefulWidget {
   final String content;
   final int rating;
   final String timestamp;
-  final String neighborhood;
+  final String? neighborhood;
   final int numComments;
   final int numLikes;
   final bool anonymous;
-  final String editedAt;
-  final String picLink;
+  final String? editedAt;
+  final String? picLink;
   final String uuid;
 
   MyPostCard(
@@ -225,7 +225,7 @@ class _MyPostCardState extends State<MyPostCard> {
                   (() {
                     if (widget.neighborhood != null) {
                       String goodNbhood =
-                          utf8.decode(widget.neighborhood.codeUnits);
+                          utf8.decode(widget.neighborhood!.codeUnits);
                       return Flexible(
                           child: Text(
                         '${capitalize(goodNbhood)}, $goodLocation',

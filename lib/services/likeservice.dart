@@ -6,13 +6,14 @@ class LikeService {
   // TODO: Add auth token in header for all calls (will do when firebase is implemented)
 
   Future<bool> addLike(item) async {
-    String endpoint = "${Config.localUrl}/like/${item['uuid']}";
+    String path = '/like/${item['uuid']}';
+    var endpoint = Uri.http('${Config.localUrl}', path);
     // TODO: Add user from local storage
 
     Map<String, String> headers = {'username': item['username']};
     bool succeed;
     try {
-      await http.post(endpoint as Uri, headers: headers);
+      await http.post(endpoint, headers: headers);
       succeed = true;
     } catch (e) {
       print(e);
@@ -23,14 +24,15 @@ class LikeService {
   }
 
   Future<bool> deleteLike(item) async {
-    String endpoint = "${Config.localUrl}/like/${item['uuid']}";
+    String path = '/like/${item['uuid']}';
+    var endpoint = Uri.http('${Config.localUrl}', path);
     // TODO: Add user from local storage
 
     bool succeed;
 
     Map<String, String> headers = {'username': item['username']};
     try {
-      await http.delete(endpoint as Uri, headers: headers);
+      await http.delete(endpoint, headers: headers);
       succeed = true;
     } catch (e) {
       print(e);

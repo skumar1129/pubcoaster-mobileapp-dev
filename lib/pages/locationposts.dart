@@ -103,16 +103,16 @@ class _LocationPostsState extends State<LocationPosts> {
                                   return FeedPostCard(
                                       items[index].bar,
                                       items[index].location,
-                                      items[index].createdBy!,
+                                      items[index].createdBy,
                                       items[index].description,
                                       items[index].rating,
                                       items[index].createdAt,
-                                      items[index].neighborhood!,
+                                      items[index].neighborhood,
                                       items[index].numComments,
                                       items[index].numLikes,
-                                      items[index].anonymous!,
-                                      items[index].editedAt!,
-                                      items[index].picLink!,
+                                      items[index].anonymous,
+                                      items[index].editedAt,
+                                      items[index].picLink,
                                       items[index].uuid);
                                 }),
                             onRefresh: () {

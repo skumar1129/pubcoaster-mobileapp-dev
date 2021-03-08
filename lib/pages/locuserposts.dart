@@ -4,7 +4,6 @@ import 'package:NewApp/widget/navbarlocation.dart';
 import 'package:NewApp/widget/filterDrawer.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/widget/feedpostcard.dart';
-import 'package:strings/strings.dart';
 
 class LocUserPosts extends StatefulWidget {
   LocUserPosts(this.locuser);
@@ -48,7 +47,6 @@ class _LocUserPostsState extends State<LocUserPosts> {
   }
 
   int offset = 1;
-  int itemsLength = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -85,13 +83,8 @@ class _LocUserPostsState extends State<LocUserPosts> {
                                 shrinkWrap: true,
                                 itemCount: items.length + 1,
                                 itemBuilder: (context, index) {
-                                  if (index == items.length &&
-                                      items.length < itemsLength) {
-                                    return Container();
-                                  } else if (index == items.length &&
-                                      items.length >= itemsLength) {
+                                  if (index == items.length) {
                                     offset++;
-                                    itemsLength += 3;
                                     var newPosts =
                                         getLocUserPosts(location, user, offset);
                                     newPosts.then((posts) {

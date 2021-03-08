@@ -7,7 +7,8 @@ class CommentService {
   // TODO: Add auth token in header for all calls (will do when firebase is implemented)
 
   Future<bool> addComment(item) async {
-    String endpoint = '${Config.localUrl}/comment';
+    String path = '/comment';
+    var endpoint = Uri.http('${Config.localUrl}', path);
     // TODO: Add user from local storage
     var reqBody = {
       'uuid': item['uuid'],
@@ -20,8 +21,7 @@ class CommentService {
 
     bool succeed;
     try {
-      await http.post(endpoint as Uri,
-          headers: headers, body: jsonEncode(reqBody));
+      await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
       succeed = true;
     } catch (e) {
       print(e);
@@ -32,7 +32,8 @@ class CommentService {
   }
 
   Future<bool> updateComment(String uuid, item) async {
-    String endpoint = '${Config.localUrl}/comment/$uuid';
+    String path = '/comment/$uuid';
+    var endpoint = Uri.http('${Config.localUrl}', path);
     var reqBody = {
       'text': item['text'],
     };
@@ -41,8 +42,7 @@ class CommentService {
     bool succeed;
 
     try {
-      await http.patch(endpoint as Uri,
-          headers: headers, body: jsonEncode(reqBody));
+      await http.patch(endpoint, headers: headers, body: jsonEncode(reqBody));
       succeed = true;
     } catch (e) {
       print(e);
@@ -53,11 +53,12 @@ class CommentService {
   }
 
   Future<bool> deleteComment(String uuid) async {
-    String endpoint = '${Config.localUrl}/comment/$uuid';
+    String path = '/comment/$uuid';
+    var endpoint = Uri.http('${Config.localUrl}', path);
     bool succeed;
 
     try {
-      await http.delete(endpoint as Uri);
+      await http.delete(endpoint);
       succeed = true;
     } catch (e) {
       print(e);

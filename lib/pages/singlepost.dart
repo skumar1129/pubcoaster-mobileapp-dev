@@ -15,7 +15,7 @@ class SinglePost extends StatefulWidget {
 }
 
 class _SinglePostState extends State<SinglePost> {
-  Future<dynamic> post = [] as Future;
+  Future<dynamic>? post;
   final postService = new PostService();
 
   getSinglePost(String uuid) async {
