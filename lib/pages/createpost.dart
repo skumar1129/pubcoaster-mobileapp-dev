@@ -12,13 +12,13 @@ class CreatePost extends StatefulWidget {
 }
 
 class _CreatePostState extends State<CreatePost> {
-  String location = '';
-  String bar = '';
-  String neighborhood = '';
-  int rating = -1;
-  String content = '';
+  String? location;
+  String? bar;
+  String? neighborhood;
+  int? rating;
+  String? content;
   bool anonymous = false;
-  String picLink = '';
+  String? picLink;
   final postService = new PostService();
 
   // File _image = '' as File;
@@ -37,7 +37,7 @@ class _CreatePostState extends State<CreatePost> {
     });
   }
 
-  submitPost(String loc, String bar, String nbhood, int rating, String descrip,
+  submitPost(String loc, String bar, String? nbhood, int rating, String descrip,
       bool anon) async {
     // TODO: change will local storage username
     var reqBody = {
@@ -54,6 +54,10 @@ class _CreatePostState extends State<CreatePost> {
       Navigator.pushReplacementNamed(context, LocationPosts.route,
           arguments: location);
     }
+  }
+
+  goBack() {
+    Navigator.pushReplacementNamed(context, '/mypost');
   }
 
   @override
@@ -74,32 +78,38 @@ class _CreatePostState extends State<CreatePost> {
           ),
           Row(
             children: <Widget>[
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/post/user');
+                  goBack();
                 },
                 child: Text(
                   'Cancel',
                   style: TextStyle(color: Colors.white),
                 ),
-                color: Colors.red,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: BorderSide(color: Colors.red)),
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.red),
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.red)))),
               ),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
-                  submitPost(
-                      location, bar, neighborhood, rating, content, anonymous);
+                  submitPost(location!, bar!, neighborhood, rating!, content!,
+                      anonymous);
                 },
                 child: Text(
                   'Submit',
                   style: TextStyle(color: Colors.white),
                 ),
-                color: Colors.red,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: BorderSide(color: Colors.red)),
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.red),
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.red)))),
               ),
             ],
             mainAxisAlignment: MainAxisAlignment.spaceAround,
