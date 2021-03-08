@@ -10,6 +10,7 @@ import 'package:NewApp/pages/locnbhoodposts.dart';
 import 'package:NewApp/pages/locuserposts.dart';
 import 'package:NewApp/pages/singlepost.dart';
 import 'package:NewApp/pages/userposts.dart';
+import 'package:NewApp/models/postargs.dart';
 
 void main() {
   runApp(MyApp());
@@ -47,12 +48,19 @@ class MyApp extends StatelessWidget {
         '/mypost': (context) => MyPosts()
       },
       onGenerateRoute: (RouteSettings settings) {
+        //single post scenario
+        if (settings.name == SinglePost.route) {
+          final PostArgs args = settings.arguments;
+          return MaterialPageRoute(builder: (context) {
+            return SinglePost(args.uuid, args.currentUser);
+          });
+        }
         var routes = <String, WidgetBuilder>{
           LocationPosts.route: (context) => LocationPosts(settings.arguments),
           LocBarPosts.route: (context) => LocBarPosts(settings.arguments),
           LocNbhoodPosts.route: (context) => LocNbhoodPosts(settings.arguments),
           LocUserPosts.route: (context) => LocUserPosts(settings.arguments),
-          SinglePost.route: (context) => SinglePost(settings.arguments),
+          //SinglePost.route: (context) => SinglePost(settings.arguments),
           UserPosts.route: (context) => UserPosts(settings.arguments)
         };
         WidgetBuilder builder = routes[settings.name];

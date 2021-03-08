@@ -4,6 +4,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:strings/strings.dart';
 import 'dart:convert';
 import 'package:NewApp/pages/singlepost.dart';
+import 'package:NewApp/models/postargs.dart';
 
 class FeedPostCard extends StatelessWidget {
   final String bar;
@@ -220,7 +221,7 @@ class FeedPostCard extends StatelessWidget {
       ),
       onTap: () {
         Navigator.pushReplacementNamed(context, SinglePost.route,
-            arguments: uuid);
+            arguments: PostArgs(uuid: uuid, currentUser: 'helga'), );
       },
     );
   }

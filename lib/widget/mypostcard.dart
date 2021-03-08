@@ -5,6 +5,7 @@ import 'package:strings/strings.dart';
 import 'dart:convert';
 import 'package:NewApp/pages/singlepost.dart';
 import 'package:NewApp/services/postservice.dart';
+import 'package:NewApp/models/postargs.dart';
 
 class MyPostCard extends StatefulWidget {
   final String bar;
@@ -290,7 +291,7 @@ class _MyPostCardState extends State<MyPostCard> {
         ),
         onTap: () {
           Navigator.pushReplacementNamed(context, SinglePost.route,
-              arguments: widget.uuid);
+              arguments: PostArgs(uuid: widget.uuid, currentUser: 'helga'));
         },
       );
     } else {

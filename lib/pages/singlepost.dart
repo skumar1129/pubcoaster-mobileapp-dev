@@ -5,8 +5,9 @@ import 'package:NewApp/widget/singlepostcard.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 
 class SinglePost extends StatefulWidget {
-  SinglePost(this.uuid);
   final String uuid;
+  final String currentUser;
+  SinglePost(this.uuid, this.currentUser);
   static const route = '/singlepost';
 
   @override
@@ -16,6 +17,7 @@ class SinglePost extends StatefulWidget {
 class _SinglePostState extends State<SinglePost> {
   Future<dynamic> post;
   final postService = new PostService();
+  
   getSinglePost(String uuid) async {
     var response;
     try {
@@ -56,7 +58,9 @@ class _SinglePostState extends State<SinglePost> {
                       item.description,
                       item.anonymous,
                       item.comments,
-                      item.likes);
+                      item.likes,
+                      widget.currentUser
+                  );
                 } else if (snapshot.hasError) {
                   return Expanded(
                       child: Text(
