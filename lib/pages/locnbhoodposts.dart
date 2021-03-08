@@ -18,10 +18,10 @@ class LocNbhoodPosts extends StatefulWidget {
 class _LocNbhoodPostsState extends State<LocNbhoodPosts> {
   String location = '';
   String nbhood = '';
-  Future<dynamic> posts = [] as Future;
+  Future<dynamic>? posts;
   final postService = new PostService();
 
-  getLocNbhoodPosts(String loc, String nbhood, [int offset]) async {
+  getLocNbhoodPosts(String loc, String nbhood, [int? offset]) async {
     var response;
     if (offset != null) {
       try {
@@ -61,7 +61,7 @@ class _LocNbhoodPostsState extends State<LocNbhoodPosts> {
               future: posts,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var items = snapshot.data;
+                  var items = snapshot.data as List<dynamic>;
                   if (items.length == 0) {
                     return Expanded(
                         child: Text(

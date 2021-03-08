@@ -12,7 +12,7 @@ class LikeService {
     Map<String, String> headers = {'username': item['username']};
     bool succeed;
     try {
-      await http.post(endpoint, headers: headers);
+      await http.post(endpoint as Uri, headers: headers);
       succeed = true;
     } catch (e) {
       print(e);
@@ -30,7 +30,7 @@ class LikeService {
 
     Map<String, String> headers = {'username': item['username']};
     try {
-      await http.delete(endpoint, headers: headers);
+      await http.delete(endpoint as Uri, headers: headers);
       succeed = true;
     } catch (e) {
       print(e);

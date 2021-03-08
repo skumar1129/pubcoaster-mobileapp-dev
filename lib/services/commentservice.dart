@@ -20,7 +20,8 @@ class CommentService {
 
     bool succeed;
     try {
-      await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
+      await http.post(endpoint as Uri,
+          headers: headers, body: jsonEncode(reqBody));
       succeed = true;
     } catch (e) {
       print(e);
@@ -40,7 +41,8 @@ class CommentService {
     bool succeed;
 
     try {
-      await http.patch(endpoint, headers: headers, body: jsonEncode(reqBody));
+      await http.patch(endpoint as Uri,
+          headers: headers, body: jsonEncode(reqBody));
       succeed = true;
     } catch (e) {
       print(e);
@@ -55,7 +57,7 @@ class CommentService {
     bool succeed;
 
     try {
-      await http.delete(endpoint);
+      await http.delete(endpoint as Uri);
       succeed = true;
     } catch (e) {
       print(e);

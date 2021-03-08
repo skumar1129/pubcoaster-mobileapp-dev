@@ -14,9 +14,9 @@ class UserPosts extends StatefulWidget {
 }
 
 class _UserPostsState extends State<UserPosts> {
-  Future<dynamic> posts = [] as Future;
+  Future<dynamic>? posts;
   final postService = new PostService();
-  getUserPosts(String user, [int offset]) async {
+  getUserPosts(String user, [int? offset]) async {
     var response;
     if (offset != null) {
       try {
@@ -52,7 +52,7 @@ class _UserPostsState extends State<UserPosts> {
               future: posts,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var items = snapshot.data;
+                  var items = snapshot.data as List<dynamic>;
                   // TODO: find a way to return empty container instead of spinner
                   if (items.length == 0) {
                     return Expanded(

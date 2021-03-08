@@ -131,10 +131,10 @@ class _CreatePostState extends State<CreatePost> {
                             value: value,
                           ))
                       .toList(),
-                  onChanged: (String value) {
+                  onChanged: (String? value) {
                     if (mounted) {
                       setState(() {
-                        location = value;
+                        location = value!;
                       });
                     }
                   },
@@ -179,10 +179,10 @@ class _CreatePostState extends State<CreatePost> {
                             value: value,
                           ))
                       .toList(),
-                  onChanged: (String value) {
+                  onChanged: (String? value) {
                     if (mounted) {
                       setState(() {
-                        rating = int.parse(value);
+                        rating = int.parse(value!);
                       });
                     }
                   },
@@ -207,10 +207,10 @@ class _CreatePostState extends State<CreatePost> {
                 CheckboxListTile(
                     value: anonymous,
                     title: Text('Make post anonymous?'),
-                    onChanged: (bool value) {
+                    onChanged: (bool? value) {
                       if (mounted) {
                         setState(() {
-                          anonymous = value;
+                          anonymous = value!;
                         });
                       }
                     },

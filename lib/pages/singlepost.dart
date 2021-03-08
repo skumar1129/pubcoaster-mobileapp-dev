@@ -44,7 +44,7 @@ class _SinglePostState extends State<SinglePost> {
               future: post,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var item = snapshot.data;
+                  var item = snapshot.data as dynamic;
                   return SinglePostCard(
                       item.bar,
                       item.location,

@@ -15,9 +15,9 @@ class LocationPosts extends StatefulWidget {
 }
 
 class _LocationPostsState extends State<LocationPosts> {
-  Future<dynamic> posts = [] as Future;
+  Future<dynamic>? posts;
   final postService = new PostService();
-  getLocationPosts(String location, [int offset]) async {
+  getLocationPosts(String location, [int? offset]) async {
     var response;
     if (offset != null) {
       try {
@@ -54,7 +54,7 @@ class _LocationPostsState extends State<LocationPosts> {
               future: posts,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var items = snapshot.data;
+                  var items = snapshot.data as List<dynamic>;
                   if (items.length == 0) {
                     return Expanded(
                         child: Text('No posts for ${widget.location} yet'));
@@ -103,16 +103,16 @@ class _LocationPostsState extends State<LocationPosts> {
                                   return FeedPostCard(
                                       items[index].bar,
                                       items[index].location,
-                                      items[index].createdBy,
+                                      items[index].createdBy!,
                                       items[index].description,
                                       items[index].rating,
                                       items[index].createdAt,
-                                      items[index].neighborhood,
+                                      items[index].neighborhood!,
                                       items[index].numComments,
                                       items[index].numLikes,
-                                      items[index].anonymous,
-                                      items[index].editedAt,
-                                      items[index].picLink,
+                                      items[index].anonymous!,
+                                      items[index].editedAt!,
+                                      items[index].picLink!,
                                       items[index].uuid);
                                 }),
                             onRefresh: () {

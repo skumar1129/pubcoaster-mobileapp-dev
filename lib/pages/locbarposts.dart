@@ -18,10 +18,10 @@ class LocBarPosts extends StatefulWidget {
 class _LocBarPostsState extends State<LocBarPosts> {
   String location = '';
   String bar = '';
-  Future<dynamic> posts = [] as Future;
+  Future<dynamic>? posts;
   final postService = new PostService();
 
-  getLocBarPosts(String loc, String bar, [int offset]) async {
+  getLocBarPosts(String loc, String bar, [int? offset]) async {
     var response;
     if (offset != null) {
       try {
@@ -60,7 +60,7 @@ class _LocBarPostsState extends State<LocBarPosts> {
               future: posts,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var items = snapshot.data;
+                  var items = snapshot.data as List<dynamic>;
                   if (items.length == 0) {
                     return Expanded(
                         child: Text(

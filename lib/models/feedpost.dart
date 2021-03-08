@@ -1,31 +1,31 @@
 class FeedPost {
   final String uuid;
-  final String picLink;
+  final String? picLink;
   final String bar;
   final String description;
   final String location;
   final String createdAt;
   final int rating;
-  final String editedAt;
+  final String? editedAt;
   final int numComments;
   final int numLikes;
-  final String neighborhood;
+  final String? neighborhood;
   final bool anonymous;
-  final String createdBy;
+  final String? createdBy;
 
   FeedPost(
-      {this.uuid,
+      {required this.uuid,
       this.picLink,
-      this.bar,
-      this.description,
-      this.location,
-      this.createdAt,
-      this.rating,
+      required this.bar,
+      required this.description,
+      required this.location,
+      required this.createdAt,
+      required this.rating,
       this.editedAt,
       this.neighborhood,
-      this.numComments,
-      this.numLikes,
-      this.anonymous,
+      required this.numComments,
+      required this.numLikes,
+      required this.anonymous,
       this.createdBy});
 
   factory FeedPost.fromJson(Map<String, dynamic> json) {

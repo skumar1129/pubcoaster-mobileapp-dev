@@ -10,7 +10,7 @@ import 'package:NewApp/models/postargs.dart';
 class MyPostCard extends StatefulWidget {
   final String bar;
   final String location;
-  final String username;
+  final String? username;
   final String content;
   final int rating;
   final String timestamp;
@@ -92,7 +92,7 @@ class _MyPostCardState extends State<MyPostCard> {
     }
   }
 
-  String dropdownValue;
+  String? dropdownValue;
   @override
   Widget build(BuildContext context) {
     String goodContent = utf8.decode(widget.content.codeUnits);
@@ -164,7 +164,7 @@ class _MyPostCardState extends State<MyPostCard> {
                   (() {
                     if (widget.username != null) {
                       String goodUsername =
-                          utf8.decode(widget.username.codeUnits);
+                          utf8.decode(widget.username!.codeUnits);
                       return Flexible(
                         child: Text(
                           '$goodUsername',
@@ -346,11 +346,11 @@ class _MyPostCardState extends State<MyPostCard> {
                           ),
                           value: value);
                     }).toList(),
-                    onChanged: (String value) {
+                    onChanged: (String? value) {
                       if (mounted) {
                         setState(() {
                           dropdownValue = value;
-                          newRating = int.parse(value);
+                          newRating = int.parse(value!);
                         });
                       }
                     },

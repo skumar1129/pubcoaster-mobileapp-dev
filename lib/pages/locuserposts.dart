@@ -18,10 +18,10 @@ class LocUserPosts extends StatefulWidget {
 class _LocUserPostsState extends State<LocUserPosts> {
   String location = '';
   String user = '';
-  Future<dynamic> posts = [] as Future;
+  Future<dynamic>? posts;
   final postService = new PostService();
 
-  getLocUserPosts(String loc, String user, [int offset]) async {
+  getLocUserPosts(String loc, String user, [int? offset]) async {
     var response;
     if (offset != null) {
       try {
@@ -61,7 +61,7 @@ class _LocUserPostsState extends State<LocUserPosts> {
               future: posts,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var items = snapshot.data;
+                  var items = snapshot.data as List<dynamic>;
                   if (items.length == 0) {
                     return Expanded(
                         child: Text('No posts for $user in $location yet'));

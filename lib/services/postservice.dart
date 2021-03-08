@@ -28,7 +28,7 @@ class PostService {
   // TODO: Add auth token in header for all calls (will do when firebase is implemented)
 
   Future<bool> addPost(item) async {
-    String endpoint = '${Config.localUrl}/post';
+    var endpoint = Uri.https('${Config.localUrl}', '/post');
     // TODO: Add user from local storage
     var reqBody = {
       'username': item['username'],
@@ -57,7 +57,7 @@ class PostService {
   }
 
   Future<bool> updatePost(String uuid, item) async {
-    String endpoint = '${Config.localUrl}/post/$uuid';
+    var endpoint = Uri.https('${Config.localUrl}', '/post/$uuid');
     var reqBody = {
       'picLink': '',
       'neighborhood': item['nbhood'],
@@ -81,7 +81,7 @@ class PostService {
   }
 
   Future<bool> deletePost(String uuid) async {
-    String endpoint = '${Config.localUrl}/post/$uuid';
+    var endpoint = Uri.https('${Config.localUrl}', '/post/$uuid');
     bool succeed;
 
     try {
@@ -99,7 +99,7 @@ class PostService {
     String endpoint = '${Config.localUrl}/post/$uuid';
     var response;
     try {
-      response = await http.get(endpoint);
+      response = await http.get(endpoint as Uri);
     } catch (e) {
       print(e);
     }
@@ -107,11 +107,11 @@ class PostService {
     return compute(parseSinglePost, json.decode(response.body));
   }
 
-  Future<List<FeedPost>> getLocationPosts(String location, [int page]) async {
-    String endpoint = '${Config.localUrl}/post/location/$location';
-    if (page != null && page > 1) {
-      endpoint += '?offset=$page';
-    }
+  Future<List<FeedPost>> getLocationPosts(String location, [int? page]) async {
+    var endpoint = Uri.http('${Config.localUrl}', '/post/location/$location');
+    // if (page != null && page > 1) {
+    //   endpoint += '?offset=$page';
+    // }
     var response;
     try {
       response = await http.get(endpoint);
@@ -123,14 +123,14 @@ class PostService {
   }
 
   Future<List<FeedPost>> getLocBarPosts(String location, String bar,
-      [int page]) async {
+      [int? page]) async {
     String endpoint = '${Config.localUrl}/post/locbar/$location/$bar';
     if (page != null && page > 1) {
       endpoint += '?offset=$page';
     }
     var response;
     try {
-      response = await http.get(endpoint);
+      response = await http.get(endpoint as Uri);
     } catch (e) {
       print(e);
     }
@@ -139,14 +139,14 @@ class PostService {
   }
 
   Future<List<FeedPost>> getLocNbhoodPosts(String location, String nbhood,
-      [int page]) async {
+      [int? page]) async {
     String endpoint = '${Config.localUrl}/post/locnbhood/$location/$nbhood';
     if (page != null && page > 1) {
       endpoint += '?offset=$page';
     }
     var response;
     try {
-      response = await http.get(endpoint);
+      response = await http.get(endpoint as Uri);
     } catch (e) {
       print(e);
     }
@@ -155,14 +155,14 @@ class PostService {
   }
 
   Future<List<FeedPost>> getLocUserPosts(String location, String user,
-      [int page]) async {
+      [int? page]) async {
     String endpoint = '${Config.localUrl}/post/locuser/$location/$user';
     if (page != null && page > 1) {
       endpoint += '?offset=$page';
     }
     var response;
     try {
-      response = await http.get(endpoint);
+      response = await http.get(endpoint as Uri);
     } catch (e) {
       print(e);
     }
@@ -170,7 +170,7 @@ class PostService {
     return compute(parseFeedPosts, json.decode(response.body));
   }
 
-  Future<List<MyPost>> getMyPosts([int page]) async {
+  Future<List<MyPost>> getMyPosts([int? page]) async {
     String endpoint = '${Config.localUrl}/mypost/user';
 
     // TODO: update to use local storage
@@ -181,7 +181,7 @@ class PostService {
     }
     var response;
     try {
-      response = await http.get(endpoint, headers: headers);
+      response = await http.get(endpoint as Uri, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -189,14 +189,14 @@ class PostService {
     return compute(parseMyPosts, json.decode(response.body));
   }
 
-  Future<List<FeedPost>> getUserPosts(String user, [int page]) async {
+  Future<List<FeedPost>> getUserPosts(String user, [int? page]) async {
     String endpoint = '${Config.localUrl}/post/user/$user';
     if (page != null && page > 1) {
       endpoint += '?offset=$page';
     }
     var response;
     try {
-      response = await http.get(endpoint);
+      response = await http.get(endpoint as Uri);
     } catch (e) {
       print(e);
     }
