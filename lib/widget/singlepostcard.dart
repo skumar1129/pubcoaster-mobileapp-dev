@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/material.dart';
 import 'package:strings/strings.dart';
-import 'package:NewApp/models/postargs.dart';
-import 'package:NewApp/pages/singlepost.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/services/commentservice.dart';
 import 'package:NewApp/services/likeservice.dart';
@@ -110,10 +108,12 @@ class _SinglePostCardState extends State<SinglePostCard> {
   }
 
   editComment(uuid) async {
-    setState(() {
-      editCommentVar = true;
-      editCommentUuid = uuid;
-    });
+    if (mounted) {
+      setState(() {
+        editCommentVar = true;
+        editCommentUuid = uuid;
+      });
+    }
   }
 
   deleteComment(index, uuid) async {
@@ -129,7 +129,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
 
   saveComment(uuid) async {
     var item = {
-      'text': newComment,
+      'text': newEditComment,
     };
     bool succeed = await commentService.updateComment(uuid, item);
     if (succeed) {
@@ -149,11 +149,13 @@ class _SinglePostCardState extends State<SinglePostCard> {
   }
 
   cancelComment() {
-    setState(() {
-      editCommentVar = false;
-      editCommentUuid = "";
-      newEditComment = "";
-    });
+    if (mounted) {
+      setState(() {
+        editCommentVar = false;
+        editCommentUuid = "";
+        newEditComment = "";
+      });
+    }
   }
 
   bool userLiked() {
