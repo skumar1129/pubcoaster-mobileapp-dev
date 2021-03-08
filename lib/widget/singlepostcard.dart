@@ -95,25 +95,19 @@ class _SinglePostCardState extends State<SinglePostCard> {
       'uuid': widget.uuid,
       'createdBy': widget.currentUser
     };
-    // need way to included createdAt with correct date time
     var comment = {
-      //TODO: what to do for the missing pieces?
       'text': newComment,
       'createdBy': widget.currentUser,
-      'createdAt': DateTime.now().toString()
+      'createdAt': HttpDate.format(DateTime.now())
     };
     bool succeed = await commentService.addComment(item);
     if (succeed) {
       if (mounted) {
         setState(() {
           newComment = "";
-          widget.comments.add(comment);
+          widget.comments.insert(0, comment);
         });
       }
-      // reloading works (would be nice to get setState working)
-      // Navigator.pushReplacementNamed(context, SinglePost.route,
-      //     arguments:
-      //         PostArgs(uuid: widget.uuid, currentUser: widget.currentUser));
     }
   }
 
@@ -127,22 +121,13 @@ class _SinglePostCardState extends State<SinglePostCard> {
   }
 
   deleteComment(index, uuid) async {
-    //TODO: is there more in a comment?
-    // var comment = {
-    //   'text': widget.comments[index]['text'],
-    //   'uuid': uuid,
-    //   'createdBy': widget.currentUser,
-    //   'createdAt': widget.comments[index]['createdAt']
-    // };
     bool succeed = await commentService.deleteComment(uuid);
     if (succeed) {
       if (mounted) {
         setState(() {
-          // widget.comments.removeAt(indexCom);
           widget.comments.removeWhere((comment) => comment['uuid'] == uuid);
         });
       }
-      // var indexCom = widget.comments.indexOf(comment);
     }
   }
 
@@ -152,18 +137,12 @@ class _SinglePostCardState extends State<SinglePostCard> {
     };
     bool succeed = await commentService.updateComment(uuid, item);
     if (succeed) {
-      // works
-      // Navigator.pushReplacementNamed(context, SinglePost.route,
-      //     arguments:
-      //         PostArgs(uuid: widget.uuid, currentUser: widget.currentUser));
-      // also works
       var comment = widget.comments.firstWhere(
         (comment) => comment['uuid'] == uuid,
         orElse: () => '',
       );
       if (mounted && comment != '') {
         setState(() {
-          //TODO: how to update comment
           comment['text'] = newEditComment;
           editCommentVar = false;
           editCommentUuid = "";
