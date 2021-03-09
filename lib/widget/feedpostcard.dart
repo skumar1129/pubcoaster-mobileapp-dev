@@ -9,16 +9,16 @@ import 'package:NewApp/models/postargs.dart';
 class FeedPostCard extends StatelessWidget {
   final String bar;
   final String location;
-  final String username;
+  final String? username;
   final String content;
   final int rating;
   final String timestamp;
-  final String neighborhood;
+  final String? neighborhood;
   final int numComments;
   final int numLikes;
-  final bool anonymous;
-  final String editedAt;
-  final String picLink;
+  final bool? anonymous;
+  final String? editedAt;
+  final String? picLink;
   final String uuid;
 
   FeedPostCard(
@@ -96,7 +96,7 @@ class FeedPostCard extends StatelessWidget {
               children: [
                 (() {
                   if (username != null) {
-                    String goodUsername = utf8.decode(username.codeUnits);
+                    String goodUsername = utf8.decode(username!.codeUnits);
                     return Flexible(
                       child: Text(
                         '$goodUsername',
@@ -155,7 +155,7 @@ class FeedPostCard extends StatelessWidget {
                 ),
                 (() {
                   if (neighborhood != null) {
-                    String goodNbhood = utf8.decode(neighborhood.codeUnits);
+                    String goodNbhood = utf8.decode(neighborhood!.codeUnits);
                     return Flexible(
                         child: Text(
                       '${capitalize(goodNbhood)}, $goodLocation',
@@ -220,8 +220,11 @@ class FeedPostCard extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.pushReplacementNamed(context, SinglePost.route,
-            arguments: PostArgs(uuid: uuid, currentUser: 'helga'), );
+        Navigator.pushReplacementNamed(
+          context,
+          SinglePost.route,
+          arguments: PostArgs(uuid: uuid, currentUser: 'helga'),
+        );
       },
     );
   }

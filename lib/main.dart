@@ -50,20 +50,23 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (RouteSettings settings) {
         //single post scenario
         if (settings.name == SinglePost.route) {
-          final PostArgs args = settings.arguments;
+          final PostArgs args = settings.arguments as PostArgs;
           return MaterialPageRoute(builder: (context) {
             return SinglePost(args.uuid, args.currentUser);
           });
         }
         var routes = <String, WidgetBuilder>{
-          LocationPosts.route: (context) => LocationPosts(settings.arguments),
-          LocBarPosts.route: (context) => LocBarPosts(settings.arguments),
-          LocNbhoodPosts.route: (context) => LocNbhoodPosts(settings.arguments),
-          LocUserPosts.route: (context) => LocUserPosts(settings.arguments),
-          //SinglePost.route: (context) => SinglePost(settings.arguments),
-          UserPosts.route: (context) => UserPosts(settings.arguments)
+          LocationPosts.route: (context) =>
+              LocationPosts(settings.arguments as String),
+          LocBarPosts.route: (context) =>
+              LocBarPosts(settings.arguments as String),
+          LocNbhoodPosts.route: (context) =>
+              LocNbhoodPosts(settings.arguments as String),
+          LocUserPosts.route: (context) =>
+              LocUserPosts(settings.arguments as String),
+          UserPosts.route: (context) => UserPosts(settings.arguments as String)
         };
-        WidgetBuilder builder = routes[settings.name];
+        WidgetBuilder builder = routes[settings.name]!;
         return MaterialPageRoute(builder: (context) => builder(context));
       },
     );

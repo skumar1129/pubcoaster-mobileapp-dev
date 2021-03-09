@@ -1,30 +1,30 @@
 class MyPost {
   final String uuid;
-  final String picLink;
+  final String? picLink;
   final String bar;
   final String description;
   final String location;
   final String createdAt;
   final int rating;
-  final String editedAt;
+  final String? editedAt;
   final int numComments;
   final int numLikes;
-  final String neighborhood;
-  final bool anonymous;
-  final String createdBy;
+  final String? neighborhood;
+  final bool? anonymous;
+  final String? createdBy;
 
   MyPost(
-      {this.uuid,
+      {required this.uuid,
       this.picLink,
-      this.bar,
-      this.description,
-      this.location,
-      this.createdAt,
-      this.rating,
+      required this.bar,
+      required this.description,
+      required this.location,
+      required this.createdAt,
+      required this.rating,
       this.editedAt,
       this.neighborhood,
-      this.numComments,
-      this.numLikes,
+      required this.numComments,
+      required this.numLikes,
       this.anonymous,
       this.createdBy});
 

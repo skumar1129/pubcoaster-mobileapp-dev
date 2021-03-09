@@ -1,32 +1,32 @@
 class SinglePost {
   final String uuid;
-  final String picLink;
+  final String? picLink;
   final String bar;
   final String description;
   final String location;
   final String createdAt;
-  final String editedAt;
+  final String? editedAt;
   final int rating;
-  final String createdBy;
-  final bool anonymous;
-  final String neighborhood;
+  final String? createdBy;
+  final bool? anonymous;
+  final String? neighborhood;
   final List<dynamic> comments;
   final List<dynamic> likes;
 
   SinglePost(
-      {this.uuid,
+      {required this.uuid,
       this.picLink,
       this.anonymous,
-      this.bar,
-      this.comments,
-      this.createdAt,
+      required this.bar,
+      required this.comments,
+      required this.createdAt,
       this.createdBy,
-      this.likes,
-      this.location,
-      this.description,
+      required this.likes,
+      required this.location,
+      required this.description,
       this.editedAt,
       this.neighborhood,
-      this.rating});
+      required this.rating});
 
   factory SinglePost.fromJson(Map<String, dynamic> json) {
     if (json['anonymous'] == false && json['neighborhood'] != null) {

@@ -6,18 +6,16 @@ import 'package:strings/strings.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/services/commentservice.dart';
 import 'package:NewApp/services/likeservice.dart';
-import 'package:NewApp/models/postargs.dart';
-import 'package:NewApp/pages/singlepost.dart';
 
 class SinglePostCard extends StatefulWidget {
   final String bar;
   final String location;
-  final String username;
+  final String? username;
   final int rating;
   final String timestamp;
-  final String neighborhood;
-  final String editedAt;
-  final String picLink;
+  final String? neighborhood;
+  final String? editedAt;
+  final String? picLink;
   final String uuid;
   final bool anonymous;
   final String description;
@@ -46,11 +44,11 @@ class SinglePostCard extends StatefulWidget {
 }
 
 class _SinglePostCardState extends State<SinglePostCard> {
-  String newComment;
+  String newComment = '';
   bool editCommentVar = false;
-  String editCommentUuid;
-  String newEditComment;
-  bool userLikedVar;
+  String editCommentUuid = '';
+  String newEditComment = '';
+  bool userLikedVar = false;
   final postService = new PostService();
   final commentService = new CommentService();
   final likeService = new LikeService();
@@ -96,18 +94,16 @@ class _SinglePostCardState extends State<SinglePostCard> {
       'createdBy': widget.currentUser
     };
     var comment = {
+      'createdAt': HttpDate.format(DateTime.now()),
       'text': newComment,
       'createdBy': widget.currentUser,
-      'createdAt': HttpDate.format(DateTime.now())
     };
     bool succeed = await commentService.addComment(item);
     if (succeed) {
-      if (mounted) {
-        setState(() {
-          newComment = "";
-          widget.comments.insert(0, comment);
-        });
-      }
+      setState(() {
+        newComment = "";
+        widget.comments.insert(0, comment);
+      });
     }
   }
 
@@ -270,7 +266,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                   (() {
                     if (widget.username != null) {
                       String goodUsername =
-                          utf8.decode(widget.username.codeUnits);
+                          utf8.decode(widget.username!.codeUnits);
                       return Padding(
                         padding: EdgeInsets.only(left: 4),
                         child: Text(
@@ -374,7 +370,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                   (() {
                     if (widget.neighborhood != null) {
                       String goodNbhood =
-                          utf8.decode(widget.neighborhood.codeUnits);
+                          utf8.decode(widget.neighborhood!.codeUnits);
                       return Padding(
                           padding: EdgeInsets.only(right: 4),
                           child: Text(

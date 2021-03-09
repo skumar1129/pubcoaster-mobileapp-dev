@@ -10,16 +10,16 @@ import 'package:NewApp/models/postargs.dart';
 class MyPostCard extends StatefulWidget {
   final String bar;
   final String location;
-  final String username;
+  final String? username;
   final String content;
   final int rating;
   final String timestamp;
-  final String neighborhood;
+  final String? neighborhood;
   final int numComments;
   final int numLikes;
   final bool anonymous;
-  final String editedAt;
-  final String picLink;
+  final String? editedAt;
+  final String? picLink;
   final String uuid;
 
   MyPostCard(
@@ -44,10 +44,10 @@ class MyPostCard extends StatefulWidget {
 class _MyPostCardState extends State<MyPostCard> {
   final postService = new PostService();
   bool editMode = false;
-  String newBar;
-  String newContent;
-  String newNbhood;
-  int newRating = -1;
+  String? newBar;
+  String? newContent;
+  String? newNbhood;
+  int? newRating;
 
   goToEditMode() {
     if (mounted) {
@@ -92,7 +92,7 @@ class _MyPostCardState extends State<MyPostCard> {
     }
   }
 
-  String dropdownValue;
+  String? dropdownValue;
   @override
   Widget build(BuildContext context) {
     String goodContent = utf8.decode(widget.content.codeUnits);
@@ -164,7 +164,7 @@ class _MyPostCardState extends State<MyPostCard> {
                   (() {
                     if (widget.username != null) {
                       String goodUsername =
-                          utf8.decode(widget.username.codeUnits);
+                          utf8.decode(widget.username!.codeUnits);
                       return Flexible(
                         child: Text(
                           '$goodUsername',
@@ -225,7 +225,7 @@ class _MyPostCardState extends State<MyPostCard> {
                   (() {
                     if (widget.neighborhood != null) {
                       String goodNbhood =
-                          utf8.decode(widget.neighborhood.codeUnits);
+                          utf8.decode(widget.neighborhood!.codeUnits);
                       return Flexible(
                           child: Text(
                         '${capitalize(goodNbhood)}, $goodLocation',
@@ -331,9 +331,9 @@ class _MyPostCardState extends State<MyPostCard> {
                     )),
                 Flexible(
                   child: DropdownButton(
-                    value: dropdownValue != null
-                        ? dropdownValue
-                        : widget.rating.toString(),
+                    value: dropdownValue == null
+                        ? widget.rating.toString()
+                        : dropdownValue,
                     dropdownColor: Colors.black,
                     items: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
                         .map((String value) {
@@ -346,11 +346,11 @@ class _MyPostCardState extends State<MyPostCard> {
                           ),
                           value: value);
                     }).toList(),
-                    onChanged: (String value) {
+                    onChanged: (String? value) {
                       if (mounted) {
                         setState(() {
                           dropdownValue = value;
-                          newRating = int.parse(value);
+                          newRating = int.parse(value!);
                         });
                       }
                     },

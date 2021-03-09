@@ -10,9 +10,9 @@ class MyPosts extends StatefulWidget {
 }
 
 class _MyPostsState extends State<MyPosts> {
-  Future<dynamic> posts;
+  Future<dynamic>? posts;
   final postService = new PostService();
-  getMyPosts([int offset]) async {
+  getMyPosts([int? offset]) async {
     var response;
     if (offset != null) {
       try {
@@ -48,7 +48,7 @@ class _MyPostsState extends State<MyPosts> {
               future: posts,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var items = snapshot.data;
+                  var items = snapshot.data as List<dynamic>;
                   if (items.length == 0) {
                     return Expanded(
                         child: Text('You have not made a post yet'));

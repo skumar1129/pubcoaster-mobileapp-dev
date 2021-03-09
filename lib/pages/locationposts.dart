@@ -15,9 +15,9 @@ class LocationPosts extends StatefulWidget {
 }
 
 class _LocationPostsState extends State<LocationPosts> {
-  Future<dynamic> posts;
+  Future<dynamic>? posts;
   final postService = new PostService();
-  getLocationPosts(String location, [int offset]) async {
+  getLocationPosts(String location, [int? offset]) async {
     var response;
     if (offset != null) {
       try {
@@ -54,7 +54,7 @@ class _LocationPostsState extends State<LocationPosts> {
               future: posts,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var items = snapshot.data;
+                  var items = snapshot.data as List<dynamic>;
                   if (items.length == 0) {
                     return Expanded(
                         child: Text('No posts for ${widget.location} yet'));

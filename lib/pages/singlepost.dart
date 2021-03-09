@@ -15,9 +15,9 @@ class SinglePost extends StatefulWidget {
 }
 
 class _SinglePostState extends State<SinglePost> {
-  Future<dynamic> post;
+  Future<dynamic>? post;
   final postService = new PostService();
-  
+
   getSinglePost(String uuid) async {
     var response;
     try {
@@ -44,7 +44,7 @@ class _SinglePostState extends State<SinglePost> {
               future: post,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var item = snapshot.data;
+                  var item = snapshot.data as dynamic;
                   return SinglePostCard(
                       item.bar,
                       item.location,
@@ -59,8 +59,7 @@ class _SinglePostState extends State<SinglePost> {
                       item.anonymous,
                       item.comments,
                       item.likes,
-                      widget.currentUser
-                  );
+                      widget.currentUser);
                 } else if (snapshot.hasError) {
                   return Expanded(
                       child: Text(

@@ -12,16 +12,16 @@ class CreatePost extends StatefulWidget {
 }
 
 class _CreatePostState extends State<CreatePost> {
-  String location = '';
-  String bar = '';
-  String neighborhood = '';
-  int rating;
-  String content = '';
+  String? location;
+  String? bar;
+  String? neighborhood;
+  int? rating;
+  String? content;
   bool anonymous = false;
-  String picLink = '';
+  String? picLink;
   final postService = new PostService();
 
-  File _image;
+  // File _image = '' as File;
   final picker = ImagePicker();
 
   Future getImage() async {
@@ -29,14 +29,15 @@ class _CreatePostState extends State<CreatePost> {
 
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        print('nice!');
+        // _image = File(pickedFile.path);
       } else {
         print('No image selected.');
       }
     });
   }
 
-  submitPost(String loc, String bar, String nbhood, int rating, String descrip,
+  submitPost(String loc, String bar, String? nbhood, int rating, String descrip,
       bool anon) async {
     // TODO: change will local storage username
     var reqBody = {
@@ -53,6 +54,10 @@ class _CreatePostState extends State<CreatePost> {
       Navigator.pushReplacementNamed(context, LocationPosts.route,
           arguments: location);
     }
+  }
+
+  goBack() {
+    Navigator.pushReplacementNamed(context, '/mypost');
   }
 
   @override
@@ -73,32 +78,38 @@ class _CreatePostState extends State<CreatePost> {
           ),
           Row(
             children: <Widget>[
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/post/user');
+                  goBack();
                 },
                 child: Text(
                   'Cancel',
                   style: TextStyle(color: Colors.white),
                 ),
-                color: Colors.red,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: BorderSide(color: Colors.red)),
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.red),
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.red)))),
               ),
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
-                  submitPost(
-                      location, bar, neighborhood, rating, content, anonymous);
+                  submitPost(location!, bar!, neighborhood, rating!, content!,
+                      anonymous);
                 },
                 child: Text(
                   'Submit',
                   style: TextStyle(color: Colors.white),
                 ),
-                color: Colors.red,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: BorderSide(color: Colors.red)),
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.red),
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.red)))),
               ),
             ],
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -130,10 +141,10 @@ class _CreatePostState extends State<CreatePost> {
                             value: value,
                           ))
                       .toList(),
-                  onChanged: (String value) {
+                  onChanged: (String? value) {
                     if (mounted) {
                       setState(() {
-                        location = value;
+                        location = value!;
                       });
                     }
                   },
@@ -178,10 +189,10 @@ class _CreatePostState extends State<CreatePost> {
                             value: value,
                           ))
                       .toList(),
-                  onChanged: (String value) {
+                  onChanged: (String? value) {
                     if (mounted) {
                       setState(() {
-                        rating = int.parse(value);
+                        rating = int.parse(value!);
                       });
                     }
                   },
@@ -206,10 +217,10 @@ class _CreatePostState extends State<CreatePost> {
                 CheckboxListTile(
                     value: anonymous,
                     title: Text('Make post anonymous?'),
-                    onChanged: (bool value) {
+                    onChanged: (bool? value) {
                       if (mounted) {
                         setState(() {
-                          anonymous = value;
+                          anonymous = value!;
                         });
                       }
                     },

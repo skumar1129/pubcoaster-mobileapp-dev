@@ -11,9 +11,9 @@ class FilterDrawer extends StatefulWidget {
 }
 
 class _FilterDrawerState extends State<FilterDrawer> {
-  String bar;
-  String nbhood;
-  String user;
+  String bar = '';
+  String nbhood = '';
+  String user = '';
 
   goToLocBarPage(String input) {
     Navigator.pushReplacementNamed(context, LocBarPosts.route,

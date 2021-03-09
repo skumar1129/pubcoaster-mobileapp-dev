@@ -6,7 +6,8 @@ class LikeService {
   // TODO: Add auth token in header for all calls (will do when firebase is implemented)
 
   Future<bool> addLike(item) async {
-    String endpoint = "${Config.localUrl}/like/${item['uuid']}";
+    String path = '/like/${item['uuid']}';
+    var endpoint = Uri.http('${Config.localUrl}', path);
     // TODO: Add user from local storage
 
     Map<String, String> headers = {'username': item['username']};
@@ -23,7 +24,8 @@ class LikeService {
   }
 
   Future<bool> deleteLike(item) async {
-    String endpoint = "${Config.localUrl}/like/${item['uuid']}";
+    String path = '/like/${item['uuid']}';
+    var endpoint = Uri.http('${Config.localUrl}', path);
     // TODO: Add user from local storage
 
     bool succeed;
