@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class BottomNav extends StatefulWidget {
   @override
@@ -27,9 +28,17 @@ class _BottomNavState extends State<BottomNav> {
         {}
         break;
       case 4:
-        {}
+        {
+          await FirebaseAuth.instance.signOut();
+          Navigator.pushReplacementNamed(context, '/signin');
+        }
         break;
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

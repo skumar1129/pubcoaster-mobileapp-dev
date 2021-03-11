@@ -4,6 +4,8 @@ import 'package:NewApp/pages/splashscreen.dart';
 import 'package:NewApp/pages/createpost.dart';
 import 'package:NewApp/pages/myposts.dart';
 import 'package:NewApp/pages/signup.dart';
+import 'package:NewApp/pages/sigin.dart';
+import 'package:NewApp/pages/forgotpassword.dart';
 import 'package:NewApp/pages/locationposts.dart';
 import 'package:NewApp/pages/locbarposts.dart';
 import 'package:NewApp/pages/locnbhoodposts.dart';
@@ -55,6 +57,8 @@ class MyApp extends StatelessWidget {
                 '/': (context) => SplashScreen(),
                 '/createpost': (context) => CreatePost(),
                 '/signup': (context) => SignUp(),
+                '/forgot': (context) => ForgotPassword(),
+                '/signin': (context) => SignIn(),
                 '/home': (context) => Home(),
                 '/mypost': (context) => MyPosts()
               },
