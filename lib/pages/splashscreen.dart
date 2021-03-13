@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -21,11 +22,17 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
-  navigateUser() {
+  navigateUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     auth.authStateChanges().listen((User? user) {
       if (user == null) {
         Navigator.pushReplacementNamed(context, '/signin');
+      } else if (user.emailVerified == false) {
+        Navigator.pushReplacementNamed(context, '/verifyemail');
+      } else if (user.displayName == null) {
+        Navigator.pushReplacementNamed(context, '/adduserinfo');
       } else {
+        prefs.setString('username', user.displayName!);
         Navigator.pushReplacementNamed(context, '/home');
       }
     });

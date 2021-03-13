@@ -11,6 +11,8 @@ import 'package:NewApp/pages/locbarposts.dart';
 import 'package:NewApp/pages/locnbhoodposts.dart';
 import 'package:NewApp/pages/locuserposts.dart';
 import 'package:NewApp/pages/singlepost.dart';
+import 'package:NewApp/pages/verifyemail.dart';
+import 'package:NewApp/pages/adduserinfo.dart';
 import 'package:NewApp/pages/userposts.dart';
 import 'package:NewApp/models/postargs.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -59,6 +61,8 @@ class MyApp extends StatelessWidget {
                 '/signup': (context) => SignUp(),
                 '/forgot': (context) => ForgotPassword(),
                 '/signin': (context) => SignIn(),
+                '/verifyemail': (context) => VerifyEmail(),
+                '/adduserinfo': (context) => AddUserInfo(),
                 '/home': (context) => Home(),
                 '/mypost': (context) => MyPosts()
               },

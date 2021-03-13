@@ -7,7 +7,6 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   bool confirmTime = false;
-  String? username;
   String? email;
   String? password;
   String? confirm;
@@ -50,16 +49,6 @@ class _SignUpState extends State<SignUp> {
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18.0),
                             side: BorderSide(color: Colors.red)))),
-              ),
-              TextField(
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: 'Username'),
-                onChanged: (value) => {
-                  if (mounted)
-                    {
-                      setState(() => {username = value})
-                    }
-                },
               ),
               const Divider(thickness: 0.05, color: Colors.white),
               TextField(
