@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:NewApp/pages/singlepost.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/models/postargs.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MyPostCard extends StatefulWidget {
   final String bar;
@@ -90,6 +91,15 @@ class _MyPostCardState extends State<MyPostCard> {
     if (succeed) {
       Navigator.pushReplacementNamed(context, '/mypost');
     }
+  }
+
+  goToSinglePost() async {
+    String user = FirebaseAuth.instance.currentUser!.displayName!;
+    Navigator.pushReplacementNamed(
+      context,
+      SinglePost.route,
+      arguments: PostArgs(uuid: widget.uuid, currentUser: user),
+    );
   }
 
   String? dropdownValue;
@@ -290,8 +300,7 @@ class _MyPostCardState extends State<MyPostCard> {
           ),
         ),
         onTap: () {
-          Navigator.pushReplacementNamed(context, SinglePost.route,
-              arguments: PostArgs(uuid: widget.uuid, currentUser: 'helga'));
+          goToSinglePost();
         },
       );
     } else {

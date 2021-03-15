@@ -8,7 +8,7 @@ class CommentService {
 
   Future<bool> addComment(item) async {
     String path = '/comment';
-    var endpoint = Uri.http('${Config.localUrl}', path);
+    var endpoint = Uri.http('${Config.postApiUrl}', path);
     // TODO: Add user from local storage
     var reqBody = {
       'uuid': item['uuid'],
@@ -33,7 +33,7 @@ class CommentService {
 
   Future<bool> updateComment(String uuid, item) async {
     String path = '/comment/$uuid';
-    var endpoint = Uri.http('${Config.localUrl}', path);
+    var endpoint = Uri.http('${Config.postApiUrl}', path);
     var reqBody = {
       'text': item['text'],
     };
@@ -54,7 +54,7 @@ class CommentService {
 
   Future<bool> deleteComment(String uuid) async {
     String path = '/comment/$uuid';
-    var endpoint = Uri.http('${Config.localUrl}', path);
+    var endpoint = Uri.http('${Config.postApiUrl}', path);
     bool succeed;
 
     try {

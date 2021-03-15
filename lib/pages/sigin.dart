@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -13,7 +12,6 @@ class _SignInState extends State<SignIn> {
 
   signIn(String email, String password) async {
     try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       if (userCredential.user?.emailVerified == false) {
@@ -21,7 +19,6 @@ class _SignInState extends State<SignIn> {
       } else if (userCredential.user?.displayName == null) {
         Navigator.pushReplacementNamed(context, '/adduserinfo');
       } else {
-        prefs.setString('username', userCredential.user!.displayName!);
         Navigator.pushReplacementNamed(context, '/home');
       }
     } on FirebaseAuthException catch (e) {

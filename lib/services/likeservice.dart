@@ -7,7 +7,7 @@ class LikeService {
 
   Future<bool> addLike(item) async {
     String path = '/like/${item['uuid']}';
-    var endpoint = Uri.http('${Config.localUrl}', path);
+    var endpoint = Uri.http('${Config.postApiUrl}', path);
     // TODO: Add user from local storage
 
     Map<String, String> headers = {'username': item['username']};
@@ -25,7 +25,7 @@ class LikeService {
 
   Future<bool> deleteLike(item) async {
     String path = '/like/${item['uuid']}';
-    var endpoint = Uri.http('${Config.localUrl}', path);
+    var endpoint = Uri.http('${Config.postApiUrl}', path);
     // TODO: Add user from local storage
 
     bool succeed;

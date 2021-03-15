@@ -7,32 +7,39 @@ class VerifyEmail extends StatefulWidget {
 }
 
 class _VerifyEmailState extends State<VerifyEmail> {
-  bool? confirmTime;
-  String? email;
-  resendCode() async {
-    await FirebaseAuth.instance.sendSignInLinkToEmail(
-        email: email!,
-        actionCodeSettings: ActionCodeSettings(
-            url:
-                'https://newapp-847ed.firebaseapp.com/__/auth/action?mode=action&oobCode=code',
-            handleCodeInApp: true));
+  goToSignUp() {
+    Navigator.pushReplacementNamed(context, '/signup');
   }
 
-  confirmUser() {}
+  resendEmail() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        user.sendEmailVerification();
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  goToSignIn() {
+    Navigator.pushReplacementNamed(context, '/signin');
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Column(
       children: [
+        const SizedBox(
+          height: 35,
+        ),
         ElevatedButton(
           onPressed: () {
-            if (mounted) {
-              setState(() => {confirmTime = false});
-            }
+            goToSignUp();
           },
           child: Text(
-            'Go back',
+            'Go back to sign up',
             style: TextStyle(color: Colors.white),
           ),
           style: ButtonStyle(
@@ -42,29 +49,21 @@ class _VerifyEmailState extends State<VerifyEmail> {
                       borderRadius: BorderRadius.circular(18.0),
                       side: BorderSide(color: Colors.red)))),
         ),
+        const Divider(thickness: 1.0, color: Colors.white),
         Text(
-          'Let us know the email you are trying to verify',
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          'Send a verification email to your account and sign back in once complete, or go back to sign up and register a new email',
+          style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
         ),
-        TextField(
-          decoration: InputDecoration(
-              border: OutlineInputBorder(), labelText: 'Email to Verify'),
-          onChanged: (value) => {
-            if (mounted)
-              {
-                setState(() => {email = value})
-              }
-          },
-        ),
+        const Divider(thickness: 1.0, color: Colors.white),
         Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               ElevatedButton(
                 onPressed: () {
-                  resendCode();
+                  resendEmail();
                 },
                 child: Text(
-                  'Resend code',
+                  'Resend Email',
                   style: TextStyle(color: Colors.white),
                 ),
                 style: ButtonStyle(
@@ -77,10 +76,10 @@ class _VerifyEmailState extends State<VerifyEmail> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  confirmUser();
+                  goToSignIn();
                 },
                 child: Text(
-                  'Submit',
+                  'Go to sign in',
                   style: TextStyle(color: Colors.white),
                 ),
                 style: ButtonStyle(
