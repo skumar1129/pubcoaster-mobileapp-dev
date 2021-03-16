@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/navbarhome.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/pages/locationposts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CreatePost extends StatefulWidget {
   @override
@@ -39,9 +39,9 @@ class _CreatePostState extends State<CreatePost> {
 
   submitPost(String loc, String bar, String? nbhood, int rating, String descrip,
       bool anon) async {
-    // TODO: change will local storage username
+    String user = FirebaseAuth.instance.currentUser!.displayName!;
     var reqBody = {
-      'username': 'helga',
+      'username': user,
       'anonymous': anon,
       'bar': bar,
       'description': descrip,

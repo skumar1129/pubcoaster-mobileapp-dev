@@ -5,6 +5,7 @@ import 'package:strings/strings.dart';
 import 'dart:convert';
 import 'package:NewApp/pages/singlepost.dart';
 import 'package:NewApp/models/postargs.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FeedPostCard extends StatelessWidget {
   final String bar;
@@ -35,6 +36,15 @@ class FeedPostCard extends StatelessWidget {
       this.editedAt,
       this.picLink,
       this.uuid);
+
+  goToSinglePost(context) async {
+    String user = FirebaseAuth.instance.currentUser!.displayName!;
+    Navigator.pushReplacementNamed(
+      context,
+      SinglePost.route,
+      arguments: PostArgs(uuid: uuid, currentUser: user),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -220,11 +230,7 @@ class FeedPostCard extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.pushReplacementNamed(
-          context,
-          SinglePost.route,
-          arguments: PostArgs(uuid: uuid, currentUser: 'helga'),
-        );
+        goToSinglePost(context);
       },
     );
   }
