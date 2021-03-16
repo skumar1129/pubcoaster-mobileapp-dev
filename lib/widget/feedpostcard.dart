@@ -46,6 +46,115 @@ class FeedPostCard extends StatelessWidget {
     );
   }
 
+  Widget user(username) {
+     if (username != null) {
+      String goodUsername = utf8.decode(username!.codeUnits);
+      return Flexible(
+        child: Text(
+          '$goodUsername',
+          style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Merriweather-Regular'),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget likes(numLikes) {
+    if (numLikes == 0) {
+      return Flexible(
+          child: Text(
+        'No Likes Yet',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    } else if (numLikes == 1) {
+      return Flexible(
+          child: Text(
+        '$numLikes like',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    } else {
+      return Flexible(
+          child: Text(
+        '$numLikes likes',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    }
+  }
+
+  Widget picture(picLink) {
+     if (picLink != '') {
+      return Column(children: [
+        Image(image: NetworkImage('$picLink')),
+        const Divider(
+          color: Colors.white,
+        )
+      ]);
+    } else {
+      return Container();
+    }
+  }
+
+  Widget nbhood(neighborhood, goodLocation) {
+    if (neighborhood != null) {
+      String goodNbhood = utf8.decode(neighborhood!.codeUnits);
+      return Flexible(
+          child: Text(
+        '${capitalize(goodNbhood)}, $goodLocation',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+        softWrap: true,
+      ));
+    } else {
+      return Flexible(
+          child: Text(
+        '$goodLocation',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+        softWrap: true,
+      ));
+    }
+  }
+
+  Widget comments(numComments) {
+    if (numComments == 0) {
+      return Flexible(
+          child: Text(
+        'No comments yet',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    } else if (numComments == 1) {
+      return Flexible(
+          child: Text(
+        '$numComments comment',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    } else {
+      return Flexible(
+          child: Text(
+        '$numComments comments',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     String goodContent = utf8.decode(content.codeUnits);
@@ -82,18 +191,7 @@ class FeedPostCard extends StatelessWidget {
             const Divider(
               color: Colors.white,
             ),
-            (() {
-              if (picLink != '') {
-                return Column(children: [
-                  Image(image: NetworkImage('$picLink')),
-                  const Divider(
-                    color: Colors.white,
-                  )
-                ]);
-              } else {
-                return Container();
-              }
-            }()),
+            picture(picLink),
             Text(
               goodContent,
               style: TextStyle(
@@ -104,48 +202,8 @@ class FeedPostCard extends StatelessWidget {
             ),
             Row(
               children: [
-                (() {
-                  if (username != null) {
-                    String goodUsername = utf8.decode(username!.codeUnits);
-                    return Flexible(
-                      child: Text(
-                        '$goodUsername',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Merriweather-Regular'),
-                      ),
-                    );
-                  } else {
-                    return Container();
-                  }
-                }()),
-                (() {
-                  if (numLikes == 0) {
-                    return Flexible(
-                        child: Text(
-                      'No Likes Yet',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  } else if (numLikes == 1) {
-                    return Flexible(
-                        child: Text(
-                      '$numLikes like',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  } else {
-                    return Flexible(
-                        child: Text(
-                      '$numLikes likes',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  }
-                }())
+                user(username),
+                likes(numLikes)
               ],
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
@@ -163,28 +221,7 @@ class FeedPostCard extends StatelessWidget {
                     softWrap: true,
                   ),
                 ),
-                (() {
-                  if (neighborhood != null) {
-                    String goodNbhood = utf8.decode(neighborhood!.codeUnits);
-                    return Flexible(
-                        child: Text(
-                      '${capitalize(goodNbhood)}, $goodLocation',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                      softWrap: true,
-                    ));
-                  } else {
-                    return Flexible(
-                        child: Text(
-                      '$goodLocation',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                      softWrap: true,
-                    ));
-                  }
-                }())
+                nbhood(neighborhood, goodLocation)
               ],
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
@@ -193,33 +230,7 @@ class FeedPostCard extends StatelessWidget {
             ),
             Row(
               children: [
-                (() {
-                  if (numComments == 0) {
-                    return Flexible(
-                        child: Text(
-                      'No comments yet',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  } else if (numComments == 1) {
-                    return Flexible(
-                        child: Text(
-                      '$numComments comment',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  } else {
-                    return Flexible(
-                        child: Text(
-                      '$numComments comments',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  }
-                }())
+                comments(numComments)
               ],
             ),
             const Divider(
