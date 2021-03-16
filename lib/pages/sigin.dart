@@ -42,7 +42,7 @@ class _SignInState extends State<SignIn> {
                 height: 30,
               ),
               Text(
-                'Welcome to Barz BRO!',
+                'Welcome to Knew Barz!',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
               ),
               const Divider(thickness: 0.5, color: Colors.white),

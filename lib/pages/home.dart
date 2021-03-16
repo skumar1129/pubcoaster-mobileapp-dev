@@ -13,7 +13,7 @@ class Home extends StatelessWidget {
             children: [
               const Divider(thickness: 0.5, color: Colors.white),
               Text(
-                'Welcome to NEW APP!',
+                'Welcome to Knew Barz!',
                 style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
