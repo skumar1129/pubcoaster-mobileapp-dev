@@ -102,6 +102,118 @@ class _MyPostCardState extends State<MyPostCard> {
     );
   }
 
+  Widget picture() {
+    if (widget.picLink != '') {
+      return Column(children: [
+        Image(image: NetworkImage('${widget.picLink}')),
+        const Divider(
+          color: Colors.white,
+        )
+      ]);
+    } else {
+      return Container();
+    }
+  }
+
+  Widget user() {
+     if (widget.username != null) {
+        String goodUsername =
+            utf8.decode(widget.username!.codeUnits);
+        return Flexible(
+          child: Text(
+            '$goodUsername',
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Merriweather-Regular'),
+          ),
+        );
+      } else {
+        return Container();
+      }
+  }
+
+  Widget likes() {
+    if (widget.numLikes == 0) {
+      return Flexible(
+          child: Text(
+        'No Likes Yet',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    } else if (widget.numLikes == 1) {
+      return Flexible(
+          child: Text(
+        '${widget.numLikes} like',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    } else {
+      return Flexible(
+          child: Text(
+        '${widget.numLikes} likes',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    }
+  }
+
+  Widget neighborhood(goodLocation) {
+    if (widget.neighborhood != null) {
+      String goodNbhood =
+          utf8.decode(widget.neighborhood!.codeUnits);
+      return Flexible(
+          child: Text(
+        '${capitalize(goodNbhood)}, $goodLocation',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+        softWrap: true,
+      ));
+    } else {
+      return Flexible(
+          child: Text(
+        '$goodLocation',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+        softWrap: true,
+      ));
+    }
+  }
+
+  Widget comments() {
+     if (widget.numComments == 0) {
+      return Flexible(
+          child: Text(
+        'No comments yet',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    } else if (widget.numComments == 1) {
+      return Flexible(
+          child: Text(
+        '${widget.numComments} comment',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    } else {
+      return Flexible(
+          child: Text(
+        '${widget.numComments} comments',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    }
+  }
+
+
+
   String? dropdownValue;
   @override
   Widget build(BuildContext context) {
@@ -149,18 +261,7 @@ class _MyPostCardState extends State<MyPostCard> {
               const Divider(
                 color: Colors.white,
               ),
-              (() {
-                if (widget.picLink != '') {
-                  return Column(children: [
-                    Image(image: NetworkImage('${widget.picLink}')),
-                    const Divider(
-                      color: Colors.white,
-                    )
-                  ]);
-                } else {
-                  return Container();
-                }
-              }()),
+              picture(),
               Text(
                 goodContent,
                 style: TextStyle(
@@ -171,49 +272,8 @@ class _MyPostCardState extends State<MyPostCard> {
               ),
               Row(
                 children: [
-                  (() {
-                    if (widget.username != null) {
-                      String goodUsername =
-                          utf8.decode(widget.username!.codeUnits);
-                      return Flexible(
-                        child: Text(
-                          '$goodUsername',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Merriweather-Regular'),
-                        ),
-                      );
-                    } else {
-                      return Container();
-                    }
-                  }()),
-                  (() {
-                    if (widget.numLikes == 0) {
-                      return Flexible(
-                          child: Text(
-                        'No Likes Yet',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Merriweather-Regular'),
-                      ));
-                    } else if (widget.numLikes == 1) {
-                      return Flexible(
-                          child: Text(
-                        '${widget.numLikes} like',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Merriweather-Regular'),
-                      ));
-                    } else {
-                      return Flexible(
-                          child: Text(
-                        '${widget.numLikes} likes',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Merriweather-Regular'),
-                      ));
-                    }
-                  }())
+                  user(),
+                  likes()
                 ],
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
@@ -232,29 +292,7 @@ class _MyPostCardState extends State<MyPostCard> {
                       softWrap: true,
                     ),
                   ),
-                  (() {
-                    if (widget.neighborhood != null) {
-                      String goodNbhood =
-                          utf8.decode(widget.neighborhood!.codeUnits);
-                      return Flexible(
-                          child: Text(
-                        '${capitalize(goodNbhood)}, $goodLocation',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Merriweather-Regular'),
-                        softWrap: true,
-                      ));
-                    } else {
-                      return Flexible(
-                          child: Text(
-                        '$goodLocation',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Merriweather-Regular'),
-                        softWrap: true,
-                      ));
-                    }
-                  }())
+                  neighborhood(goodLocation)
                 ],
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
@@ -263,33 +301,7 @@ class _MyPostCardState extends State<MyPostCard> {
               ),
               Row(
                 children: [
-                  (() {
-                    if (widget.numComments == 0) {
-                      return Flexible(
-                          child: Text(
-                        'No comments yet',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Merriweather-Regular'),
-                      ));
-                    } else if (widget.numComments == 1) {
-                      return Flexible(
-                          child: Text(
-                        '${widget.numComments} comment',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Merriweather-Regular'),
-                      ));
-                    } else {
-                      return Flexible(
-                          child: Text(
-                        '${widget.numComments} comments',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Merriweather-Regular'),
-                      ));
-                    }
-                  }())
+                 comments()
                 ],
               ),
               const Divider(
@@ -377,18 +389,7 @@ class _MyPostCardState extends State<MyPostCard> {
             const Divider(
               color: Colors.white,
             ),
-            (() {
-              if (widget.picLink != '') {
-                return Column(children: [
-                  Image(image: NetworkImage('${widget.picLink}')),
-                  const Divider(
-                    color: Colors.white,
-                  )
-                ]);
-              } else {
-                return Container();
-              }
-            }()),
+            picture(),
             TextField(
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
