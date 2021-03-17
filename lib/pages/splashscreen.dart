@@ -16,9 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   showScreen() {
-    Timer(Duration(milliseconds: 750), () {
-      navigateUser();
-    });
+    navigateUser();
   }
 
   navigateUser() async {
