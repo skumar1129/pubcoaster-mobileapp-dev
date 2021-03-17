@@ -24,6 +24,8 @@ class _SinglePostState extends State<SinglePost> {
       response = await postService.getPost(uuid);
     } catch (e) {
       print(e);
+      final snackBar = SnackBar(content: Text('Error: could retrieve post :(', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
     return response;
   }

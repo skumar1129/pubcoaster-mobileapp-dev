@@ -19,12 +19,16 @@ class _MyPostsState extends State<MyPosts> {
         response = await postService.getMyPosts(offset);
       } catch (e) {
         print(e);
+        final snackBar = SnackBar(content: Text('Error: could retrieve posts :(', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } else {
       try {
         response = await postService.getMyPosts();
       } catch (e) {
         print(e);
+        final snackBar = SnackBar(content: Text('Error: could retrieve posts :(', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }
     return response;
