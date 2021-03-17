@@ -16,10 +16,16 @@ class _VerifyEmailState extends State<VerifyEmail> {
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         user.sendEmailVerification();
+      } else {
+        final snackBar = SnackBar(content: Text('Error: had trouble finding user in system.', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } catch (e) {
-      print(e);
+      final snackBar = SnackBar(content: Text('Error: could not send verification email.', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+    final snackBar = SnackBar(content: Text('Successfully resent email!', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.green);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   goToSignIn() {

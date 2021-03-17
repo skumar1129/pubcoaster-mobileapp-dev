@@ -73,6 +73,10 @@ class _MyPostCardState extends State<MyPostCard> {
 
   editPost() async {
     bool succeed;
+    if (newRating == null || newBar == null || newBar == "" || newContent == null || newContent == "") {
+      final snackBar = SnackBar(content: Text('Error: missing a couple of fields. Please fill out all required fields before submitting post.', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
     var item = {
       'nbhood': newNbhood,
       'rating': newRating,
@@ -80,8 +84,13 @@ class _MyPostCardState extends State<MyPostCard> {
       'description': newContent
     };
     succeed = await postService.updatePost(widget.uuid, item);
-    if (succeed) {
+    if (succeed) { 
+      final snackBar = SnackBar(content: Text('Successfully updated post! :)', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.green);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       Navigator.pushReplacementNamed(context, '/mypost');
+    } else {
+      final snackBar = SnackBar(content: Text('Error with editing post :(', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -89,7 +98,12 @@ class _MyPostCardState extends State<MyPostCard> {
     bool succeed;
     succeed = await postService.deletePost(widget.uuid);
     if (succeed) {
+      final snackBar = SnackBar(content: Text('Successfully deleted post! :)', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.green);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       Navigator.pushReplacementNamed(context, '/mypost');
+    } else {
+      final snackBar = SnackBar(content: Text('Error with deleting post :(', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 

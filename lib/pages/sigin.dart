@@ -19,13 +19,17 @@ class _SignInState extends State<SignIn> {
       } else if (userCredential.user?.displayName == null) {
         Navigator.pushReplacementNamed(context, '/adduserinfo');
       } else {
+        final snackBar = SnackBar(content: Text('Successfully signed in yo', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.green);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
         Navigator.pushReplacementNamed(context, '/home');
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        final snackBar = SnackBar(content: Text('Ope, no user found for that email.', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        final snackBar = SnackBar(content: Text('Ope, wrong password for that email.', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }
   }

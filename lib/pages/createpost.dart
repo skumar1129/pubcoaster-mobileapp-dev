@@ -40,6 +40,10 @@ class _CreatePostState extends State<CreatePost> {
   submitPost(String loc, String bar, String? nbhood, int rating, String descrip,
       bool anon) async {
     String user = FirebaseAuth.instance.currentUser!.displayName!;
+    if (user == null || bar == null || bar == "" || descrip == null || descrip == "" || rating == null || loc == null || loc == "") {
+      final snackBar = SnackBar(content: Text('Please fill out all required info before trying to create a post!!', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
     var reqBody = {
       'username': user,
       'anonymous': anon,
@@ -51,8 +55,13 @@ class _CreatePostState extends State<CreatePost> {
     };
     bool succeed = await postService.addPost(reqBody);
     if (succeed) {
+      final snackBar = SnackBar(content: Text('Successfully created post HOLLA!', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.green);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       Navigator.pushReplacementNamed(context, LocationPosts.route,
           arguments: location);
+    } else {
+      final snackBar = SnackBar(content: Text('Error: could not create post :(', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 

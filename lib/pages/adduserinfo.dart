@@ -31,6 +31,10 @@ class _AddUserInfoState extends State<AddUserInfo> {
 
   submitUser() async {
     String email = FirebaseAuth.instance.currentUser!.email!;
+    if (username == null || username == "" || email == null || firstname == null || firstname == "" || lastname == null || lastname == "") {
+      final snackBar = SnackBar(content: Text('Error with form: please make sure to fill out all the info before submitting.', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
     String fullname = '$firstname $lastname';
     var body = {
       'username': username,
@@ -41,9 +45,22 @@ class _AddUserInfoState extends State<AddUserInfo> {
       'picLink': ''
     };
     // TODO: add checks to these calls and possibly adding photo
-    await userService.createUser(body);
-    await FirebaseAuth.instance.currentUser!
-        .updateProfile(displayName: username);
+    bool succeed = await userService.createUser(body);
+    if (!succeed) {
+      final snackBar = SnackBar(content: Text('Error: could not create user. Please try redoing the form and submitting again.', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    try {
+      await FirebaseAuth.instance.currentUser!
+          .updateProfile(displayName: username);
+    }
+    catch (e) {
+      print(e);
+      final snackBar = SnackBar(content: Text('Error updating profile! :(', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    final snackBar = SnackBar(content: Text('Successfully updated profile!! :)', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.green);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
     Navigator.pushReplacementNamed(context, '/home');
   }
 

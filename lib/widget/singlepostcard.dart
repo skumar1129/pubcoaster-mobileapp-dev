@@ -69,7 +69,12 @@ class _SinglePostCardState extends State<SinglePostCard> {
           userLikedVar = true;
           widget.likes.add(like);
         });
+        final snackBar = SnackBar(content: Text('Liked post successfully :)', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.green);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
+    } else {
+      final snackBar = SnackBar(content: Text('Error with liking post :(', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -83,7 +88,12 @@ class _SinglePostCardState extends State<SinglePostCard> {
               like['username'] == widget.currentUser && like['like'] == true);
           userLikedVar = false;
         });
+        final snackBar = SnackBar(content: Text('Unliked post successfully :)', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.green);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
+    } else {
+      final snackBar = SnackBar(content: Text('Error with unliking post :(', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -104,6 +114,11 @@ class _SinglePostCardState extends State<SinglePostCard> {
         newComment = "";
         widget.comments.insert(0, comment);
       });
+      final snackBar = SnackBar(content: Text('Created comment successfully :)', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.green);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      final snackBar = SnackBar(content: Text('Error with creating comment :(', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -123,7 +138,12 @@ class _SinglePostCardState extends State<SinglePostCard> {
         setState(() {
           widget.comments.removeWhere((comment) => comment['uuid'] == uuid);
         });
+        final snackBar = SnackBar(content: Text('Deleted comment successfully :)', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.green);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
+    } else {
+      final snackBar = SnackBar(content: Text('Error with deleting comment :(', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -144,7 +164,12 @@ class _SinglePostCardState extends State<SinglePostCard> {
           editCommentUuid = "";
           newEditComment = "";
         });
+        final snackBar = SnackBar(content: Text('Updated comment successfully :)', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.green);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
+    } else {
+      final snackBar = SnackBar(content: Text('Error with udpating comment :(', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 

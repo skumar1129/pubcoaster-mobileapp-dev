@@ -18,11 +18,15 @@ class _SignUpState extends State<SignUp> {
       if (userCredential.user != null) {
         await userCredential.user!.sendEmailVerification();
       } else {
-        print('something went wrong');
+        final snackBar = SnackBar(content: Text('Error with email verfication: please check the inputted email and submit the form again.', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
+      final snackBar = SnackBar(content: Text('Account created!! WooT', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.green);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       Navigator.pushReplacementNamed(context, '/verifyemail');
     } else {
-      print('passwords no matchy');
+      final snackBar = SnackBar(content: Text('Passwords no matchy', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
