@@ -29,7 +29,15 @@ class _LocNbhoodPostsState extends State<LocNbhoodPosts> {
             await postService.getLocNbhoodPosts(location, nbhood, offset);
       } catch (e) {
         print(e);
-        final snackBar = SnackBar(content: Text('Error: could retrieve posts :(', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+        final snackBar = SnackBar(
+            content: Text(
+                'Error: could retrieve posts. Check network connection.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } else {
@@ -37,7 +45,15 @@ class _LocNbhoodPostsState extends State<LocNbhoodPosts> {
         response = await postService.getLocNbhoodPosts(location, nbhood);
       } catch (e) {
         print(e);
-        final snackBar = SnackBar(content: Text('Error: could retrieve posts :(', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+        final snackBar = SnackBar(
+            content: Text(
+                'Error: could retrieve posts. Check network connection.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }

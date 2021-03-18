@@ -73,10 +73,6 @@ class _MyPostCardState extends State<MyPostCard> {
 
   editPost() async {
     bool succeed;
-    if (newRating == null || newBar == null || newBar == "" || newContent == null || newContent == "") {
-      final snackBar = SnackBar(content: Text('Error: missing a couple of fields. Please fill out all required fields before submitting post.', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
     var item = {
       'nbhood': newNbhood,
       'rating': newRating,
@@ -84,12 +80,17 @@ class _MyPostCardState extends State<MyPostCard> {
       'description': newContent
     };
     succeed = await postService.updatePost(widget.uuid, item);
-    if (succeed) { 
-      final snackBar = SnackBar(content: Text('Successfully updated post! :)', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.green);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    if (succeed) {
       Navigator.pushReplacementNamed(context, '/mypost');
     } else {
-      final snackBar = SnackBar(content: Text('Error with editing post :(', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      final snackBar = SnackBar(
+          content: Text('Error with editing post. Check network connection.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -98,11 +99,16 @@ class _MyPostCardState extends State<MyPostCard> {
     bool succeed;
     succeed = await postService.deletePost(widget.uuid);
     if (succeed) {
-      final snackBar = SnackBar(content: Text('Successfully deleted post! :)', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.green);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       Navigator.pushReplacementNamed(context, '/mypost');
     } else {
-      final snackBar = SnackBar(content: Text('Error with deleting post :(', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      final snackBar = SnackBar(
+          content: Text('Error with deleting post. Check network connection.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -130,20 +136,18 @@ class _MyPostCardState extends State<MyPostCard> {
   }
 
   Widget user() {
-     if (widget.username != null) {
-        String goodUsername =
-            utf8.decode(widget.username!.codeUnits);
-        return Flexible(
-          child: Text(
-            '$goodUsername',
-            style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'Merriweather-Regular'),
-          ),
-        );
-      } else {
-        return Container();
-      }
+    if (widget.username != null) {
+      String goodUsername = utf8.decode(widget.username!.codeUnits);
+      return Flexible(
+        child: Text(
+          '$goodUsername',
+          style: TextStyle(
+              color: Colors.white, fontFamily: 'Merriweather-Regular'),
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 
   Widget likes() {
@@ -151,82 +155,71 @@ class _MyPostCardState extends State<MyPostCard> {
       return Flexible(
           child: Text(
         'No Likes Yet',
-        style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular'),
+        style:
+            TextStyle(color: Colors.white, fontFamily: 'Merriweather-Regular'),
       ));
     } else if (widget.numLikes == 1) {
       return Flexible(
           child: Text(
         '${widget.numLikes} like',
-        style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular'),
+        style:
+            TextStyle(color: Colors.white, fontFamily: 'Merriweather-Regular'),
       ));
     } else {
       return Flexible(
           child: Text(
         '${widget.numLikes} likes',
-        style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular'),
+        style:
+            TextStyle(color: Colors.white, fontFamily: 'Merriweather-Regular'),
       ));
     }
   }
 
   Widget neighborhood(goodLocation) {
     if (widget.neighborhood != null) {
-      String goodNbhood =
-          utf8.decode(widget.neighborhood!.codeUnits);
+      String goodNbhood = utf8.decode(widget.neighborhood!.codeUnits);
       return Flexible(
           child: Text(
         '${capitalize(goodNbhood)}, $goodLocation',
-        style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular'),
+        style:
+            TextStyle(color: Colors.white, fontFamily: 'Merriweather-Regular'),
         softWrap: true,
       ));
     } else {
       return Flexible(
           child: Text(
         '$goodLocation',
-        style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular'),
+        style:
+            TextStyle(color: Colors.white, fontFamily: 'Merriweather-Regular'),
         softWrap: true,
       ));
     }
   }
 
   Widget comments() {
-     if (widget.numComments == 0) {
+    if (widget.numComments == 0) {
       return Flexible(
           child: Text(
         'No comments yet',
-        style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular'),
+        style:
+            TextStyle(color: Colors.white, fontFamily: 'Merriweather-Regular'),
       ));
     } else if (widget.numComments == 1) {
       return Flexible(
           child: Text(
         '${widget.numComments} comment',
-        style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular'),
+        style:
+            TextStyle(color: Colors.white, fontFamily: 'Merriweather-Regular'),
       ));
     } else {
       return Flexible(
           child: Text(
         '${widget.numComments} comments',
-        style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular'),
+        style:
+            TextStyle(color: Colors.white, fontFamily: 'Merriweather-Regular'),
       ));
     }
   }
-
-
 
   String? dropdownValue;
   @override
@@ -285,10 +278,7 @@ class _MyPostCardState extends State<MyPostCard> {
                 color: Colors.white,
               ),
               Row(
-                children: [
-                  user(),
-                  likes()
-                ],
+                children: [user(), likes()],
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
               const Divider(
@@ -314,9 +304,7 @@ class _MyPostCardState extends State<MyPostCard> {
                 color: Colors.white,
               ),
               Row(
-                children: [
-                 comments()
-                ],
+                children: [comments()],
               ),
               const Divider(
                 color: Colors.black,

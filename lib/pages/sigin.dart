@@ -19,16 +19,67 @@ class _SignInState extends State<SignIn> {
       } else if (userCredential.user?.displayName == null) {
         Navigator.pushReplacementNamed(context, '/adduserinfo');
       } else {
-        final snackBar = SnackBar(content: Text('Successfully signed in yo', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.green);
+        final snackBar = SnackBar(
+            content: Text('Successfully signed in',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.green);
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
         Navigator.pushReplacementNamed(context, '/home');
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        final snackBar = SnackBar(content: Text('Ope, no user found for that email.', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+        final snackBar = SnackBar(
+            content: Text('No user found for that email.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       } else if (e.code == 'wrong-password') {
-        final snackBar = SnackBar(content: Text('Ope, wrong password for that email.', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+        final snackBar = SnackBar(
+            content: Text('Wrong password for that email.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else if (e.code == 'user-disabled') {
+        final snackBar = SnackBar(
+            content: Text('This user has been disabled.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else if (e.code == 'invalid-email') {
+        final snackBar = SnackBar(
+            content: Text('Email needs to be valid.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else {
+        final snackBar = SnackBar(
+            content: Text('Unknown error occurred. Check network connection.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }

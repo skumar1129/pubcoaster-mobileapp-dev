@@ -13,17 +13,41 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   sendEmail() async {
     if (email == null || email == "") {
-      final snackBar = SnackBar(content: Text('Please fill out the email yo', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
+      final snackBar = SnackBar(
+          content: Text('Please fill out the email.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      try {
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: email!);
+      } catch (e) {
+        final snackBar = SnackBar(
+            content: Text(
+                'Error: could not send password reset email. Check network connection.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+      final snackBar = SnackBar(
+          content: Text(
+              'Success! Check your email in order to reset your password.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.green);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
-    try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email!);
-    } catch (e) {
-      final snackBar = SnackBar(content: Text('Error: could not send password reset email :(', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.red);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-    final snackBar = SnackBar(content: Text('Success! Please check your email in order to reset your password.', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 20)), backgroundColor: Colors.green);
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   changePassword() async {}
