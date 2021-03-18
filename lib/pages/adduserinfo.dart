@@ -31,20 +31,72 @@ class _AddUserInfoState extends State<AddUserInfo> {
 
   submitUser() async {
     String email = FirebaseAuth.instance.currentUser!.email!;
-    String fullname = '$firstname $lastname';
-    var body = {
-      'username': username,
-      'email': email,
-      'firstName': firstname,
-      'lastName': lastname,
-      'fullName': fullname,
-      'picLink': ''
-    };
-    // TODO: add checks to these calls and possibly adding photo
-    await userService.createUser(body);
-    await FirebaseAuth.instance.currentUser!
-        .updateProfile(displayName: username);
-    Navigator.pushReplacementNamed(context, '/home');
+    if (username == null ||
+        username == "" ||
+        firstname == null ||
+        firstname == "" ||
+        lastname == null ||
+        lastname == "") {
+      final snackBar = SnackBar(
+          content: Text(
+              'Error with form: please make sure to fill out all the info before submitting.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      String fullname = '$firstname $lastname';
+      var body = {
+        'username': username,
+        'email': email,
+        'firstName': firstname,
+        'lastName': lastname,
+        'fullName': fullname,
+        'picLink': ''
+      };
+      // TODO: add checks to these calls and possibly adding photo
+      bool succeed = await userService.createUser(body);
+      if (!succeed) {
+        final snackBar = SnackBar(
+            content: Text(
+                'Error: could not create user. Check network connection.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+      try {
+        await FirebaseAuth.instance.currentUser!
+            .updateProfile(displayName: username);
+      } catch (e) {
+        print(e);
+        final snackBar = SnackBar(
+            content: Text('Error updating profile! Check network connection.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+      final snackBar = SnackBar(
+          content: Text('Successfully updated profile!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.green);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.pushReplacementNamed(context, '/home');
+    }
   }
 
   goToSignIn() {

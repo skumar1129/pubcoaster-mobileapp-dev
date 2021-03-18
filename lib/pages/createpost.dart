@@ -37,22 +37,60 @@ class _CreatePostState extends State<CreatePost> {
     });
   }
 
-  submitPost(String loc, String bar, String? nbhood, int rating, String descrip,
-      bool anon) async {
+  submitPost(String? loc, String? bar, String? nbhood, int? rating,
+      String? descrip, bool anon) async {
     String user = FirebaseAuth.instance.currentUser!.displayName!;
-    var reqBody = {
-      'username': user,
-      'anonymous': anon,
-      'bar': bar,
-      'description': descrip,
-      'rating': rating,
-      'location': loc,
-      'nbhood': nbhood
-    };
-    bool succeed = await postService.addPost(reqBody);
-    if (succeed) {
-      Navigator.pushReplacementNamed(context, LocationPosts.route,
-          arguments: location);
+    if (bar == null ||
+        bar == "" ||
+        descrip == null ||
+        descrip == "" ||
+        rating == null ||
+        loc == null ||
+        loc == "") {
+      final snackBar = SnackBar(
+          content: Text(
+              'Please fill out all required info before trying to create a post!!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      var reqBody = {
+        'username': user,
+        'anonymous': anon,
+        'bar': bar,
+        'description': descrip,
+        'rating': rating,
+        'location': loc,
+        'nbhood': nbhood
+      };
+      bool succeed = await postService.addPost(reqBody);
+      if (succeed) {
+        final snackBar = SnackBar(
+            content: Text('Successfully created post!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.green);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Navigator.pushReplacementNamed(context, LocationPosts.route,
+            arguments: location);
+      } else {
+        final snackBar = SnackBar(
+            content: Text('Error: could not create post. Check connection',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
     }
   }
 
@@ -96,8 +134,8 @@ class _CreatePostState extends State<CreatePost> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  submitPost(location!, bar!, neighborhood, rating!, content!,
-                      anonymous);
+                  submitPost(
+                      location, bar, neighborhood, rating, content, anonymous);
                 },
                 child: Text(
                   'Submit',

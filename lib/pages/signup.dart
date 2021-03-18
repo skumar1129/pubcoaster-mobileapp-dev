@@ -13,16 +13,86 @@ class _SignUpState extends State<SignUp> {
 
   signUp() async {
     if (password == confirm) {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email!, password: password!);
-      if (userCredential.user != null) {
-        await userCredential.user!.sendEmailVerification();
-      } else {
-        print('something went wrong');
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email!, password: password!);
+        if (userCredential.user != null) {
+          await userCredential.user!.sendEmailVerification();
+        } else {
+          final snackBar = SnackBar(
+              content: Text(
+                  'Error with email verfication: please check the inputted email and submit the form again.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 20)),
+              backgroundColor: Colors.red);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+        final snackBar = SnackBar(
+            content: Text('Account created! Now verify that email.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.green);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Navigator.pushReplacementNamed(context, '/verifyemail');
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'invalid-email') {
+          final snackBar = SnackBar(
+              content: Text('Need a valid email address.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 20)),
+              backgroundColor: Colors.red);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        } else if (e.code == 'email-already-in-use') {
+          final snackBar = SnackBar(
+              content: Text('That email is already being used.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 20)),
+              backgroundColor: Colors.red);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        } else if (e.code == 'weak-password') {
+          final snackBar = SnackBar(
+              content: Text('Password is too weak.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 20)),
+              backgroundColor: Colors.red);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        } else {
+          final snackBar = SnackBar(
+              content: Text('Unknown error occurred. Check network connection.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 20)),
+              backgroundColor: Colors.red);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
       }
-      Navigator.pushReplacementNamed(context, '/verifyemail');
     } else {
-      print('passwords no matchy');
+      final snackBar = SnackBar(
+          content: Text('Passwords need to match',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
