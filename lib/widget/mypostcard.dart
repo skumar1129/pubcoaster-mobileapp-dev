@@ -125,7 +125,7 @@ class _MyPostCardState extends State<MyPostCard> {
   Widget picture() {
     if (widget.picLink != '') {
       return Column(children: [
-        Image(image: NetworkImage('${widget.picLink}')),
+        Image(image: NetworkImage('${widget.picLink}'), height: MediaQuery.of(context).size.height * .2),
         const Divider(
           color: Colors.white,
         )
