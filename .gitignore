@@ -41,3 +41,15 @@ app.*.symbols
 app.*.map.json
 
 config.dart
+
+
+.DS_Store
+.atom/
+.idea
+.packages
+.pub/
+build/
+ios/.generated/
+packages
+pubspec.lock
+.flutter-plugins
