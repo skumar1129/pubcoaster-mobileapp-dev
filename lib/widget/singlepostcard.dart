@@ -240,7 +240,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
   }
 
   Widget picture() {
-    if (widget.picLink != '') {
+    if (widget.picLink != '' && widget.picLink!=null) {
       return Column(children: [
         Image(image: NetworkImage('${widget.picLink}'), height: MediaQuery.of(context).size.height * .3, width: MediaQuery.of(context).size.width * .8),
         const Divider(
@@ -501,7 +501,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
     // TODO: Look into better way to get real time
     var date = newDate.add(Duration(hours: 5));
     return Container(
-        height: MediaQuery.of(context).size.height * .75,
+        height: MediaQuery.of(context).size.height * .6,
         child: Card(
           color: Colors.black,
           child: Column(
