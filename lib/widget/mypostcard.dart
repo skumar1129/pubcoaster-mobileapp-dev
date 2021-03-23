@@ -123,7 +123,7 @@ class _MyPostCardState extends State<MyPostCard> {
   }
 
   Widget picture() {
-    if (widget.picLink != '') {
+    if (widget.picLink != '' && widget.picLink != null) {
       return Column(children: [
         Image(image: NetworkImage('${widget.picLink}'), height: MediaQuery.of(context).size.height * .2),
         const Divider(
