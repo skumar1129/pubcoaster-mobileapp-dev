@@ -42,15 +42,17 @@ class _CreatePostState extends State<CreatePost> {
           source: ImageSource.camera,);
     }
 
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-        filePicked = true;
-        Navigator.of(context, rootNavigator: true).pop('dialog');
-      } else {
-        print('No image selected.');
-      }
-    });
+    if (mounted) {
+      setState(() {
+        if (pickedFile != null) {
+          _image = File(pickedFile.path);
+          filePicked = true;
+          Navigator.of(context, rootNavigator: true).pop('dialog');
+        } else {
+          print('No image selected.');
+        }
+      });
+    }
   }
 
 
@@ -60,19 +62,6 @@ class _CreatePostState extends State<CreatePost> {
     } else {
       return Text(_image.toString(), style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black, fontSize: 16));
     }
-  }
-
-  Future<String> uploadFile() async {
-    String? downloadUrl;
-    final firebase_storage.Reference storageRef = firebase_storage.FirebaseStorage.instance.ref().child('post_pics/${_image!.path.split("/").last}');
-    firebase_storage.UploadTask task = storageRef.putFile(_image!);
-    await task.whenComplete(() => {
-    storageRef.getDownloadURL().then((url) {
-        print(url);
-        downloadUrl=url;
-      })
-    });
-    return downloadUrl!;
   }
 
   Widget pictureButton() {
@@ -238,7 +227,8 @@ class _CreatePostState extends State<CreatePost> {
           'description': descrip,
           'rating': rating,
           'location': loc,
-          'nbhood': nbhood
+          'nbhood': nbhood,
+          'picLink': ''
         };
         bool succeed = await postService.addPost(reqBody);
         if (succeed) {
