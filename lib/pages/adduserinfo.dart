@@ -34,15 +34,17 @@ class _AddUserInfoState extends State<AddUserInfo> {
           source: ImageSource.camera,);
     }
 
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-        filePicked = true;
-        Navigator.of(context, rootNavigator: true).pop('dialog');
-      } else {
-        print('No image selected.');
-      }
-    });
+    if (mounted) {
+      setState(() {
+        if (pickedFile != null) {
+          _image = File(pickedFile.path);
+          filePicked = true;
+          Navigator.of(context, rootNavigator: true).pop('dialog');
+        } else {
+          print('No image selected.');
+        }
+      });
+    }
   }
 
    Widget alertText() {
@@ -152,7 +154,7 @@ class _AddUserInfoState extends State<AddUserInfo> {
     } else {
       if (filePicked) {
         try {
-            final firebase_storage.Reference storageRef = firebase_storage.FirebaseStorage.instance.ref().child('user_pics/${_image!.path.split("/").last}');
+            final firebase_storage.Reference storageRef = firebase_storage.FirebaseStorage.instance.ref().child('prof_pics/${_image!.path.split("/").last}');
             firebase_storage.UploadTask task = storageRef.putFile(_image!);
             await task.whenComplete(() async {
               storageRef.getDownloadURL().then((url) async {
@@ -179,6 +181,21 @@ class _AddUserInfoState extends State<AddUserInfo> {
                         backgroundColor: Colors.red);
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }
+                try {
+                  await FirebaseAuth.instance.currentUser!
+                      .updateProfile(displayName: username, photoURL: url);
+                } catch (e) {
+                  print(e);
+                  final snackBar = SnackBar(
+                      content: Text('Error updating profile! Check network connection.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              fontSize: 20)),
+                      backgroundColor: Colors.red);
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
               });
             });
           } on firebase_core.FirebaseException catch (e) {
@@ -192,21 +209,6 @@ class _AddUserInfoState extends State<AddUserInfo> {
                       fontStyle: FontStyle.italic,
                       fontSize: 20)),
               backgroundColor: Colors.red);
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
-          try {
-            await FirebaseAuth.instance.currentUser!
-                .updateProfile(displayName: username);
-          } catch (e) {
-            print(e);
-            final snackBar = SnackBar(
-                content: Text('Error updating profile! Check network connection.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        fontSize: 20)),
-                backgroundColor: Colors.red);
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
           final snackBar = SnackBar(
