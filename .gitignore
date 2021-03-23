@@ -41,3 +41,19 @@ app.*.symbols
 app.*.map.json
 
 config.dart
+
+
+.DS_Store
+.atom/
+.idea
+.packages 2
+.pub/
+build/
+ios/.generated/
+ios/Flutter/Flutter 2.podspec
+ios/Flutter/Generated 2.xcconfig
+ios/Flutter/flutter_export_environment 2.sh
+.packages 2
+pubspec.lock
+.flutter-plugins 2
+.flutter-plugins-dependencies 2

@@ -104,10 +104,13 @@ class _CreatePostState extends State<CreatePost> {
       body: Column(
         children: <Widget>[
           NavBar(),
-          Center(
-            child: Text(
-              'Create a New Post',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          Padding(
+            padding: const EdgeInsets.only(top: 6, bottom: 0),
+            child: Center(
+              child: Text(
+                'Create a New Post',
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+              ),
             ),
           ),
           const Divider(
@@ -154,124 +157,160 @@ class _CreatePostState extends State<CreatePost> {
           ),
           const Divider(
             color: Colors.white,
-            thickness: 0.5,
+            thickness: .5,
           ),
-          Form(
-              child: Expanded(
+          Padding(
+            padding: const EdgeInsets.only(right: 4, left: 4),
+            child: Container(
+                  decoration: BoxDecoration(border: Border.all(width: 4)),
+                  padding: const EdgeInsets.only(right: 4, left: 4),
+                        child: Form(
                   child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                DropdownButtonFormField(
-                  items: [
-                    'Columbus',
-                    'Chicago',
-                    'New York',
-                    'Denver',
-                    'Washington DC',
-                    'San Francisco',
-                    'Orlando',
-                    'Phoenix',
-                    'Boston',
-                    'Los Angeles'
-                  ]
-                      .map((String value) => DropdownMenuItem<String>(
-                            child: Text(value),
-                            value: value,
-                          ))
-                      .toList(),
-                  onChanged: (String? value) {
-                    if (mounted) {
-                      setState(() {
-                        location = value!;
-                      });
-                    }
-                  },
-                  hint: Text('Location*'),
-                ),
-                const Divider(
-                  color: Colors.white,
-                  thickness: 0.75,
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'Bar*'),
-                  onChanged: (value) => {
-                    if (mounted)
-                      {
-                        setState(() => {bar = value})
-                      }
-                  },
-                ),
-                const Divider(
-                  color: Colors.white,
-                  thickness: 0.5,
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'Neighborhood'),
-                  onChanged: (value) => {
-                    if (mounted)
-                      {
-                        setState(() => {neighborhood = value})
-                      }
-                  },
-                ),
-                const Divider(
-                  color: Colors.white,
-                  thickness: 0.5,
-                ),
-                DropdownButtonFormField(
-                  items: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-                      .map((String value) => DropdownMenuItem<String>(
-                            child: Text(value),
-                            value: value,
-                          ))
-                      .toList(),
-                  onChanged: (String? value) {
-                    if (mounted) {
-                      setState(() {
-                        rating = int.parse(value!);
-                      });
-                    }
-                  },
-                  hint: Text('Rating*'),
-                ),
-                const Divider(
-                  color: Colors.white,
-                  thickness: 0.75,
-                ),
-                TextField(
-                  maxLines: 4,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'What\'s good?*'),
-                  onChanged: (value) => {
-                    if (mounted)
-                      {
-                        setState(() => {content = value})
-                      }
-                  },
-                ),
-                CheckboxListTile(
-                    value: anonymous,
-                    title: Text('Make post anonymous?'),
-                    onChanged: (bool? value) {
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                  padding: const EdgeInsets.only(left: 6, right: 6, top: 4),
+                  child: DropdownButtonFormField(
+                    items: [
+                      'Columbus',
+                      'Chicago',
+                      'New York',
+                      'Denver',
+                      'Washington DC',
+                      'San Francisco',
+                      'Orlando',
+                      'Phoenix',
+                      'Boston',
+                      'Los Angeles'
+                    ]
+                        .map((String value) => DropdownMenuItem<String>(
+                              child: Text(value),
+                              value: value,
+                            ))
+                        .toList(),
+                    onChanged: (String? value) {
                       if (mounted) {
                         setState(() {
-                          anonymous = value!;
+                          location = value!;
                         });
                       }
                     },
-                    secondary: Icon(Icons.security)),
-                FloatingActionButton(
-                  onPressed: getImage,
-                  tooltip: 'Picture (Optional)',
-                  child: Icon(Icons.add_a_photo),
-                  backgroundColor: Colors.red,
+                    hint: Text('Location*'),
+                    decoration: InputDecoration(focusColor: Colors.black)
+                  ),
+                    ),
+                    const Divider(
+                  color: Colors.white,
+                  thickness: .5,
+                    ),
+                    Padding(
+                  padding: const EdgeInsets.only(left: 4, right: 4),
+                  child: TextField(
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Bar*'),
+                    onChanged: (value) => {
+                      if (mounted)
+                        {
+                          setState(() => {bar = value})
+                        }
+                    },
+                  ),
+                    ),
+                    const Divider(
+                  color: Colors.white,
+                  thickness: 0.5,
+                    ),
+                    Padding(
+                  padding: const EdgeInsets.only(left: 4, right: 4),
+                  child: TextField(
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(), labelText: 'Neighborhood'),
+                    onChanged: (value) => {
+                      if (mounted)
+                        {
+                          setState(() => {neighborhood = value})
+                        }
+                    },
+                  ),
+                    ),
+                    const Divider(
+                  color: Colors.white,
+                  thickness: 0.5,
+                    ),
+                    Padding(
+                  padding: const EdgeInsets.only(left: 6, right: 6),
+                  child: DropdownButtonFormField(
+                    items: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+                        .map((String value) => DropdownMenuItem<String>(
+                              child: Text(value),
+                              value: value,
+                            ))
+                        .toList(),
+                    onChanged: (String? value) {
+                      if (mounted) {
+                        setState(() {
+                          rating = int.parse(value!);
+                        });
+                      }
+                    },
+                    hint: Text('Rating*'),
+                  ),
+                    ),
+                    const Divider(
+                  color: Colors.white,
+                  thickness: 0.75,
+                    ),
+                    Padding(
+                  padding: const EdgeInsets.only(left: 4, right: 4),
+                  child: TextField(
+                    maxLines: 4,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'What\'s good?*'),
+                    onChanged: (value) => {
+                      if (mounted)
+                        {
+                          setState(() => {content = value})
+                        }
+                    },
+                  ),
+                    ),
+                    Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: CheckboxListTile(
+                      value: anonymous,
+                      title: Text('Make post anonymous?', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                      onChanged: (bool? value) {
+                        if (mounted) {
+                          setState(() {
+                            anonymous = value!;
+                          });
+                        }
+                      },
+                      secondary: Icon(Icons.security, size: 30)
+                      ),
+                    ),
+                    Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: FloatingActionButton(
+                    onPressed: getImage,
+                    tooltip: 'Picture (Optional)',
+                    child: Icon(Icons.add_a_photo),
+                    backgroundColor: Colors.red,
+                  ),
+                    ),
+                    Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: const Divider(
+                    color: Colors.white,
+                    thickness: .5,
+                  ),
+                    )
+                  ],
                 ),
-              ],
+              )),
             ),
-          ))),
+          ),
         ],
       ),
       bottomNavigationBar: BottomNav(),
