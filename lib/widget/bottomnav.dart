@@ -37,11 +37,6 @@ class _BottomNavState extends State<BottomNav> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(canvasColor: Colors.red),
