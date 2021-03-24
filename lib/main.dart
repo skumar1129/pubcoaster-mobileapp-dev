@@ -16,6 +16,7 @@ import 'package:NewApp/pages/adduserinfo.dart';
 import 'package:NewApp/pages/userposts.dart';
 import 'package:NewApp/models/postargs.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:NewApp/pages/landpage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         future: _initialization,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            // TODO: make error page
+            return LandPage('error');
           }
 
           if (snapshot.connectionState == ConnectionState.done) {
@@ -92,8 +93,7 @@ class MyApp extends StatelessWidget {
               },
             );
           }
-          // TODO: return a loading widget
-          return Container();
+          return LandPage('loading');
         });
   }
 }
