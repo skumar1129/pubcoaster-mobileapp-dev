@@ -5,14 +5,15 @@ class LandPage extends StatelessWidget {
   LandPage(this.status);
 
   Widget loading() {
-    return Column(
+    return Stack(
       children: [
         Text(
           'Loading....',
           style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
-              fontFamily: 'Hindsiliguri-Bold'),
+              fontFamily: 'Hindsiliguri-Bold',
+              color: Colors.black),
         ),
         Container(
           decoration: BoxDecoration(
@@ -26,14 +27,15 @@ class LandPage extends StatelessWidget {
   }
 
   Widget error() {
-    return Column(
+    return Stack(
       children: [
         Text(
           'An error has occurred, try restarting the app',
           style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
-              fontFamily: 'Hindsiliguri-Bold'),
+              fontFamily: 'Hindsiliguri-Bold',
+              color: Colors.black),
         ),
         Container(
           decoration: BoxDecoration(
