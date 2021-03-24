@@ -40,7 +40,7 @@ class PostService {
       'rating': item['rating'],
       'neighborhood': item['nbhood'],
       'description': item['description'],
-      'picLink': ''
+      'picLink': item['picLink']
     };
 
     // TODO: add more to headers

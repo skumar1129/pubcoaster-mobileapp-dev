@@ -91,7 +91,7 @@ class FeedPostCard extends StatelessWidget {
   }
 
   Widget picture(picLink) {
-     if (picLink != '') {
+     if (picLink != '' && picLink!=null) {
       return Column(children: [
         Image(image: NetworkImage('$picLink'), height: 300, width: 600),
         const Divider(
