@@ -4,7 +4,7 @@ import 'package:NewApp/pages/splashscreen.dart';
 import 'package:NewApp/pages/createpost.dart';
 import 'package:NewApp/pages/myposts.dart';
 import 'package:NewApp/pages/signup.dart';
-import 'package:NewApp/pages/sigin.dart';
+import 'package:NewApp/pages/signin.dart';
 import 'package:NewApp/pages/forgotpassword.dart';
 import 'package:NewApp/pages/locationposts.dart';
 import 'package:NewApp/pages/locbarposts.dart';
