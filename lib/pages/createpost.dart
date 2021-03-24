@@ -1,3 +1,5 @@
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:flutter/material.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/navbarhome.dart';
@@ -5,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/pages/locationposts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
 
 class CreatePost extends StatefulWidget {
   @override
@@ -19,22 +22,124 @@ class _CreatePostState extends State<CreatePost> {
   String? content;
   bool anonymous = false;
   String? picLink;
+  File? _image;
+  bool filePicked = false;
   final postService = new PostService();
 
   // File _image = '' as File;
   final picker = ImagePicker();
 
-  Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
+  Future getImage(bool gallery) async {
+    final pickedFile;
+    // Let user select photo from gallery
+    if(gallery) {
+      pickedFile = await picker.getImage(
+          source: ImageSource.gallery,);
+    } 
+    // Otherwise open camera to get new photo
+    else{
+      pickedFile = await picker.getImage(
+          source: ImageSource.camera,);
+    }
 
-    setState(() {
-      if (pickedFile != null) {
-        print('nice!');
-        // _image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
-    });
+    if (mounted) {
+      setState(() {
+        if (pickedFile != null) {
+          _image = File(pickedFile.path);
+          filePicked = true;
+          Navigator.of(context, rootNavigator: true).pop('dialog');
+        } else {
+          print('No image selected.');
+        }
+      });
+    }
+  }
+
+
+  Widget alertText() {
+    if (!filePicked) {
+      return Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black));
+    } else {
+      return Text(_image.toString(), style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black, fontSize: 16));
+    }
+  }
+
+  Widget pictureButton() {
+    if (!filePicked) {
+      return FloatingActionButton(
+        onPressed: () => showDialog(context: context, builder: (BuildContext content) {
+          //getImage()
+          return AlertDialog(
+            title: Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+            backgroundColor: Colors.white,
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: FloatingActionButton(child: Icon(Icons.file_upload),
+                  onPressed: () => getImage(true),
+                  tooltip: 'Upload from storage',
+                  backgroundColor: Colors.red,
+                ),
+              ),
+              SizedBox(width: 150),
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: FloatingActionButton(
+                  child: Icon(Icons.camera),
+                  tooltip: 'Upload from camera',
+                  onPressed: () => getImage(false),
+                  backgroundColor: Colors.red,
+                ),
+              )
+            ],
+          );
+        }),
+        tooltip: 'Picture (Optional)',
+        child: Icon(Icons.add_a_photo),
+        backgroundColor: Colors.red,
+      );
+    } else {
+      return Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Text('File Successfully Picked!', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20)),
+          ),
+          FloatingActionButton(
+            onPressed: () => showDialog(context: context, builder: (BuildContext content) {
+              //getImage()
+              return AlertDialog(
+                title: Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                backgroundColor: Colors.white,
+                actions: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: FloatingActionButton(child: Icon(Icons.file_upload),
+                      onPressed: () => getImage(true),
+                      tooltip: 'Upload from storage',
+                      backgroundColor: Colors.red,
+                    ),
+                  ),
+                  SizedBox(width: 150),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: FloatingActionButton(
+                      child: Icon(Icons.camera),
+                      tooltip: 'Upload from camera',
+                      onPressed: () => getImage(false),
+                      backgroundColor: Colors.red,
+                    ),
+                  )
+                ],
+              );
+            }),
+            tooltip: 'Picture (Optional)',
+            child: Icon(Icons.add_a_photo),
+            backgroundColor: Colors.red,
+          )
+        ]
+      );
+    }
   }
 
   submitPost(String? loc, String? bar, String? nbhood, int? rating,
@@ -58,38 +163,97 @@ class _CreatePostState extends State<CreatePost> {
           backgroundColor: Colors.red);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
-      var reqBody = {
-        'username': user,
-        'anonymous': anon,
-        'bar': bar,
-        'description': descrip,
-        'rating': rating,
-        'location': loc,
-        'nbhood': nbhood
-      };
-      bool succeed = await postService.addPost(reqBody);
-      if (succeed) {
-        final snackBar = SnackBar(
-            content: Text('Successfully created post!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 20)),
-            backgroundColor: Colors.green);
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        Navigator.pushReplacementNamed(context, LocationPosts.route,
-            arguments: location);
-      } else {
-        final snackBar = SnackBar(
-            content: Text('Error: could not create post. Check connection',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 20)),
-            backgroundColor: Colors.red);
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      if (filePicked) {
+          try {
+            final firebase_storage.Reference storageRef = firebase_storage.FirebaseStorage.instance.ref().child('post_pics/${_image!.path.split("/").last}');
+            firebase_storage.UploadTask task = storageRef.putFile(_image!);
+            await task.whenComplete(() async {
+              storageRef.getDownloadURL().then((url) async {
+              var reqBody = {
+                'username': user,
+                'anonymous': anon,
+                'bar': bar,
+                'description': descrip,
+                'rating': rating,
+                'location': loc,
+                'nbhood': nbhood,
+                'picLink': url
+              };
+              bool succeed = await postService.addPost(reqBody);
+              if (succeed) {
+                  final snackBar = SnackBar(
+                      content: Text('Successfully created post!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              fontSize: 20)),
+                      backgroundColor: Colors.green);
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  Navigator.pushReplacementNamed(context, LocationPosts.route,
+                      arguments: location);
+                } else {
+                  final snackBar = SnackBar(
+                      content: Text('Error: could not create post. Check connection',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              fontSize: 20)),
+                      backgroundColor: Colors.red);
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+              });
+            });
+          } on firebase_core.FirebaseException catch (e) {
+            print(e);
+            final snackBar = SnackBar(
+              content: Text(
+                  'Unable to upload file. Please check your network connection.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 20)),
+              backgroundColor: Colors.red);
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+      }
+      else {
+        var reqBody = {
+          'username': user,
+          'anonymous': anon,
+          'bar': bar,
+          'description': descrip,
+          'rating': rating,
+          'location': loc,
+          'nbhood': nbhood,
+          'picLink': ''
+        };
+        bool succeed = await postService.addPost(reqBody);
+        if (succeed) {
+          final snackBar = SnackBar(
+              content: Text('Successfully created post!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 20)),
+              backgroundColor: Colors.green);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          Navigator.pushReplacementNamed(context, LocationPosts.route,
+              arguments: location);
+        } else {
+          final snackBar = SnackBar(
+              content: Text('Error: could not create post. Check connection',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 20)),
+              backgroundColor: Colors.red);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
       }
     }
   }
@@ -291,13 +455,8 @@ class _CreatePostState extends State<CreatePost> {
                       ),
                     ),
                     Padding(
-                  padding: const EdgeInsets.only(top: 6),
-                  child: FloatingActionButton(
-                    onPressed: getImage,
-                    tooltip: 'Picture (Optional)',
-                    child: Icon(Icons.add_a_photo),
-                    backgroundColor: Colors.red,
-                  ),
+                      padding: const EdgeInsets.only(top: 6),
+                      child: pictureButton()
                     ),
                     Padding(
                   padding: const EdgeInsets.only(top: 6),
