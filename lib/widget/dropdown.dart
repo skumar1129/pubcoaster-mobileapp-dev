@@ -108,8 +108,8 @@ class _DropDownState extends State<DropDown> {
                 ))
             .toList(),
         isDense: true,
-        onChanged: (String value) {
-          clickLocationTab(value);
+        onChanged: (String? value) {
+          clickLocationTab(value!);
         },
         icon: Icon(Icons.location_city),
         iconEnabledColor: Colors.white,

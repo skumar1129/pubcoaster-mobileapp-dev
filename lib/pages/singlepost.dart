@@ -5,8 +5,9 @@ import 'package:NewApp/widget/singlepostcard.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 
 class SinglePost extends StatefulWidget {
-  SinglePost(this.uuid);
   final String uuid;
+  final String currentUser;
+  SinglePost(this.uuid, this.currentUser);
   static const route = '/singlepost';
 
   @override
@@ -14,14 +15,24 @@ class SinglePost extends StatefulWidget {
 }
 
 class _SinglePostState extends State<SinglePost> {
-  Future<dynamic> post;
+  Future<dynamic>? post;
   final postService = new PostService();
+
   getSinglePost(String uuid) async {
     var response;
     try {
       response = await postService.getPost(uuid);
     } catch (e) {
       print(e);
+      final snackBar = SnackBar(
+          content: Text('Error: could retrieve post. Check network connection.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
     return response;
   }
@@ -42,7 +53,7 @@ class _SinglePostState extends State<SinglePost> {
               future: post,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var item = snapshot.data;
+                  var item = snapshot.data as dynamic;
                   return SinglePostCard(
                       item.bar,
                       item.location,
@@ -56,7 +67,8 @@ class _SinglePostState extends State<SinglePost> {
                       item.description,
                       item.anonymous,
                       item.comments,
-                      item.likes);
+                      item.likes,
+                      widget.currentUser);
                 } else if (snapshot.hasError) {
                   return Expanded(
                       child: Text(

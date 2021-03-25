@@ -11,9 +11,9 @@ class FilterDrawer extends StatefulWidget {
 }
 
 class _FilterDrawerState extends State<FilterDrawer> {
-  String bar;
-  String nbhood;
-  String user;
+  String bar = '';
+  String nbhood = '';
+  String user = '';
 
   goToLocBarPage(String input) {
     Navigator.pushReplacementNamed(context, LocBarPosts.route,
@@ -53,7 +53,10 @@ class _FilterDrawerState extends State<FilterDrawer> {
                   },
                 )),
             onChanged: (value) => {
-              setState(() => {bar = value})
+              if (mounted)
+                {
+                  setState(() => {bar = value})
+                }
             },
           ),
           TextField(
@@ -67,7 +70,10 @@ class _FilterDrawerState extends State<FilterDrawer> {
                   },
                 )),
             onChanged: (value) => {
-              setState(() => {nbhood = value})
+              if (mounted)
+                {
+                  setState(() => {nbhood = value})
+                }
             },
           ),
           TextField(
@@ -81,7 +87,10 @@ class _FilterDrawerState extends State<FilterDrawer> {
                   },
                 )),
             onChanged: (value) => {
-              setState(() => {user = value})
+              if (mounted)
+                {
+                  setState(() => {user = value})
+                }
             },
           ),
         ],

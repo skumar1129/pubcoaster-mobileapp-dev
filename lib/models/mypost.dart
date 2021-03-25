@@ -1,4 +1,4 @@
-class FeedPost {
+class MyPost {
   final String uuid;
   final String? picLink;
   final String bar;
@@ -10,10 +10,10 @@ class FeedPost {
   final int numComments;
   final int numLikes;
   final String? neighborhood;
-  final bool anonymous;
+  final bool? anonymous;
   final String? createdBy;
 
-  FeedPost(
+  MyPost(
       {required this.uuid,
       this.picLink,
       required this.bar,
@@ -25,12 +25,12 @@ class FeedPost {
       this.neighborhood,
       required this.numComments,
       required this.numLikes,
-      required this.anonymous,
+      this.anonymous,
       this.createdBy});
 
-  factory FeedPost.fromJson(Map<String, dynamic> json) {
-    if (json['anonymous'] == false && json['neighborhood'] != null) {
-      return FeedPost(
+  factory MyPost.fromJson(Map<String, dynamic> json) {
+    if (json['neighborhood'] != null) {
+      return MyPost(
           uuid: json['uuid'],
           picLink: json['picLink'],
           bar: json['bar'],
@@ -44,8 +44,8 @@ class FeedPost {
           createdAt: json['createdAt'],
           neighborhood: json['neighborhood'],
           createdBy: json['createdBy']);
-    } else if (json['anonymous'] == false && json['neighborhood'] == null) {
-      return FeedPost(
+    } else {
+      return MyPost(
           uuid: json['uuid'],
           picLink: json['picLink'],
           bar: json['bar'],
@@ -58,33 +58,6 @@ class FeedPost {
           numLikes: json['numLikes'],
           createdAt: json['createdAt'],
           createdBy: json['createdBy']);
-    } else if (json['anonymous'] == true && json['neighborhood'] != null) {
-      return FeedPost(
-          uuid: json['uuid'],
-          picLink: json['picLink'],
-          bar: json['bar'],
-          description: json['description'],
-          location: json['location'],
-          editedAt: json['editedAt'],
-          anonymous: json['anonymous'],
-          rating: json['rating'],
-          numComments: json['numComments'],
-          numLikes: json['numLikes'],
-          createdAt: json['createdAt'],
-          neighborhood: json['neighborhood']);
-    } else {
-      return FeedPost(
-          uuid: json['uuid'],
-          picLink: json['picLink'],
-          bar: json['bar'],
-          description: json['description'],
-          location: json['location'],
-          editedAt: json['editedAt'],
-          anonymous: json['anonymous'],
-          rating: json['rating'],
-          numComments: json['numComments'],
-          numLikes: json['numLikes'],
-          createdAt: json['createdAt']);
     }
   }
 }

@@ -4,7 +4,6 @@ import 'package:NewApp/widget/navbarlocation.dart';
 import 'package:NewApp/widget/filterDrawer.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/widget/feedpostcard.dart';
-import 'package:strings/strings.dart';
 
 class LocUserPosts extends StatefulWidget {
   LocUserPosts(this.locuser);
@@ -16,24 +15,44 @@ class LocUserPosts extends StatefulWidget {
 }
 
 class _LocUserPostsState extends State<LocUserPosts> {
-  String location;
-  String user;
-  Future<dynamic> posts;
+  String location = '';
+  String user = '';
+  Future<dynamic>? posts;
   final postService = new PostService();
 
-  getLocUserPosts(String loc, String user, [int offset]) async {
+  getLocUserPosts(String loc, String user, [int? offset]) async {
     var response;
     if (offset != null) {
       try {
         response = await postService.getLocUserPosts(location, user, offset);
       } catch (e) {
         print(e);
+        final snackBar = SnackBar(
+            content: Text(
+                'Error: could retrieve posts. Check network connection.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } else {
       try {
         response = await postService.getLocUserPosts(location, user);
       } catch (e) {
         print(e);
+        final snackBar = SnackBar(
+            content: Text(
+                'Error: could retrieve posts. Check network connection.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }
     return response;
@@ -48,7 +67,6 @@ class _LocUserPostsState extends State<LocUserPosts> {
   }
 
   int offset = 1;
-  int itemsLength = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +79,7 @@ class _LocUserPostsState extends State<LocUserPosts> {
               future: posts,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var items = snapshot.data;
+                  var items = snapshot.data as List<dynamic>;
                   if (items.length == 0) {
                     return Expanded(
                         child: Text('No posts for $user in $location yet'));
@@ -85,13 +103,8 @@ class _LocUserPostsState extends State<LocUserPosts> {
                                 shrinkWrap: true,
                                 itemCount: items.length + 1,
                                 itemBuilder: (context, index) {
-                                  if (index == items.length &&
-                                      items.length < itemsLength) {
-                                    return Container();
-                                  } else if (index == items.length &&
-                                      items.length >= itemsLength) {
+                                  if (index == items.length) {
                                     offset++;
-                                    itemsLength += 3;
                                     var newPosts =
                                         getLocUserPosts(location, user, offset);
                                     newPosts.then((posts) {

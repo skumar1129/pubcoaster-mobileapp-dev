@@ -16,12 +16,12 @@ class LocNbhoodPosts extends StatefulWidget {
 }
 
 class _LocNbhoodPostsState extends State<LocNbhoodPosts> {
-  String location;
-  String nbhood;
-  Future<dynamic> posts;
+  String location = '';
+  String nbhood = '';
+  Future<dynamic>? posts;
   final postService = new PostService();
 
-  getLocNbhoodPosts(String loc, String nbhood, [int offset]) async {
+  getLocNbhoodPosts(String loc, String nbhood, [int? offset]) async {
     var response;
     if (offset != null) {
       try {
@@ -29,12 +29,32 @@ class _LocNbhoodPostsState extends State<LocNbhoodPosts> {
             await postService.getLocNbhoodPosts(location, nbhood, offset);
       } catch (e) {
         print(e);
+        final snackBar = SnackBar(
+            content: Text(
+                'Error: could retrieve posts. Check network connection.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } else {
       try {
         response = await postService.getLocNbhoodPosts(location, nbhood);
       } catch (e) {
         print(e);
+        final snackBar = SnackBar(
+            content: Text(
+                'Error: could retrieve posts. Check network connection.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }
     return response;
@@ -61,7 +81,7 @@ class _LocNbhoodPostsState extends State<LocNbhoodPosts> {
               future: posts,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var items = snapshot.data;
+                  var items = snapshot.data as List<dynamic>;
                   if (items.length == 0) {
                     return Expanded(
                         child: Text(

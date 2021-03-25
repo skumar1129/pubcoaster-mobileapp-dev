@@ -16,24 +16,44 @@ class LocBarPosts extends StatefulWidget {
 }
 
 class _LocBarPostsState extends State<LocBarPosts> {
-  String location;
-  String bar;
-  Future<dynamic> posts;
+  String location = '';
+  String bar = '';
+  Future<dynamic>? posts;
   final postService = new PostService();
 
-  getLocBarPosts(String loc, String bar, [int offset]) async {
+  getLocBarPosts(String loc, String bar, [int? offset]) async {
     var response;
     if (offset != null) {
       try {
         response = await postService.getLocBarPosts(location, bar, offset);
       } catch (e) {
         print(e);
+        final snackBar = SnackBar(
+            content: Text(
+                'Error: could retrieve posts. Check network connection.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } else {
       try {
         response = await postService.getLocBarPosts(location, bar);
       } catch (e) {
         print(e);
+        final snackBar = SnackBar(
+            content: Text(
+                'Error: could retrieve posts. Check network connection.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }
     return response;
@@ -60,7 +80,7 @@ class _LocBarPostsState extends State<LocBarPosts> {
               future: posts,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var items = snapshot.data;
+                  var items = snapshot.data as List<dynamic>;
                   if (items.length == 0) {
                     return Expanded(
                         child: Text(

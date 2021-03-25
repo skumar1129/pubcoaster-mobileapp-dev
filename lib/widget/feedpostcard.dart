@@ -4,20 +4,22 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:strings/strings.dart';
 import 'dart:convert';
 import 'package:NewApp/pages/singlepost.dart';
+import 'package:NewApp/models/postargs.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FeedPostCard extends StatelessWidget {
   final String bar;
   final String location;
-  final String username;
+  final String? username;
   final String content;
   final int rating;
   final String timestamp;
-  final String neighborhood;
+  final String? neighborhood;
   final int numComments;
   final int numLikes;
-  final bool anonymous;
-  final String editedAt;
-  final String picLink;
+  final bool? anonymous;
+  final String? editedAt;
+  final String? picLink;
   final String uuid;
 
   FeedPostCard(
@@ -34,6 +36,124 @@ class FeedPostCard extends StatelessWidget {
       this.editedAt,
       this.picLink,
       this.uuid);
+
+  goToSinglePost(context) async {
+    String user = FirebaseAuth.instance.currentUser!.displayName!;
+    Navigator.pushReplacementNamed(
+      context,
+      SinglePost.route,
+      arguments: PostArgs(uuid: uuid, currentUser: user),
+    );
+  }
+
+  Widget user(username) {
+     if (username != null) {
+      String goodUsername = utf8.decode(username!.codeUnits);
+      return Flexible(
+        child: Text(
+          '$goodUsername',
+          style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Merriweather-Regular'),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget likes(numLikes) {
+    if (numLikes == 0) {
+      return Flexible(
+          child: Text(
+        'No Likes Yet',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    } else if (numLikes == 1) {
+      return Flexible(
+          child: Text(
+        '$numLikes like',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    } else {
+      return Flexible(
+          child: Text(
+        '$numLikes likes',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    }
+  }
+
+  Widget picture(picLink) {
+     if (picLink != '' && picLink!=null) {
+      return Column(children: [
+        Image(image: NetworkImage('$picLink'), height: 300, width: 600),
+        const Divider(
+          color: Colors.white,
+        )
+      ]);
+    } else {
+      return Container();
+    }
+  }
+
+  Widget nbhood(neighborhood, goodLocation) {
+    if (neighborhood != null) {
+      String goodNbhood = utf8.decode(neighborhood!.codeUnits);
+      return Flexible(
+          child: Text(
+        '${capitalize(goodNbhood)}, $goodLocation',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+        softWrap: true,
+      ));
+    } else {
+      return Flexible(
+          child: Text(
+        '$goodLocation',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+        softWrap: true,
+      ));
+    }
+  }
+
+  Widget comments(numComments) {
+    if (numComments == 0) {
+      return Flexible(
+          child: Text(
+        'No comments yet',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    } else if (numComments == 1) {
+      return Flexible(
+          child: Text(
+        '$numComments comment',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    } else {
+      return Flexible(
+          child: Text(
+        '$numComments comments',
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular'),
+      ));
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,18 +191,7 @@ class FeedPostCard extends StatelessWidget {
             const Divider(
               color: Colors.white,
             ),
-            (() {
-              if (picLink != '') {
-                return Column(children: [
-                  Image(image: NetworkImage('$picLink')),
-                  const Divider(
-                    color: Colors.white,
-                  )
-                ]);
-              } else {
-                return Container();
-              }
-            }()),
+            picture(picLink),
             Text(
               goodContent,
               style: TextStyle(
@@ -93,48 +202,8 @@ class FeedPostCard extends StatelessWidget {
             ),
             Row(
               children: [
-                (() {
-                  if (username != null) {
-                    String goodUsername = utf8.decode(username.codeUnits);
-                    return Flexible(
-                      child: Text(
-                        '$goodUsername',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Merriweather-Regular'),
-                      ),
-                    );
-                  } else {
-                    return Container();
-                  }
-                }()),
-                (() {
-                  if (numLikes == 0) {
-                    return Flexible(
-                        child: Text(
-                      'No Likes Yet',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  } else if (numLikes == 1) {
-                    return Flexible(
-                        child: Text(
-                      '$numLikes like',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  } else {
-                    return Flexible(
-                        child: Text(
-                      '$numLikes likes',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  }
-                }())
+                user(username),
+                likes(numLikes)
               ],
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
@@ -152,28 +221,7 @@ class FeedPostCard extends StatelessWidget {
                     softWrap: true,
                   ),
                 ),
-                (() {
-                  if (neighborhood != null) {
-                    String goodNbhood = utf8.decode(neighborhood.codeUnits);
-                    return Flexible(
-                        child: Text(
-                      '${capitalize(goodNbhood)}, $goodLocation',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                      softWrap: true,
-                    ));
-                  } else {
-                    return Flexible(
-                        child: Text(
-                      '$goodLocation',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                      softWrap: true,
-                    ));
-                  }
-                }())
+                nbhood(neighborhood, goodLocation)
               ],
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
@@ -182,33 +230,7 @@ class FeedPostCard extends StatelessWidget {
             ),
             Row(
               children: [
-                (() {
-                  if (numComments == 0) {
-                    return Flexible(
-                        child: Text(
-                      'No comments yet',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  } else if (numComments == 1) {
-                    return Flexible(
-                        child: Text(
-                      '$numComments comment',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  } else {
-                    return Flexible(
-                        child: Text(
-                      '$numComments comments',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular'),
-                    ));
-                  }
-                }())
+                comments(numComments)
               ],
             ),
             const Divider(
@@ -219,8 +241,7 @@ class FeedPostCard extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.pushReplacementNamed(context, SinglePost.route,
-            arguments: uuid);
+        goToSinglePost(context);
       },
     );
   }

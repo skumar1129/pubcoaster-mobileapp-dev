@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -7,6 +8,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
   @override
   void initState() {
     super.initState();
@@ -14,13 +16,21 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   showScreen() {
-    Timer(Duration(milliseconds: 750), () {
-      navigateUser();
-    });
+    navigateUser();
   }
 
   navigateUser() async {
-    Navigator.pushReplacementNamed(context, '/home');
+    auth.authStateChanges().listen((User? user) {
+      if (user == null) {
+        Navigator.pushReplacementNamed(context, '/signin');
+      } else if (user.emailVerified == false) {
+        Navigator.pushReplacementNamed(context, '/verifyemail');
+      } else if (user.displayName == null) {
+        Navigator.pushReplacementNamed(context, '/adduserinfo');
+      } else {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    });
   }
 
   @override
