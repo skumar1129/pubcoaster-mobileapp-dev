@@ -1,48 +1,41 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:NewApp/pages/signin.dart';
+import 'package:NewApp/pages/verifyemail.dart';
+import 'package:NewApp/pages/adduserinfo.dart';
+import 'package:NewApp/pages/home.dart';
 
-class SplashScreen extends StatefulWidget {
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  @override
-  void initState() {
-    super.initState();
-    showScreen();
-  }
-
-  showScreen() {
-    navigateUser();
-  }
-
-  navigateUser() async {
-    auth.authStateChanges().listen((User? user) {
-      if (user == null) {
-        Navigator.pushReplacementNamed(context, '/signin');
-      } else if (user.emailVerified == false) {
-        Navigator.pushReplacementNamed(context, '/verifyemail');
-      } else if (user.displayName == null) {
-        Navigator.pushReplacementNamed(context, '/adduserinfo');
-      } else {
-        Navigator.pushReplacementNamed(context, '/home');
-      }
-    });
-  }
-
+class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/img/splash_screen.jpg"),
-              fit: BoxFit.cover),
-        ),
-      ),
-    );
+    return StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            User? user;
+            if (snapshot.hasData) {
+              user = snapshot.data as User;
+            }
+            if (user == null) {
+              return SignIn();
+            } else if (user.emailVerified == false) {
+              return VerifyEmail();
+            } else if (user.displayName == null) {
+              return AddUserInfo();
+            } else {
+              return Home();
+            }
+          } else {
+            return Scaffold(
+              body: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/img/splash_screen.jpg"),
+                      fit: BoxFit.cover),
+                ),
+              ),
+            );
+          }
+        });
   }
 }
