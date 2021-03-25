@@ -100,89 +100,115 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             const SizedBox(
-              height: 30,
+              height: 70,
             ),
-            Text(
-              'Sign Up',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: Text(
+                  'Sign Up',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, decoration: TextDecoration.underline),
+              ),
             ),
+            const Divider(thickness: .003, color: Colors.white),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushReplacementNamed(context, '/signin');
+                  Navigator.pushReplacementNamed(context, '/signin');
               },
-              child: Text(
-                'Back to Sign In Page',
-                style: TextStyle(color: Colors.white),
+              child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Back to Sign In Page',
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
               ),
               style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                  shape: MaterialStateProperty.all<OutlinedBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.red)))),
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.red)))),
+            ),
+            const Divider(thickness: 1.8, color: Colors.white),
+            Padding(
+              padding: const EdgeInsets.only(left: 6, right: 6, top: 6),
+              child: TextField(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(), labelText: 'Email'),
+                  onChanged: (value) => {
+                    if (mounted)
+                      {
+                        setState(() => {email = value})
+                      }
+                  },
+              ),
             ),
             const Divider(thickness: 0.05, color: Colors.white),
-            TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Email'),
-              onChanged: (value) => {
-                if (mounted)
-                  {
-                    setState(() => {email = value})
-                  }
-              },
+            Padding(
+              padding: const EdgeInsets.only(left: 6, right: 6),
+              child: TextField(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(), labelText: 'Password'),
+                  onChanged: (value) => {
+                    if (mounted)
+                      {
+                        setState(() => {password = value})
+                      }
+                  },
+                  obscureText: true,
+              ),
             ),
             const Divider(thickness: 0.05, color: Colors.white),
-            TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Password'),
-              onChanged: (value) => {
-                if (mounted)
-                  {
-                    setState(() => {password = value})
-                  }
-              },
-              obscureText: true,
+            Padding(
+              padding: const EdgeInsets.only(left: 6, right: 6, bottom: 2),
+              child: TextField(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(), labelText: 'Confirm Password'),
+                  obscureText: true,
+                  onChanged: (value) => {
+                    if (mounted)
+                      {
+                        setState(() => {confirm = value})
+                      }
+                  },
+              ),
             ),
             const Divider(thickness: 0.05, color: Colors.white),
-            TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Confirm Password'),
-              obscureText: true,
-              onChanged: (value) => {
-                if (mounted)
-                  {
-                    setState(() => {confirm = value})
-                  }
-              },
-            ),
             ElevatedButton(
               onPressed: () {
-                signUp();
+                  signUp();
               },
-              child: Text(
-                'Sign Up',
-                style: TextStyle(color: Colors.white),
+              child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Sign Up',
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
               ),
               style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                  shape: MaterialStateProperty.all<OutlinedBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.red)))),
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.red)))),
             ),
-            Expanded(
+            const Divider(color: Colors.white, thickness: 10),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
               child: Image(
                 image: AssetImage('assets/img/sign_up.jpg'),
               ),
-              flex: 2,
-            )
+            ),
+            const SizedBox(
+              height: 110,
+            ),
           ],
+        ),
         ),
       ),
     );

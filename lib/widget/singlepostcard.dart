@@ -284,7 +284,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
       return Row(
         children: [
           Padding(
-              padding: EdgeInsets.only(right: 4),
+              padding: EdgeInsets.only(right: 2),
               child: Text(
                 'No Likes Yet',
                 style: TextStyle(
@@ -292,14 +292,17 @@ class _SinglePostCardState extends State<SinglePostCard> {
                     color: Colors.white,
                     fontFamily: 'Merriweather-Regular'),
               )),
-          heartIcon()
+          Padding(
+            padding: const EdgeInsets.only(right: 6),
+            child: heartIcon(),
+          )
         ],
       );
     } else if (widget.likes.length == 1) {
       return Row(
         children: [
           Padding(
-              padding: EdgeInsets.only(right: 4),
+              padding: EdgeInsets.only(right: 2),
               child: Text(
                 '${widget.likes.length} like',
                 style: TextStyle(
@@ -307,7 +310,10 @@ class _SinglePostCardState extends State<SinglePostCard> {
                     color: Colors.white,
                     fontFamily: 'Merriweather-Regular'),
               )),
-          heartIcon()
+          Padding(
+            padding: const EdgeInsets.only(right: 6),
+            child: heartIcon(),
+          )
         ],
       );
     } else {
@@ -332,7 +338,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
     if (widget.neighborhood != null) {
       String goodNbhood = utf8.decode(widget.neighborhood!.codeUnits);
       return Padding(
-          padding: EdgeInsets.only(right: 4),
+          padding: EdgeInsets.only(right: 6),
           child: Text(
             '${capitalize(goodNbhood)}, $goodLocation',
             style: TextStyle(
@@ -343,7 +349,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
           ));
     } else {
       return Padding(
-          padding: EdgeInsets.only(right: 4),
+          padding: EdgeInsets.only(right: 6),
           child: Text(
             '$goodLocation',
             style: TextStyle(
@@ -357,14 +363,20 @@ class _SinglePostCardState extends State<SinglePostCard> {
 
   Widget comments() {
     if (widget.comments.length == 0) {
-      return new Row(children: [
-        Center(
-            child: Text(
-          'No comments yet',
-          style: TextStyle(
-              color: Colors.white, fontFamily: 'Merriweather-Regular'),
-        ))
-      ]);
+      return Padding(
+        padding: const EdgeInsets.only(top: 6, bottom: 6),
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'No comments yet',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+              color: Colors.white, fontFamily: 'Merriweather-Regular', fontSize: 18),
+            )
+        ]),
+      );
     } else {
       return Expanded(
           child: ListView.separated(
@@ -500,8 +512,8 @@ class _SinglePostCardState extends State<SinglePostCard> {
     var newDate = HttpDate.parse(widget.timestamp);
     // TODO: Look into better way to get real time
     var date = newDate.add(Duration(hours: 5));
-    return Container(
-        height: MediaQuery.of(context).size.height * .6,
+    return SingleChildScrollView(
+        //height: MediaQuery.of(context).size.height * .6,
         child: Card(
           color: Colors.black,
           child: Column(
@@ -542,12 +554,15 @@ class _SinglePostCardState extends State<SinglePostCard> {
                 color: Colors.white,
               ),
               picture(),
-              Text(
-                goodContent,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'Merriweather-Regular',
-                    fontSize: 25),
+              Padding(
+                padding: const EdgeInsets.only(top: 12, bottom: 12),
+                child: Text(
+                  goodContent,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Merriweather-Regular',
+                      fontSize: 25),
+                ),
               ),
               const Divider(
                 color: Colors.white,
@@ -559,24 +574,27 @@ class _SinglePostCardState extends State<SinglePostCard> {
               ),
               const Divider(
                 color: Colors.black,
-                thickness: 1,
+                thickness: .5,
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 4),
-                    child: Text(
-                      timeago.format(date.toLocal()),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Italic',
-                          fontSize: 18),
-                      softWrap: true,
+              Padding(
+                padding: const EdgeInsets.only(bottom: 6),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 6),
+                      child: Text(
+                        timeago.format(date.toLocal()),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Merriweather-Italic',
+                            fontSize: 18),
+                        softWrap: true,
+                      ),
                     ),
-                  ),
-                  neighborhood(goodLocation)
-                ],
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    neighborhood(goodLocation)
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                ),
               ),
               const Divider(
                 color: Colors.white,
@@ -596,7 +614,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           labelText: 'Create Comment',
-                          labelStyle: TextStyle(color: Colors.white),
+                          labelStyle: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
                           border: OutlineInputBorder(),
                           isDense: true,
                           contentPadding: EdgeInsets.all(8),
