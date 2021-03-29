@@ -6,10 +6,12 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(children: <Widget>[
+      body: ListView(children: <Widget>[
         NavBar(),
-        Expanded(
+        SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Divider(thickness: 0.5, color: Colors.white),
               SizedBox(height: MediaQuery.of(context).size.height * .03),
@@ -17,6 +19,7 @@ class Home extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 3, left: 3),
                 child: Text(
                   'Welcome to Knew Barz!',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 35,
                     fontWeight: FontWeight.bold,
@@ -25,7 +28,7 @@ class Home extends StatelessWidget {
                   ),
                 ),
               ),
-              const Divider(thickness: 0.5, color: Colors.white),
+              const Divider(thickness: .5, color: Colors.white),
               Padding(
                 padding: const EdgeInsets.only(right: 3, left: 3),
                 child: Text(
@@ -49,17 +52,16 @@ class Home extends StatelessWidget {
                       fontFamily: 'Hindsiliguri-Regular'),
                 ),
               ),
+              const Divider(thickness: 6, color: Colors.white),
+              Image(
+                image: AssetImage('assets/img/home_page.jpg'),
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * .3
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * .1)
             ],
           ),
         ),
-        Expanded(
-          child: Image(
-            image: AssetImage('assets/img/home_page.jpg'),
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * .1
-          ),
-        ),
-        SizedBox(height: MediaQuery.of(context).size.height * .1)
       ]),
       bottomNavigationBar: BottomNav(),
     );
