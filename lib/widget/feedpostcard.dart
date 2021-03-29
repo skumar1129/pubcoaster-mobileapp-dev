@@ -98,10 +98,10 @@ class FeedPostCard extends StatelessWidget {
     }
   }
 
-  Widget picture(picLink) {
+  Widget picture(picLink, context) {
      if (picLink != '' && picLink!=null) {
       return Column(children: [
-        Image(image: NetworkImage('$picLink'), height: 300, width: 600),
+        Image(image: NetworkImage('$picLink'), height: MediaQuery.of(context).size.height * .4, width: MediaQuery.of(context).size.width * .92),
         const Divider(
           color: Colors.white,
           thickness: 1.0
@@ -207,7 +207,7 @@ class FeedPostCard extends StatelessWidget {
               color: Colors.white,
               thickness: 1.0
             ),
-            picture(picLink),
+            picture(picLink, context),
             Padding(
               padding: const EdgeInsets.only(top: 4, bottom: 4),
               child: Text(
