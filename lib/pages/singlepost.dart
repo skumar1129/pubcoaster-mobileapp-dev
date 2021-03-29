@@ -73,6 +73,7 @@ class _SinglePostState extends State<SinglePost> {
                   return Expanded(
                       child: Text(
                     'There was an error getting the post',
+                    textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ));
                 }
