@@ -83,19 +83,26 @@ class _LocNbhoodPostsState extends State<LocNbhoodPosts> {
                 if (snapshot.hasData) {
                   var items = snapshot.data as List<dynamic>;
                   if (items.length == 0) {
-                    return Expanded(
-                        child: Text(
-                            'No posts for ${capitalize(nbhood)} in $location yet'));
+                    return Container(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: Text(
+                              'No posts for ${capitalize(nbhood)} in $location yet', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+                        ));
                   } else {
                     return Expanded(
                         child: Column(
                       children: [
-                        Text(
-                          '${capitalize(nbhood)} in $location',
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Oxygen-Bold'),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Text(
+                            '${capitalize(nbhood)} in $location',
+                            style: TextStyle(
+                                  fontSize: 35,
+                                  fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.underline,
+                                  fontFamily: 'Oxygen-Bold'),
+                          ),
                         ),
                         Expanded(
                           child: Scrollbar(
