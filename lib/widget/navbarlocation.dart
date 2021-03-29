@@ -6,7 +6,7 @@ class NavBarLoc extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: const Text(
-        'NEW APP',
+        'Knew Barz',
         style: TextStyle(fontFamily: 'Oxygen-Regular'),
       ),
       leading: IconButton(

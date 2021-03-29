@@ -36,62 +36,87 @@ class _FilterDrawerState extends State<FilterDrawer> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          DrawerHeader(
-              decoration: BoxDecoration(color: Colors.red),
-              child: Text(
-                'Search ${widget.location} by',
-                style: TextStyle(color: Colors.white),
-              )),
-          TextField(
-            decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Bar',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    goToLocBarPage(bar);
-                  },
-                )),
-            onChanged: (value) => {
-              if (mounted)
-                {
-                  setState(() => {bar = value})
-                }
-            },
+          Container(
+            height: 120,
+            child: DrawerHeader(
+                decoration: BoxDecoration(color: Colors.red),
+                child: Text(
+                  'Search ${widget.location} by...',
+                  style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+            ),
           ),
-          TextField(
-            decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Neighborhood',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    goToLocNbhoodPage(nbhood);
-                  },
-                )),
-            onChanged: (value) => {
-              if (mounted)
-                {
-                  setState(() => {nbhood = value})
-                }
-            },
+          Padding(
+            padding: const EdgeInsets.only(left: 2, bottom: 12, right: 2),
+            child: TextField(
+              textAlign: TextAlign.left,
+              decoration: InputDecoration(
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                  ),
+                  hintText: 'Bar',
+                  hintStyle: TextStyle(color: Colors.black, fontSize: 17),
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      goToLocBarPage(bar);
+                    },
+                  )),
+              onChanged: (value) => {
+                if (mounted)
+                  {
+                    setState(() => {bar = value})
+                  }
+              },
+            ),
           ),
-          TextField(
-            decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'User',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    goToLocUserPage(user);
-                  },
-                )),
-            onChanged: (value) => {
-              if (mounted)
-                {
-                  setState(() => {user = value})
-                }
-            },
+          Padding(
+            padding: const EdgeInsets.only(left: 2, bottom: 12, right: 2),
+            child: TextField(
+              textAlign: TextAlign.left,
+              decoration: InputDecoration(
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                  ),
+                  hintText: 'Neighborhood',
+                  hintStyle: TextStyle(color: Colors.black, fontSize: 17),
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      goToLocNbhoodPage(nbhood);
+                    },
+                  )),
+              onChanged: (value) => {
+                if (mounted)
+                  {
+                    setState(() => {nbhood = value})
+                  }
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 2, bottom: 12, right: 2),
+            child: TextField(
+              textAlign: TextAlign.left,
+              decoration: InputDecoration(
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                  ),
+                  hintText: 'User',
+                  hintStyle: TextStyle(color: Colors.black, fontSize: 17),
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      goToLocUserPage(user);
+                    },
+                  )),
+              onChanged: (value) => {
+                if (mounted)
+                  {
+                    setState(() => {user = value})
+                  }
+              },
+            ),
           ),
         ],
       ),

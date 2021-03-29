@@ -18,11 +18,11 @@ class _NavBarState extends State<NavBar> {
       title: typing
           ? TextBox()
           : const Text(
-              'NEW APP',
+              'Knew Barz',
               style: TextStyle(fontFamily: 'Oxygen-Regular'),
             ),
       leading: IconButton(
-        icon: Icon(typing ? Icons.chevron_left : Icons.search),
+        icon: Icon(typing ? Icons.chevron_left : Icons.search, size: 30),
         onPressed: () {
           if (mounted) {
             setState(() {
