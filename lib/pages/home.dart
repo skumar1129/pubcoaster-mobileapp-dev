@@ -12,28 +12,42 @@ class Home extends StatelessWidget {
           child: Column(
             children: [
               const Divider(thickness: 0.5, color: Colors.white),
-              Text(
-                'Welcome to Knew Barz!',
-                style: TextStyle(
-                    fontSize: 32,
+              SizedBox(height: MediaQuery.of(context).size.height * .03),
+              Padding(
+                padding: const EdgeInsets.only(right: 3, left: 3),
+                child: Text(
+                  'Welcome to Knew Barz!',
+                  style: TextStyle(
+                    fontSize: 35,
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'Hindsiliguri-Bold'),
+                    fontFamily: 'Hindsiliguri-Bold',
+                    decoration: TextDecoration.underline
+                  ),
+                ),
               ),
               const Divider(thickness: 0.5, color: Colors.white),
-              Text(
-                'Check out the vibes of the bars tonight or check out top bars in your area!',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Hindsiliguri-Regular'),
+              Padding(
+                padding: const EdgeInsets.only(right: 3, left: 3),
+                child: Text(
+                  'Check out the vibes of the bars tonight or check out top bars in your area!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Hindsiliguri-Regular'),
+                ),
               ),
               const Divider(thickness: 0.5, color: Colors.white),
-              Text(
-                'All rated by fellow bros! Pick a city or search for a specific user to get started!',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Hindsiliguri-Regular'),
+              Padding(
+                padding: const EdgeInsets.only(right: 3, left: 3),
+                child: Text(
+                  'All rated by fellow bros! Pick a city or search for a specific user to get started!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Hindsiliguri-Regular'),
+                ),
               ),
             ],
           ),
@@ -41,8 +55,11 @@ class Home extends StatelessWidget {
         Expanded(
           child: Image(
             image: AssetImage('assets/img/home_page.jpg'),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * .1
           ),
         ),
+        SizedBox(height: MediaQuery.of(context).size.height * .1)
       ]),
       bottomNavigationBar: BottomNav(),
     );
