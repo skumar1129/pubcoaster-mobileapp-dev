@@ -104,6 +104,7 @@ class FeedPostCard extends StatelessWidget {
         Image(image: NetworkImage('$picLink'), height: 300, width: 600),
         const Divider(
           color: Colors.white,
+          thickness: 1.0
         )
       ]);
     } else {
@@ -204,57 +205,72 @@ class FeedPostCard extends StatelessWidget {
             // ),
             const Divider(
               color: Colors.white,
+              thickness: 1.0
             ),
             picture(picLink),
-            Text(
-              goodContent,
-              style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Merriweather-Regular',
-                      fontSize: 20),
+            Padding(
+              padding: const EdgeInsets.only(top: 4, bottom: 4),
+              child: Text(
+                goodContent,
+                style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Merriweather-Regular',
+                        fontSize: 20),
+              ),
             ),
             const Divider(
               color: Colors.white,
+              thickness: 1.0
             ),
-            Row(
-              children: [
-                user(username),
-                likes(numLikes)
-              ],
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Padding(
+              padding: const EdgeInsets.only(top: 4, bottom: 4),
+              child: Row(
+                children: [
+                  user(username),
+                  likes(numLikes)
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
             ),
             const Divider(
               color: Colors.black,
-              thickness: 0.5,
+              thickness: 1.0
             ),
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 8),
-                  child: Text(
-                    timeago.format(date.toLocal()),
-                    style: TextStyle(
-                        color: Colors.white, fontFamily: 'Merriweather-Italic', fontSize: 14),
-                    softWrap: true,
+            Padding(
+              padding: const EdgeInsets.only(top: 4, bottom: 4),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Text(
+                      timeago.format(date.toLocal()),
+                      style: TextStyle(
+                          color: Colors.white, fontFamily: 'Merriweather-Italic', fontSize: 14),
+                      softWrap: true,
+                    ),
                   ),
-                ),
-                nbhood(neighborhood, goodLocation)
-              ],
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  nbhood(neighborhood, goodLocation)
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
             ),
             const Divider(
               color: Colors.white,
+              thickness: 1.0
             ),
-            Row(
-               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                comments(numComments)
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Row(
+                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  comments(numComments)
+                ],
+              ),
             ),
             const Divider(
               color: Colors.black,
-              thickness: 0.5,
+              thickness: 1.0
             ),
           ],
         ),
