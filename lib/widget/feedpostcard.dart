@@ -47,12 +47,14 @@ class FeedPostCard extends StatelessWidget {
   }
 
   Widget user(username) {
-     if (username != null) {
+    if (username != null) {
       String goodUsername = utf8.decode(username!.codeUnits);
-      return Flexible(
+      return Padding(
+        padding: EdgeInsets.only(left: 4),
         child: Text(
           '$goodUsername',
           style: TextStyle(
+              fontSize: 18,
               color: Colors.white,
               fontFamily: 'Merriweather-Regular'),
         ),
@@ -64,38 +66,45 @@ class FeedPostCard extends StatelessWidget {
 
   Widget likes(numLikes) {
     if (numLikes == 0) {
-      return Flexible(
+      return Padding(
+        padding: EdgeInsets.only(right: 8),
           child: Text(
         'No Likes Yet',
-        style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular'),
+       style: TextStyle(
+          fontSize: 16,
+          color: Colors.white,
+          fontFamily: 'Merriweather-Regular'),
       ));
     } else if (numLikes == 1) {
-      return Flexible(
+      return Padding(
+        padding: EdgeInsets.only(right: 8),
           child: Text(
         '$numLikes like',
-        style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular'),
+       style: TextStyle(
+          fontSize: 16,
+          color: Colors.white,
+          fontFamily: 'Merriweather-Regular'),
       ));
     } else {
-      return Flexible(
+      return Padding(
+        padding: EdgeInsets.only(right: 8),
           child: Text(
         '$numLikes likes',
         style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular'),
+          fontSize: 16,
+          color: Colors.white,
+          fontFamily: 'Merriweather-Regular'),
       ));
     }
   }
 
-  Widget picture(picLink) {
+  Widget picture(picLink, context) {
      if (picLink != '' && picLink!=null) {
       return Column(children: [
-        Image(image: NetworkImage('$picLink'), height: 300, width: 600),
+        Image(image: NetworkImage('$picLink'), height: MediaQuery.of(context).size.height * .4, width: MediaQuery.of(context).size.width * .92),
         const Divider(
           color: Colors.white,
+          thickness: 1.0
         )
       ]);
     } else {
@@ -106,21 +115,24 @@ class FeedPostCard extends StatelessWidget {
   Widget nbhood(neighborhood, goodLocation) {
     if (neighborhood != null) {
       String goodNbhood = utf8.decode(neighborhood!.codeUnits);
-      return Flexible(
+      return Padding(
+        padding: EdgeInsets.only(right: 8),
           child: Text(
         '${capitalize(goodNbhood)}, $goodLocation',
         style: TextStyle(
             color: Colors.white,
-            fontFamily: 'Merriweather-Regular'),
+            fontFamily: 'Merriweather-Regular',
+            fontSize: 18),
         softWrap: true,
       ));
     } else {
-      return Flexible(
+      return Padding(
+        padding: EdgeInsets.only(right: 8),
           child: Text(
         '$goodLocation',
         style: TextStyle(
             color: Colors.white,
-            fontFamily: 'Merriweather-Regular'),
+            fontFamily: 'Merriweather-Regular', fontSize: 16),
         softWrap: true,
       ));
     }
@@ -128,29 +140,26 @@ class FeedPostCard extends StatelessWidget {
 
   Widget comments(numComments) {
     if (numComments == 0) {
-      return Flexible(
-          child: Text(
+      return Text(
         'No comments yet',
+        textAlign: TextAlign.center,
         style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular'),
-      ));
+        color: Colors.white, fontFamily: 'Merriweather-Regular', fontSize: 18),
+      );
     } else if (numComments == 1) {
-      return Flexible(
-          child: Text(
+      return Text(
         '$numComments comment',
+        textAlign: TextAlign.center,
         style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular'),
-      ));
+        color: Colors.white, fontFamily: 'Merriweather-Regular', fontSize: 18),
+      );
     } else {
-      return Flexible(
-          child: Text(
+      return Text(
         '$numComments comments',
+        textAlign: TextAlign.center,
         style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular'),
-      ));
+        color: Colors.white, fontFamily: 'Merriweather-Regular', fontSize: 18),
+      );
     }
   }
 
@@ -171,18 +180,24 @@ class FeedPostCard extends StatelessWidget {
             // ListTile(
             Row(
               children: [
-                Flexible(
+                Padding(
+                  padding: EdgeInsets.only(left: 8, top: 8),
                   child: Text(
                     capitalize(goodBar),
                     style: TextStyle(
-                        color: Colors.white, fontFamily: 'Merriweather-Bold'),
+                          color: Colors.white,
+                          fontFamily: 'Merriweather-Bold',
+                          fontSize: 20),
                   ),
                 ),
-                Flexible(
+                Padding(
+                  padding: EdgeInsets.only(right: 8, top: 8),
                     child: Text(
                   'User Rating: $rating/10',
                   style: TextStyle(
-                      color: Colors.white, fontFamily: 'Merriweather-Regular'),
+                          color: Colors.white,
+                          fontFamily: 'Merriweather-Bold',
+                          fontSize: 16),
                 ))
               ],
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -190,52 +205,72 @@ class FeedPostCard extends StatelessWidget {
             // ),
             const Divider(
               color: Colors.white,
+              thickness: 1.0
             ),
-            picture(picLink),
-            Text(
-              goodContent,
-              style: TextStyle(
-                  color: Colors.white, fontFamily: 'Merriweather-Regular'),
+            picture(picLink, context),
+            Padding(
+              padding: const EdgeInsets.only(top: 4, bottom: 4),
+              child: Text(
+                goodContent,
+                style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Merriweather-Regular',
+                        fontSize: 20),
+              ),
             ),
             const Divider(
               color: Colors.white,
+              thickness: 1.0
             ),
-            Row(
-              children: [
-                user(username),
-                likes(numLikes)
-              ],
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Padding(
+              padding: const EdgeInsets.only(top: 4, bottom: 4),
+              child: Row(
+                children: [
+                  user(username),
+                  likes(numLikes)
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
             ),
             const Divider(
               color: Colors.black,
-              thickness: 0.5,
+              thickness: 1.0
             ),
-            Row(
-              children: [
-                Flexible(
-                  child: Text(
-                    timeago.format(date.toLocal()),
-                    style: TextStyle(
-                        color: Colors.white, fontFamily: 'Merriweather-Italic'),
-                    softWrap: true,
+            Padding(
+              padding: const EdgeInsets.only(top: 4, bottom: 4),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Text(
+                      timeago.format(date.toLocal()),
+                      style: TextStyle(
+                          color: Colors.white, fontFamily: 'Merriweather-Italic', fontSize: 14),
+                      softWrap: true,
+                    ),
                   ),
-                ),
-                nbhood(neighborhood, goodLocation)
-              ],
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  nbhood(neighborhood, goodLocation)
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
             ),
             const Divider(
               color: Colors.white,
+              thickness: 1.0
             ),
-            Row(
-              children: [
-                comments(numComments)
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Row(
+                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  comments(numComments)
+                ],
+              ),
             ),
             const Divider(
               color: Colors.black,
-              thickness: 0.5,
+              thickness: 1.0
             ),
           ],
         ),

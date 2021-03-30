@@ -125,9 +125,10 @@ class _MyPostCardState extends State<MyPostCard> {
   Widget picture() {
     if (widget.picLink != '' && widget.picLink != null) {
       return Column(children: [
-        Image(image: NetworkImage('${widget.picLink}'), height: MediaQuery.of(context).size.height * .2),
+        Image(image: NetworkImage('${widget.picLink}'), height: MediaQuery.of(context).size.height * .4),
         const Divider(
           color: Colors.white,
+          thickness: 1.0
         )
       ]);
     } else {
@@ -135,14 +136,17 @@ class _MyPostCardState extends State<MyPostCard> {
     }
   }
 
-  Widget user() {
+ Widget user() {
     if (widget.username != null) {
       String goodUsername = utf8.decode(widget.username!.codeUnits);
-      return Flexible(
+      return Padding(
+        padding: EdgeInsets.only(left: 8),
         child: Text(
           '$goodUsername',
           style: TextStyle(
-              color: Colors.white, fontFamily: 'Merriweather-Regular'),
+              fontSize: 16,
+              color: Colors.white,
+              fontFamily: 'Merriweather-Regular'),
         ),
       );
     } else {
@@ -152,25 +156,34 @@ class _MyPostCardState extends State<MyPostCard> {
 
   Widget likes() {
     if (widget.numLikes == 0) {
-      return Flexible(
+      return Padding(
+        padding: EdgeInsets.only(right: 8),
           child: Text(
         'No Likes Yet',
-        style:
-            TextStyle(color: Colors.white, fontFamily: 'Merriweather-Regular'),
+       style: TextStyle(
+          fontSize: 16,
+          color: Colors.white,
+          fontFamily: 'Merriweather-Regular'),
       ));
     } else if (widget.numLikes == 1) {
-      return Flexible(
+      return Padding(
+        padding: EdgeInsets.only(right: 8),
           child: Text(
         '${widget.numLikes} like',
-        style:
-            TextStyle(color: Colors.white, fontFamily: 'Merriweather-Regular'),
+       style: TextStyle(
+          fontSize: 16,
+          color: Colors.white,
+          fontFamily: 'Merriweather-Regular'),
       ));
     } else {
-      return Flexible(
+      return Padding(
+        padding: EdgeInsets.only(right: 8),
           child: Text(
         '${widget.numLikes} likes',
-        style:
-            TextStyle(color: Colors.white, fontFamily: 'Merriweather-Regular'),
+        style: TextStyle(
+          fontSize: 16,
+          color: Colors.white,
+          fontFamily: 'Merriweather-Regular'),
       ));
     }
   }
@@ -178,46 +191,50 @@ class _MyPostCardState extends State<MyPostCard> {
   Widget neighborhood(goodLocation) {
     if (widget.neighborhood != null) {
       String goodNbhood = utf8.decode(widget.neighborhood!.codeUnits);
-      return Flexible(
+      return Padding(
+        padding: EdgeInsets.only(right: 8),
           child: Text(
         '${capitalize(goodNbhood)}, $goodLocation',
-        style:
-            TextStyle(color: Colors.white, fontFamily: 'Merriweather-Regular'),
+         style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular', fontSize: 16),
         softWrap: true,
       ));
     } else {
-      return Flexible(
+      return Padding(
+        padding: EdgeInsets.only(right: 8),
           child: Text(
         '$goodLocation',
-        style:
-            TextStyle(color: Colors.white, fontFamily: 'Merriweather-Regular'),
+        style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular', fontSize: 16),
         softWrap: true,
       ));
     }
   }
 
-  Widget comments() {
+Widget comments() {
     if (widget.numComments == 0) {
-      return Flexible(
-          child: Text(
+      return Text(
         'No comments yet',
-        style:
-            TextStyle(color: Colors.white, fontFamily: 'Merriweather-Regular'),
-      ));
+        textAlign: TextAlign.center,
+        style: TextStyle(
+        color: Colors.white, fontFamily: 'Merriweather-Regular', fontSize: 18),
+      );
     } else if (widget.numComments == 1) {
-      return Flexible(
-          child: Text(
+      return Text(
         '${widget.numComments} comment',
-        style:
-            TextStyle(color: Colors.white, fontFamily: 'Merriweather-Regular'),
-      ));
+        textAlign: TextAlign.center,
+        style: TextStyle(
+        color: Colors.white, fontFamily: 'Merriweather-Regular', fontSize: 18),
+      );
     } else {
-      return Flexible(
-          child: Text(
+      return Text(
         '${widget.numComments} comments',
-        style:
-            TextStyle(color: Colors.white, fontFamily: 'Merriweather-Regular'),
-      ));
+        textAlign: TextAlign.center,
+        style: TextStyle(
+        color: Colors.white, fontFamily: 'Merriweather-Regular', fontSize: 18),
+      );
     }
   }
 
@@ -239,11 +256,14 @@ class _MyPostCardState extends State<MyPostCard> {
               // ListTile(
               Row(
                 children: [
-                  Flexible(
+                  Padding(
+                    padding: EdgeInsets.only(left: 8, top: 8),
                     child: Text(
                       capitalize(goodBar),
-                      style: TextStyle(
-                          color: Colors.white, fontFamily: 'Merriweather-Bold'),
+                     style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Merriweather-Bold',
+                          fontSize: 20),
                     ),
                   ),
                   IconButton(
@@ -251,15 +271,17 @@ class _MyPostCardState extends State<MyPostCard> {
                       goToEditMode();
                     },
                     tooltip: 'Edit Post',
-                    icon: Icon(Icons.edit),
+                    icon: Icon(Icons.edit, size: 26),
                     color: Colors.red,
                   ),
-                  Flexible(
+                  Padding(
+                    padding: EdgeInsets.only(right: 8, top: 8),
                       child: Text(
                     'User Rating: ${widget.rating}/10',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Merriweather-Regular'),
+                     style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Merriweather-Bold',
+                          fontSize: 16),
                   ))
                 ],
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -267,48 +289,67 @@ class _MyPostCardState extends State<MyPostCard> {
               // ),
               const Divider(
                 color: Colors.white,
+                thickness: 1.0
               ),
               picture(),
-              Text(
-                goodContent,
-                style: TextStyle(
-                    color: Colors.white, fontFamily: 'Merriweather-Regular'),
+              Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4),
+                child: Text(
+                  goodContent,
+                 style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Merriweather-Regular',
+                        fontSize: 20),
+                ),
               ),
               const Divider(
                 color: Colors.white,
+                thickness: 1.0
               ),
-              Row(
-                children: [user(), likes()],
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4),
+                child: Row(
+                  children: [user(), likes()],
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                ),
               ),
               const Divider(
                 color: Colors.black,
-                thickness: 0.5,
+                thickness: 1.0
               ),
-              Row(
-                children: [
-                  Flexible(
-                    child: Text(
-                      timeago.format(date.toLocal()),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Italic'),
-                      softWrap: true,
+              Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 8),
+                      child: Text(
+                        timeago.format(date.toLocal()),
+                        style: TextStyle(
+                          color: Colors.white, fontFamily: 'Merriweather-Italic', fontSize: 14),
+                        softWrap: true,
+                      ),
                     ),
-                  ),
-                  neighborhood(goodLocation)
-                ],
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    neighborhood(goodLocation)
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                ),
               ),
               const Divider(
                 color: Colors.white,
+                thickness: 1.0
               ),
-              Row(
-                children: [comments()],
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [comments()],
+                ),
               ),
               const Divider(
                 color: Colors.black,
-                thickness: 0.5,
+                thickness: 1.0
               ),
             ],
           ),
@@ -326,91 +367,121 @@ class _MyPostCardState extends State<MyPostCard> {
             Row(
               children: [
                 Flexible(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 8, left: 8),
                     child: TextField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Name of bar',
-                      labelStyle: TextStyle(
+                      decoration: InputDecoration(
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                        ),
+                        //border: OutlineInputBorder(),
+                        labelText: 'Name of bar',
+                        labelStyle: TextStyle(
                           color: Colors.white,
-                          fontFamily: 'Merriweather-Bold')),
-                  onChanged: (String value) {
-                    newBar = value;
-                  },
-                  style: TextStyle(
-                      color: Colors.white, fontFamily: 'Merriweather-Bold'),
-                )),
+                          fontFamily: 'Merriweather-Bold')
+                        ),
+                      onChanged: (String value) {
+                        newBar = value;
+                      },
+                      style: TextStyle(
+                        color: Colors.white, fontFamily: 'Merriweather-Bold'),
+                  )),
+                ),
                 IconButton(
                   onPressed: () {
                     cancelEdit();
                   },
-                  icon: Icon(Icons.cancel),
+                  icon: Icon(Icons.cancel, size: 25),
                   tooltip: 'Cancel Edit',
                   color: Colors.red,
                 ),
-                Text('Rating: ',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Merriweather-Regular',
-                    )),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8, left: 4),
+                  child: Text('Rating: ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Merriweather-Regular',
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold
+                      )),
+                ),
                 Flexible(
-                  child: DropdownButton(
-                    value: dropdownValue == null
-                        ? widget.rating.toString()
-                        : dropdownValue,
-                    dropdownColor: Colors.black,
-                    items: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-                        .map((String value) {
-                      return DropdownMenuItem(
-                          child: Text(
-                            value,
-                            style: TextStyle(
-                                fontFamily: 'Merriweather-Regular',
-                                color: Colors.white),
-                          ),
-                          value: value);
-                    }).toList(),
-                    onChanged: (String? value) {
-                      if (mounted) {
-                        setState(() {
-                          dropdownValue = value;
-                          newRating = int.parse(value!);
-                        });
-                      }
-                    },
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8, left: 0),
+                    child: DropdownButton(
+                      value: dropdownValue == null
+                          ? widget.rating.toString()
+                          : dropdownValue,
+                      dropdownColor: Colors.black,
+                      items: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+                          .map((String value) {
+                        return DropdownMenuItem(
+                            child: Text(
+                              value,
+                              style: TextStyle(
+                                  fontFamily: 'Merriweather-Regular',
+                                  color: Colors.white,
+                                  fontSize: 16
+                              ),
+                            ),
+                            value: value);
+                      }).toList(),
+                      onChanged: (String? value) {
+                        if (mounted) {
+                          setState(() {
+                            dropdownValue = value;
+                            newRating = int.parse(value!);
+                          });
+                        }
+                      },
+                    ),
                   ),
                 ),
-                Text('/10',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Merriweather-Regular',
-                    ))
+                Padding(
+                  padding: const EdgeInsets.only(top: 8, right: 8),
+                  child: Text('/10',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Merriweather-Regular',
+                        fontSize: 16
+                      )),
+                )
               ],
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
             // ),
             const Divider(
               color: Colors.white,
+              thickness: 1.0
             ),
             picture(),
-            TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelStyle: TextStyle(
-                      color: Colors.white, fontFamily: 'Merriweather-Bold'),
-                  labelText: 'Post description'),
-              onChanged: (String value) {
-                newContent = value;
-              },
-              style: TextStyle(
-                  color: Colors.white, fontFamily: 'Merriweather-Bold'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                  ),
+                  //border: OutlineInputBorder(),
+                  labelStyle: TextStyle(color: Colors.white, fontFamily: 'Merriweather-Bold'),
+                  labelText: 'Post description'
+                ),
+                onChanged: (String value) {
+                  newContent = value;
+                },
+                style: TextStyle(
+                    color: Colors.white, fontFamily: 'Merriweather-Bold', fontSize: 18),
+              ),
             ),
             const Divider(
               color: Colors.white,
+              thickness: 1.0
             ),
             Row(
               children: [
                 IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: Icon(Icons.delete, size: 26),
                   onPressed: () {
                     deletePost();
                   },
@@ -418,7 +489,7 @@ class _MyPostCardState extends State<MyPostCard> {
                   tooltip: 'Delete Post',
                 ),
                 IconButton(
-                  icon: Icon(Icons.save),
+                  icon: Icon(Icons.save, size: 26),
                   onPressed: () {
                     editPost();
                   },
@@ -426,30 +497,40 @@ class _MyPostCardState extends State<MyPostCard> {
                   tooltip: 'Edit Post',
                 ),
                 Flexible(
-                  child: TextField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelStyle: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Merriweather-Bold'),
-                        labelText: 'Neighborhood'),
-                    onChanged: (String value) {
-                      newNbhood = value;
-                    },
-                    style: TextStyle(
-                        color: Colors.white, fontFamily: 'Merriweather-Bold'),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8, top: 4, right: 4),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                        ),
+                          //border: OutlineInputBorder(),
+                          labelStyle: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Merriweather-Bold'),
+                          labelText: 'Neighborhood'),
+                      onChanged: (String value) {
+                        newNbhood = value;
+                      },
+                      style: TextStyle(
+                          color: Colors.white, fontFamily: 'Merriweather-Bold'),
+                    ),
                   ),
                 ),
-                Text(
-                  ', $goodLocation',
-                  style: TextStyle(
-                      color: Colors.white, fontFamily: 'Merriweather-Bold'),
+                Padding(
+                  padding: const EdgeInsets.only(top: 4, right: 8),
+                  child: Text(
+                    ', $goodLocation',
+                    style: TextStyle(
+                        color: Colors.white, fontFamily: 'Merriweather-Bold', fontSize: 16),
+                  ),
                 )
               ],
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
             const Divider(
-              color: Colors.white,
+              color: Colors.black,
+              thickness: 1.0
             ),
           ],
         ),

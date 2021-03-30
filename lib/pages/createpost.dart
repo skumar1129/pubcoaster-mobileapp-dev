@@ -47,7 +47,7 @@ class _CreatePostState extends State<CreatePost> {
         if (pickedFile != null) {
           _image = File(pickedFile.path);
           filePicked = true;
-          Navigator.of(context, rootNavigator: true).pop('dialog');
+          Navigator.of(context).pop();
         } else {
           print('No image selected.');
         }
@@ -109,11 +109,11 @@ class _CreatePostState extends State<CreatePost> {
             onPressed: () => showDialog(context: context, builder: (BuildContext content) {
               //getImage()
               return AlertDialog(
-                title: Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                title: Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, decoration: TextDecoration.underline, fontSize: 30)),
                 backgroundColor: Colors.white,
                 actions: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(left: 8),
+                    padding: const EdgeInsets.only(left: 10, bottom: 8),
                     child: FloatingActionButton(child: Icon(Icons.file_upload),
                       onPressed: () => getImage(true),
                       tooltip: 'Upload from storage',
@@ -122,7 +122,7 @@ class _CreatePostState extends State<CreatePost> {
                   ),
                   SizedBox(width: 150),
                   Padding(
-                    padding: const EdgeInsets.only(right: 8),
+                    padding: const EdgeInsets.only(right: 10, bottom: 8),
                     child: FloatingActionButton(
                       child: Icon(Icons.camera),
                       tooltip: 'Upload from camera',
@@ -265,76 +265,34 @@ class _CreatePostState extends State<CreatePost> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: ListView(
         children: <Widget>[
           NavBar(),
           Padding(
-            padding: const EdgeInsets.only(top: 6, bottom: 0),
-            child: Center(
-              child: Text(
-                'Create a New Post',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
-              ),
-            ),
-          ),
-          const Divider(
-            color: Colors.white,
-            thickness: 0.5,
-          ),
-          Row(
-            children: <Widget>[
-              ElevatedButton(
-                onPressed: () {
-                  goBack();
-                },
-                child: Text(
-                  'Cancel',
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.red),
-                    shape: MaterialStateProperty.all<OutlinedBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                            side: BorderSide(color: Colors.red)))),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  submitPost(
-                      location, bar, neighborhood, rating, content, anonymous);
-                },
-                child: Text(
-                  'Submit',
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.red),
-                    shape: MaterialStateProperty.all<OutlinedBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                            side: BorderSide(color: Colors.red)))),
-              ),
-            ],
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-          ),
-          const Divider(
-            color: Colors.white,
-            thickness: .5,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 4, left: 4),
+            padding: const EdgeInsets.only(right: 4, left: 4, top: 6),
             child: Container(
-                  decoration: BoxDecoration(border: Border.all(width: 4)),
-                  padding: const EdgeInsets.only(right: 4, left: 4),
-                        child: Form(
-                  child: SingleChildScrollView(
+              decoration: BoxDecoration(border: Border.all(width: 4)),
+              padding: const EdgeInsets.only(right: 4, left: 4, top: 10),
+              child: Form(
+                child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    Padding(
-                  padding: const EdgeInsets.only(left: 6, right: 6, top: 4),
-                  child: DropdownButtonFormField(
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 0),
+                    child: Center(
+                      child: Text(
+                        'Create a New Post',
+                        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+                      ),
+                    ),
+                  ),
+                  const Divider(
+                    color: Colors.white,
+                    thickness: 1.5,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 6, right: 6, top: 4),
+                    child: DropdownButtonFormField(
                     items: [
                       'Columbus',
                       'Chicago',
@@ -380,10 +338,10 @@ class _CreatePostState extends State<CreatePost> {
                     },
                   ),
                     ),
-                    const Divider(
+                const Divider(
                   color: Colors.white,
                   thickness: 0.5,
-                    ),
+                  ),
                     Padding(
                   padding: const EdgeInsets.only(left: 4, right: 4),
                   child: TextField(
@@ -464,10 +422,62 @@ class _CreatePostState extends State<CreatePost> {
                     color: Colors.white,
                     thickness: .5,
                   ),
-                    )
-                  ],
+                  ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Row(
+                    children: <Widget>[
+                      ElevatedButton(
+                        onPressed: () {
+                          goBack();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Cancel',
+                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
+                        ),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.red),
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(color: Colors.red)))),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          submitPost(
+                              location, bar, neighborhood, rating, content, anonymous);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Submit',
+                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
+                        ),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.red),
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(color: Colors.red)))),
+                      ),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  ),
                 ),
-              )),
+                const Divider(
+                  color: Colors.white,
+                  thickness: 1,
+                ),
+                ],
+              ),
+            )
+            ),
             ),
           ),
         ],

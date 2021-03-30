@@ -39,7 +39,7 @@ class _AddUserInfoState extends State<AddUserInfo> {
         if (pickedFile != null) {
           _image = File(pickedFile.path);
           filePicked = true;
-          Navigator.of(context, rootNavigator: true).pop('dialog');
+          Navigator.of(context).pop();
         } else {
           print('No image selected.');
         }
@@ -61,11 +61,11 @@ class _AddUserInfoState extends State<AddUserInfo> {
         onPressed: () => showDialog(context: context, builder: (BuildContext content) {
           //getImage()
           return AlertDialog(
-            title: Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+            title: Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, decoration: TextDecoration.underline, fontSize: 30)),
             backgroundColor: Colors.white,
             actions: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(left: 8),
+                padding: const EdgeInsets.only(left: 10, bottom: 8),
                 child: FloatingActionButton(child: Icon(Icons.file_upload),
                   onPressed: () => getImage(true),
                   tooltip: 'Upload from storage',
@@ -74,7 +74,7 @@ class _AddUserInfoState extends State<AddUserInfo> {
               ),
               SizedBox(width: 150),
               Padding(
-                padding: const EdgeInsets.only(right: 8),
+                padding: const EdgeInsets.only(right: 10, bottom: 8),
                 child: FloatingActionButton(
                   child: Icon(Icons.camera),
                   tooltip: 'Upload from camera',
@@ -281,70 +281,27 @@ class _AddUserInfoState extends State<AddUserInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      children: <Widget>[
-        const SizedBox(
-          height: 35,
-        ),
-        Center(
-          child: Text(
-            'Hold up, fill out a User Profile',
-            style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
-          ),
-        ),
-        const Divider(
-          color: Colors.white,
-          thickness: 0.5,
-        ),
-        Row(
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                goToSignIn();
-              },
-              child: Text(
-                'Back to Sign In',
-                style: TextStyle(color: Colors.white),
-              ),
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                  shape: MaterialStateProperty.all<OutlinedBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.red)))),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                submitUser();
-              },
-              child: Text(
-                'Submit',
-                style: TextStyle(color: Colors.white),
-              ),
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                  shape: MaterialStateProperty.all<OutlinedBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.red)))),
-            ),
-          ],
+      body: Form(
+        child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-        ),
-        const Divider(
-          color: Colors.white,
-          thickness: 0.5,
-        ),
-        Form(
-            child: Expanded(
-                child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              const Divider(
-                color: Colors.white,
-                thickness: 0.75,
-              ),
-              TextField(
+          children: <Widget>[
+            const SizedBox(
+              height: 200,
+            ),
+            Text(
+              'Hold up, fill out a User Profile',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+            ),
+            const Divider(
+              color: Colors.white,
+              thickness: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 6, right: 6, top: 16),
+              child: TextField(
                 decoration: InputDecoration(
                     border: OutlineInputBorder(), labelText: 'Username*'),
                 onChanged: (value) => {
@@ -354,11 +311,14 @@ class _AddUserInfoState extends State<AddUserInfo> {
                     }
                 },
               ),
-              const Divider(
-                color: Colors.white,
-                thickness: 0.5,
-              ),
-              TextField(
+            ),
+            const Divider(
+              color: Colors.white,
+              thickness: 0.5,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 6, right: 6),
+              child: TextField(
                 decoration: InputDecoration(
                     border: OutlineInputBorder(), labelText: 'First Name*'),
                 onChanged: (value) => {
@@ -368,11 +328,14 @@ class _AddUserInfoState extends State<AddUserInfo> {
                     }
                 },
               ),
-              const Divider(
-                color: Colors.white,
-                thickness: 0.5,
-              ),
-              TextField(
+            ),
+            const Divider(
+              color: Colors.white,
+              thickness: 0.5,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 6, right: 6, bottom: 14),
+              child: TextField(
                 decoration: InputDecoration(
                     border: OutlineInputBorder(), labelText: 'Last Name*'),
                 onChanged: (value) => {
@@ -382,15 +345,66 @@ class _AddUserInfoState extends State<AddUserInfo> {
                     }
                 },
               ),
-              const Divider(
-                color: Colors.white,
-                thickness: 0.75,
-              ),
-              pictureButton(),
-            ],
-          ),
-        ))),
-      ],
-    ));
+            ),
+            const Divider(
+              color: Colors.white,
+              thickness: 15,
+            ),
+            pictureButton(),
+            const SizedBox(
+              height: 50,
+            ),
+            Row(
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    goToSignIn();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Back to Sign In',
+                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(color: Colors.red)))),
+                ),
+                const SizedBox(
+                  width: 17,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    submitUser();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(color: Colors.red)))),
+                ),
+              ],
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            ),
+            SizedBox(
+              height: 200
+            )
+          ],
+        ),
+      )
+      ),
+    );
   }
 }

@@ -284,7 +284,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
       return Row(
         children: [
           Padding(
-              padding: EdgeInsets.only(right: 4),
+              padding: EdgeInsets.only(right: 2),
               child: Text(
                 'No Likes Yet',
                 style: TextStyle(
@@ -292,14 +292,17 @@ class _SinglePostCardState extends State<SinglePostCard> {
                     color: Colors.white,
                     fontFamily: 'Merriweather-Regular'),
               )),
-          heartIcon()
+          Padding(
+            padding: const EdgeInsets.only(right: 6),
+            child: heartIcon(),
+          )
         ],
       );
     } else if (widget.likes.length == 1) {
       return Row(
         children: [
           Padding(
-              padding: EdgeInsets.only(right: 4),
+              padding: EdgeInsets.only(right: 2),
               child: Text(
                 '${widget.likes.length} like',
                 style: TextStyle(
@@ -307,7 +310,10 @@ class _SinglePostCardState extends State<SinglePostCard> {
                     color: Colors.white,
                     fontFamily: 'Merriweather-Regular'),
               )),
-          heartIcon()
+          Padding(
+            padding: const EdgeInsets.only(right: 6),
+            child: heartIcon(),
+          )
         ],
       );
     } else {
@@ -332,7 +338,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
     if (widget.neighborhood != null) {
       String goodNbhood = utf8.decode(widget.neighborhood!.codeUnits);
       return Padding(
-          padding: EdgeInsets.only(right: 4),
+          padding: EdgeInsets.only(right: 6),
           child: Text(
             '${capitalize(goodNbhood)}, $goodLocation',
             style: TextStyle(
@@ -343,7 +349,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
           ));
     } else {
       return Padding(
-          padding: EdgeInsets.only(right: 4),
+          padding: EdgeInsets.only(right: 6),
           child: Text(
             '$goodLocation',
             style: TextStyle(
@@ -357,138 +363,144 @@ class _SinglePostCardState extends State<SinglePostCard> {
 
   Widget comments() {
     if (widget.comments.length == 0) {
-      return new Row(children: [
-        Center(
-            child: Text(
-          'No comments yet',
-          style: TextStyle(
-              color: Colors.white, fontFamily: 'Merriweather-Regular'),
-        ))
-      ]);
+      return Padding(
+        padding: const EdgeInsets.only(top: 6, bottom: 6),
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'No comments yet',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+              color: Colors.white, fontFamily: 'Merriweather-Regular', fontSize: 18),
+            )
+        ]),
+      );
     } else {
-      return Expanded(
-          child: ListView.separated(
-              padding: EdgeInsets.all(1),
-              itemCount: widget.comments.length,
-              itemBuilder: (BuildContext context, int index) {
-                var newDate =
-                    HttpDate.parse(widget.comments[index]['createdAt']);
-                // TODO: Look into better way to get real time
-                var date = newDate.add(Duration(hours: 5));
-                if (editCommentVar == false ||
-                    editCommentUuid != widget.comments[index]['uuid']) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 4),
-                        child: Text(
-                          "${widget.comments[index]['createdBy']} : ${widget.comments[index]['text']}",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Merriweather-Bold'),
-                        ),
-                      ),
-                      (() {
-                        if (widget.currentUser ==
-                                widget.comments[index]['createdBy'] &&
-                            editCommentVar == false) {
-                          //not going to let a user edit multiple comments at once
-                          return Row(
-                            children: [
-                              Padding(
-                                  padding: EdgeInsets.only(right: 4),
-                                  child: Text(
-                                    "${timeago.format(date.toLocal())}",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Merriweather-Regular'),
-                                  )),
-                              IconButton(
-                                  icon: Icon(
-                                    Icons.edit,
-                                    color: Colors.red,
-                                  ),
-                                  tooltip: 'Edit Comment',
-                                  onPressed: () {
-                                    editComment(widget.comments[index]['uuid']);
-                                  }),
-                              IconButton(
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  ),
-                                  tooltip: 'Delete Comment',
-                                  onPressed: () {
-                                    deleteComment(
-                                        index, widget.comments[index]['uuid']);
-                                  }),
-                            ],
-                          );
-                        } else {
-                          return Padding(
+      return ListView.separated(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          padding: EdgeInsets.all(1),
+          itemCount: widget.comments.length,
+          itemBuilder: (BuildContext context, int index) {
+            var newDate =
+                HttpDate.parse(widget.comments[index]['createdAt']);
+            // TODO: Look into better way to get real time
+            var date = newDate.add(Duration(hours: 5));
+            if (editCommentVar == false ||
+                editCommentUuid != widget.comments[index]['uuid']) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 4),
+                    child: Text(
+                      "${widget.comments[index]['createdBy']} : ${widget.comments[index]['text']}",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Merriweather-Bold'),
+                    ),
+                  ),
+                  (() {
+                    if (widget.currentUser ==
+                            widget.comments[index]['createdBy'] &&
+                        editCommentVar == false) {
+                      //not going to let a user edit multiple comments at once
+                      return Row(
+                        children: [
+                          Padding(
                               padding: EdgeInsets.only(right: 4),
                               child: Text(
                                 "${timeago.format(date.toLocal())}",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontFamily: 'Merriweather-Regular'),
-                              ));
-                        }
-                      }()),
-                    ],
-                  );
-                } else {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      //TODO: change
-                      Padding(
-                        padding: EdgeInsets.only(left: 4),
-                        child: Text(
-                          "${widget.comments[index]['createdBy']}:  ",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Merriweather-Bold'),
-                        ),
-                      ),
-                      Expanded(
-                          child: TextField(
-                              style: TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                labelText: 'New Comment Text',
-                                labelStyle: TextStyle(color: Colors.white),
-                                border: OutlineInputBorder(),
-                                isDense: true,
-                                contentPadding: EdgeInsets.all(8),
+                              )),
+                          IconButton(
+                              icon: Icon(
+                                Icons.edit,
+                                color: Colors.red,
                               ),
-                              onChanged: (String value) {
-                                newEditComment = value;
-                              })),
-                      IconButton(
-                          icon: Icon(
-                            Icons.save,
-                            color: Colors.red,
-                          ),
-                          tooltip: 'Save new comment',
-                          onPressed: () {
-                            saveComment(widget.comments[index]['uuid']);
-                          }),
-                      IconButton(
-                          icon: Icon(
-                            Icons.cancel,
-                            color: Colors.red,
-                          ),
-                          tooltip: 'Cancel new comment',
-                          onPressed: () {
-                            cancelComment();
-                          })
-                    ],
-                  );
-                }
-              },
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(color: Colors.blueGrey)));
+                              tooltip: 'Edit Comment',
+                              onPressed: () {
+                                editComment(widget.comments[index]['uuid']);
+                              }),
+                          IconButton(
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ),
+                              tooltip: 'Delete Comment',
+                              onPressed: () {
+                                deleteComment(
+                                    index, widget.comments[index]['uuid']);
+                              }),
+                        ],
+                      );
+                    } else {
+                      return Padding(
+                          padding: EdgeInsets.only(right: 4),
+                          child: Text(
+                            "${timeago.format(date.toLocal())}",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Merriweather-Regular'),
+                          ));
+                    }
+                  }()),
+                ],
+              );
+            } else {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  //TODO: change
+                  Padding(
+                    padding: EdgeInsets.only(left: 4),
+                    child: Text(
+                      "${widget.comments[index]['createdBy']}:  ",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Merriweather-Bold'),
+                    ),
+                  ),
+                  TextField(
+                      style: TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        labelText: 'New Comment Text',
+                        labelStyle: TextStyle(color: Colors.white),
+                        border: OutlineInputBorder(),
+                        isDense: true,
+                        contentPadding: EdgeInsets.all(8),
+                      ),
+                      onChanged: (String value) {
+                        newEditComment = value;
+                      }),
+                  IconButton(
+                      icon: Icon(
+                        Icons.save,
+                        color: Colors.red,
+                      ),
+                      tooltip: 'Save new comment',
+                      onPressed: () {
+                        saveComment(widget.comments[index]['uuid']);
+                      }),
+                  IconButton(
+                      icon: Icon(
+                        Icons.cancel,
+                        color: Colors.red,
+                      ),
+                      tooltip: 'Cancel new comment',
+                      onPressed: () {
+                        cancelComment();
+                      })
+                ],
+              );
+            }
+          },
+          separatorBuilder: (BuildContext context, int index) =>
+              const Divider(color: Colors.blueGrey));
     }
   }
 
@@ -500,128 +512,134 @@ class _SinglePostCardState extends State<SinglePostCard> {
     var newDate = HttpDate.parse(widget.timestamp);
     // TODO: Look into better way to get real time
     var date = newDate.add(Duration(hours: 5));
-    return Container(
-        height: MediaQuery.of(context).size.height * .6,
-        child: Card(
+    return Card(
+      color: Colors.black,
+      child: Column(
+        children: [
+        const Divider(
           color: Colors.black,
-          child: Column(
-            children: [
-              const Divider(
-                color: Colors.black,
-                thickness: 1,
+          thickness: 1,
+        ),
+        // ListTile(
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 4),
+              child: Text(
+                capitalize(goodBar),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Merriweather-Bold',
+                    fontSize: 20),
               ),
-              // ListTile(
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4),
-                    child: Text(
-                      capitalize(goodBar),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Bold',
-                          fontSize: 20),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 4),
-                    child: Text(
-                      'User Rating: ${widget.rating}/10',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Regular',
-                          fontSize: 15),
-                    ),
-                  )
-                ],
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              ),
-              // ),
-              const Divider(
-                thickness: 1,
-                color: Colors.white,
-              ),
-              picture(),
-              Text(
-                goodContent,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 4),
+              child: Text(
+                'User Rating: ${widget.rating}/10',
                 style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Merriweather-Regular',
-                    fontSize: 25),
+                    fontSize: 15),
               ),
-              const Divider(
+            )
+          ],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        ),
+        // ),
+        const Divider(
+          thickness: 1,
+          color: Colors.white,
+        ),
+        picture(),
+        Padding(
+          padding: const EdgeInsets.only(top: 12, bottom: 12),
+          child: Text(
+            goodContent,
+            style: TextStyle(
                 color: Colors.white,
-                thickness: 1,
-              ),
-              Row(
-                children: [user(), likes()],
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              ),
-              const Divider(
-                color: Colors.black,
-                thickness: 1,
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 4),
-                    child: Text(
-                      timeago.format(date.toLocal()),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Italic',
-                          fontSize: 18),
-                      softWrap: true,
-                    ),
-                  ),
-                  neighborhood(goodLocation)
-                ],
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              ),
-              const Divider(
-                color: Colors.white,
-                thickness: 1,
-              ),
-              comments(),
-              const Divider(
-                color: Colors.white,
-                thickness: 1,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                      child: Padding(
-                    padding: EdgeInsets.only(left: 4),
-                    child: TextField(
-                        style: TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          labelText: 'Create Comment',
-                          labelStyle: TextStyle(color: Colors.white),
-                          border: OutlineInputBorder(),
-                          isDense: true,
-                          contentPadding: EdgeInsets.all(8),
-                        ),
-                        onChanged: (String value) {
-                          newComment = value;
-                        }),
-                  )),
-                  IconButton(
-                      icon: Icon(
-                        Icons.send,
-                        color: Colors.white,
-                      ),
-                      tooltip: 'Send comment',
-                      onPressed: () {
-                        sendComment();
-                      })
-                ],
-              ),
-              const Divider(
-                color: Colors.black,
-                thickness: 1,
-              )
-            ],
+                fontFamily: 'Merriweather-Regular',
+                fontSize: 25),
           ),
-        ));
+        ),
+        const Divider(
+          color: Colors.white,
+          thickness: 1,
+        ),
+        Row(
+          children: [user(), likes()],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        ),
+        const Divider(
+          color: Colors.black,
+          thickness: .5,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 6),
+          child: Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 6),
+                child: Text(
+                  timeago.format(date.toLocal()),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Merriweather-Italic',
+                      fontSize: 18),
+                  softWrap: true,
+                ),
+              ),
+              neighborhood(goodLocation)
+            ],
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ),
+        ),
+        const Divider(
+          color: Colors.white,
+          thickness: 1,
+        ),
+        comments(),
+        const Divider(
+          color: Colors.white,
+          thickness: 1,
+        ),
+        Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 4),
+              child: Container(
+                width: MediaQuery.of(context).size.width * .82,
+                child: TextField(
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Create Comment',
+                  labelStyle: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
+                  border: OutlineInputBorder(),
+                  isDense: true,
+                  contentPadding: EdgeInsets.all(8),
+                ),
+                onChanged: (String value) {
+                  newComment = value;
+                }),
+              ),
+            ),
+            IconButton(
+                icon: Icon(
+                  Icons.send,
+                  color: Colors.white,
+                ),
+                tooltip: 'Send comment',
+                onPressed: () {
+                  sendComment();
+                })
+          ],
+        ),
+        const Divider(
+          color: Colors.black,
+          thickness: 1,
+        )
+      ],
+    ),
+    );
   }
 }

@@ -76,18 +76,33 @@ class _LocationPostsState extends State<LocationPosts> {
                 if (snapshot.hasData) {
                   var items = snapshot.data as List<dynamic>;
                   if (items.length == 0) {
-                    return Expanded(
-                        child: Text('No posts for ${widget.location} yet'));
+                     return Expanded(
+                       child: Column(
+                         children: [
+                           SizedBox(height: MediaQuery.of(context).size.height * .1),
+                           Padding(
+                             padding: const EdgeInsets.only(top: 12),
+                             child: Text('No posts for ${widget.location} yet', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, decoration: TextDecoration.underline)),
+                           ),
+                           Expanded(child: Image(image: AssetImage('assets/img/city_page.jpg'), height: MediaQuery.of(context).size.height * .4)),
+                           SizedBox(height: MediaQuery.of(context).size.height * .14)
+                         ],
+                       ),
+                     );               
                   } else {
                     return Expanded(
                         child: Column(
                       children: [
-                        Text(
-                          '${widget.location}',
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Oxygen-Bold'),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Text(
+                            '${widget.location}',
+                            style: TextStyle(
+                                fontSize: 35,
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline,
+                                fontFamily: 'Oxygen-Bold'),
+                          ),
                         ),
                         Expanded(
                           child: Scrollbar(
@@ -145,10 +160,18 @@ class _LocationPostsState extends State<LocationPosts> {
                   }
                 } else if (snapshot.hasError) {
                   return Expanded(
-                      child: Text(
-                    'There was an error getting the posts',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                  ));
+                       child: Column(
+                         children: [
+                           SizedBox(height: MediaQuery.of(context).size.height * .1),
+                           Padding(
+                             padding: const EdgeInsets.only(top: 12),
+                             child: Text('There was an error getting the posts', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, decoration: TextDecoration.underline)),
+                           ),
+                           Expanded(child: Image(image: AssetImage('assets/img/city_page.jpg'), height: MediaQuery.of(context).size.height * .4)),
+                           SizedBox(height: MediaQuery.of(context).size.height * .14)
+                         ],
+                       ),
+                    );
                 }
                 return Center(child: CircularProgressIndicator());
               })

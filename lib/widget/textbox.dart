@@ -18,22 +18,26 @@ class _TextBoxState extends State<TextBox> {
     return Container(
       alignment: Alignment.centerLeft,
       color: Colors.white,
-      child: TextField(
-        decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: 'Username',
-            suffixIcon: IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                searchUser(user);
-              },
-            )),
-        onChanged: (value) => {
-          if (mounted)
-            {
-              setState(() => {user = value})
-            }
-        },
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8),
+        child: TextField(
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: 'Username',
+              hintStyle: TextStyle(fontSize: 17),
+              suffixIcon: IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  searchUser(user);
+                },
+              )),
+          onChanged: (value) => {
+            if (mounted)
+              {
+                setState(() => {user = value})
+              }
+          },
+        ),
       ),
     );
   }

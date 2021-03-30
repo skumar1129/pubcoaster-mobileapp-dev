@@ -46,40 +46,54 @@ class _SinglePostState extends State<SinglePost> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          NavBar(),
-          FutureBuilder(
-              future: post,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  var item = snapshot.data as dynamic;
-                  return SinglePostCard(
-                      item.bar,
-                      item.location,
-                      item.createdBy,
-                      item.rating,
-                      item.createdAt,
-                      item.neighborhood,
-                      item.editedAt,
-                      item.picLink,
-                      item.uuid,
-                      item.description,
-                      item.anonymous,
-                      item.comments,
-                      item.likes,
-                      widget.currentUser);
-                } else if (snapshot.hasError) {
-                  return Expanded(
-                      child: Text(
-                    'There was an error getting the post',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                  ));
-                }
-                return Center(child: CircularProgressIndicator());
-              })
-        ],
-      ),
+      body: ListView(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        children: [SingleChildScrollView(
+          child: Column(
+            children: [
+              NavBar(),
+              FutureBuilder(
+                  future: post,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      var item = snapshot.data as dynamic;
+                      return SinglePostCard(
+                          item.bar,
+                          item.location,
+                          item.createdBy,
+                          item.rating,
+                          item.createdAt,
+                          item.neighborhood,
+                          item.editedAt,
+                          item.picLink,
+                          item.uuid,
+                          item.description,
+                          item.anonymous,
+                          item.comments,
+                          item.likes,
+                          widget.currentUser);
+                    } else if (snapshot.hasError) {
+                       return Expanded(
+                          child: Column(
+                            children: [
+                              SizedBox(height: MediaQuery.of(context).size.height * .1),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 12),
+                                child: Text('There was an error getting the post', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+                              ),
+                              Expanded(child: Image(image: AssetImage('assets/img/city_page.jpg'), height: MediaQuery.of(context).size.height * .4)),
+                              SizedBox(height: MediaQuery.of(context).size.height * .14)
+                            ],
+                          ),
+                        ); 
+                    }
+                    return Center(child: CircularProgressIndicator());
+                  })
+            ],
+          ),
+        ),
+      ]),
       bottomNavigationBar: BottomNav(),
     );
   }

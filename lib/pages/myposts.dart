@@ -71,17 +71,32 @@ class _MyPostsState extends State<MyPosts> {
                   var items = snapshot.data as List<dynamic>;
                   if (items.length == 0) {
                     return Expanded(
-                        child: Text('You have not made a post yet'));
+                       child: Column(
+                         children: [
+                           SizedBox(height: MediaQuery.of(context).size.height * .1),
+                           Padding(
+                             padding: const EdgeInsets.only(top: 12),
+                             child: Text('You have not made a post yet', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, decoration: TextDecoration.underline)),
+                           ),
+                           Expanded(child: Image(image: AssetImage('assets/img/city_page.jpg'), height: MediaQuery.of(context).size.height * .4)),
+                           SizedBox(height: MediaQuery.of(context).size.height * .14)
+                         ],
+                       ),
+                     ); 
                   } else {
                     return Expanded(
                         child: Column(
                       children: [
-                        Text(
-                          'My Posts',
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Oxygen-Bold'),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Text(
+                            'My Posts',
+                            style: TextStyle(
+                                  fontSize: 35,
+                                  fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.underline,
+                                  fontFamily: 'Oxygen-Bold'),
+                          ),
                         ),
                         Expanded(
                           child: Scrollbar(
@@ -138,10 +153,18 @@ class _MyPostsState extends State<MyPosts> {
                   }
                 } else if (snapshot.hasError) {
                   return Expanded(
-                      child: Text(
-                    'There was an error getting the post',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                  ));
+                       child: Column(
+                         children: [
+                           SizedBox(height: MediaQuery.of(context).size.height * .1),
+                           Padding(
+                             padding: const EdgeInsets.only(top: 12),
+                             child: Text('There was an error getting the post', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, decoration: TextDecoration.underline)),
+                           ),
+                           Expanded(child: Image(image: AssetImage('assets/img/city_page.jpg'), height: MediaQuery.of(context).size.height * .4)),
+                           SizedBox(height: MediaQuery.of(context).size.height * .14)
+                         ],
+                       ),
+                     ); 
                 }
                 return Center(child: CircularProgressIndicator());
               })
