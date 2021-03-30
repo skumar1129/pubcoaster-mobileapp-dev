@@ -70,11 +70,19 @@ class _MyPostsState extends State<MyPosts> {
                 if (snapshot.hasData) {
                   var items = snapshot.data as List<dynamic>;
                   if (items.length == 0) {
-                    return Container(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 12),
-                          child: Text('You have not made a post yet', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-                        ));
+                    return Expanded(
+                       child: Column(
+                         children: [
+                           SizedBox(height: MediaQuery.of(context).size.height * .1),
+                           Padding(
+                             padding: const EdgeInsets.only(top: 12),
+                             child: Text('You have not made a post yet', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, decoration: TextDecoration.underline)),
+                           ),
+                           Expanded(child: Image(image: AssetImage('assets/img/city_page.jpg'), height: MediaQuery.of(context).size.height * .4)),
+                           SizedBox(height: MediaQuery.of(context).size.height * .14)
+                         ],
+                       ),
+                     ); 
                   } else {
                     return Expanded(
                         child: Column(
@@ -145,10 +153,18 @@ class _MyPostsState extends State<MyPosts> {
                   }
                 } else if (snapshot.hasError) {
                   return Expanded(
-                      child: Text(
-                    'There was an error getting the post',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                  ));
+                       child: Column(
+                         children: [
+                           SizedBox(height: MediaQuery.of(context).size.height * .1),
+                           Padding(
+                             padding: const EdgeInsets.only(top: 12),
+                             child: Text('There was an error getting the post', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, decoration: TextDecoration.underline)),
+                           ),
+                           Expanded(child: Image(image: AssetImage('assets/img/city_page.jpg'), height: MediaQuery.of(context).size.height * .4)),
+                           SizedBox(height: MediaQuery.of(context).size.height * .14)
+                         ],
+                       ),
+                     ); 
                 }
                 return Center(child: CircularProgressIndicator());
               })

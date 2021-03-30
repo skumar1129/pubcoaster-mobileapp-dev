@@ -75,8 +75,19 @@ class _UserPostsState extends State<UserPosts> {
                   var items = snapshot.data as List<dynamic>;
                   // TODO: find a way to return empty container instead of spinner
                   if (items.length == 0) {
-                    return Expanded(
-                        child: Text('No posts for ${widget.user} yet'));
+                     return Expanded(
+                          child: Column(
+                            children: [
+                              SizedBox(height: MediaQuery.of(context).size.height * .1),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 12),
+                                child: Text('No posts for ${widget.user} yet', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, decoration: TextDecoration.underline)),
+                              ),
+                              Expanded(child: Image(image: AssetImage('assets/img/city_page.jpg'), height: MediaQuery.of(context).size.height * .4)),
+                              SizedBox(height: MediaQuery.of(context).size.height * .14)
+                            ],
+                          ),
+                      ); 
                   } else {
                     return Expanded(
                         child: Column(
@@ -138,11 +149,19 @@ class _UserPostsState extends State<UserPosts> {
                     ));
                   }
                 } else if (snapshot.hasError) {
-                  return Expanded(
-                      child: Text(
-                    'There was an error getting the posts',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                  ));
+                   return Expanded(
+                          child: Column(
+                            children: [
+                              SizedBox(height: MediaQuery.of(context).size.height * .1),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 12),
+                                child: Text('There was an error getting the posts', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, decoration: TextDecoration.underline)),
+                              ),
+                              Expanded(child: Image(image: AssetImage('assets/img/city_page.jpg'), height: MediaQuery.of(context).size.height * .4)),
+                              SizedBox(height: MediaQuery.of(context).size.height * .14)
+                            ],
+                          ),
+                    ); 
                 }
                 return Center(child: CircularProgressIndicator());
               })

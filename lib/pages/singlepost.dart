@@ -74,12 +74,19 @@ class _SinglePostState extends State<SinglePost> {
                           item.likes,
                           widget.currentUser);
                     } else if (snapshot.hasError) {
-                      return Expanded(
-                          child: Text(
-                        'There was an error getting the post',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                      ));
+                       return Expanded(
+                          child: Column(
+                            children: [
+                              SizedBox(height: MediaQuery.of(context).size.height * .1),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 12),
+                                child: Text('There was an error getting the post', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+                              ),
+                              Expanded(child: Image(image: AssetImage('assets/img/city_page.jpg'), height: MediaQuery.of(context).size.height * .4)),
+                              SizedBox(height: MediaQuery.of(context).size.height * .14)
+                            ],
+                          ),
+                        ); 
                     }
                     return Center(child: CircularProgressIndicator());
                   })

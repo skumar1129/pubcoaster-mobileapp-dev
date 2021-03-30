@@ -9,6 +9,7 @@ class LandPage extends StatelessWidget {
       children: [
         Text(
           'Loading....',
+          textAlign: TextAlign.center,
           style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
@@ -31,6 +32,7 @@ class LandPage extends StatelessWidget {
       children: [
         Text(
           'An error has occurred, try restarting the app',
+          textAlign: TextAlign.center,
           style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
