@@ -512,139 +512,134 @@ class _SinglePostCardState extends State<SinglePostCard> {
     var newDate = HttpDate.parse(widget.timestamp);
     // TODO: Look into better way to get real time
     var date = newDate.add(Duration(hours: 5));
-    return ListView(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      children: [SingleChildScrollView(
-        child: Card(
+    return Card(
+      color: Colors.black,
+      child: Column(
+        children: [
+        const Divider(
           color: Colors.black,
-          child: Column(
-            children: [
-            const Divider(
-              color: Colors.black,
-              thickness: 1,
-            ),
-            // ListTile(
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 4),
-                  child: Text(
-                    capitalize(goodBar),
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Merriweather-Bold',
-                        fontSize: 20),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 4),
-                  child: Text(
-                    'User Rating: ${widget.rating}/10',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Merriweather-Regular',
-                        fontSize: 15),
-                  ),
-                )
-              ],
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            ),
-            // ),
-            const Divider(
-              thickness: 1,
-              color: Colors.white,
-            ),
-            picture(),
+          thickness: 1,
+        ),
+        // ListTile(
+        Row(
+          children: [
             Padding(
-              padding: const EdgeInsets.only(top: 12, bottom: 12),
+              padding: const EdgeInsets.only(left: 4),
               child: Text(
-                goodContent,
+                capitalize(goodBar),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Merriweather-Bold',
+                    fontSize: 20),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 4),
+              child: Text(
+                'User Rating: ${widget.rating}/10',
                 style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Merriweather-Regular',
-                    fontSize: 25),
+                    fontSize: 15),
               ),
-            ),
-            const Divider(
-              color: Colors.white,
-              thickness: 1,
-            ),
-            Row(
-              children: [user(), likes()],
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            ),
-            const Divider(
-              color: Colors.black,
-              thickness: .5,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 6),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 6),
-                    child: Text(
-                      timeago.format(date.toLocal()),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Italic',
-                          fontSize: 18),
-                      softWrap: true,
-                    ),
-                  ),
-                  neighborhood(goodLocation)
-                ],
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              ),
-            ),
-            const Divider(
-              color: Colors.white,
-              thickness: 1,
-            ),
-            comments(),
-            const Divider(
-              color: Colors.white,
-              thickness: 1,
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 4),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * .82,
-                    child: TextField(
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      labelText: 'Create Comment',
-                      labelStyle: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
-                      border: OutlineInputBorder(),
-                      isDense: true,
-                      contentPadding: EdgeInsets.all(8),
-                    ),
-                    onChanged: (String value) {
-                      newComment = value;
-                    }),
-                  ),
-                ),
-                IconButton(
-                    icon: Icon(
-                      Icons.send,
-                      color: Colors.white,
-                    ),
-                    tooltip: 'Send comment',
-                    onPressed: () {
-                      sendComment();
-                    })
-              ],
-            ),
-            const Divider(
-              color: Colors.black,
-              thickness: 1,
             )
           ],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
         ),
-      )),
-    ]);
+        // ),
+        const Divider(
+          thickness: 1,
+          color: Colors.white,
+        ),
+        picture(),
+        Padding(
+          padding: const EdgeInsets.only(top: 12, bottom: 12),
+          child: Text(
+            goodContent,
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Merriweather-Regular',
+                fontSize: 25),
+          ),
+        ),
+        const Divider(
+          color: Colors.white,
+          thickness: 1,
+        ),
+        Row(
+          children: [user(), likes()],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        ),
+        const Divider(
+          color: Colors.black,
+          thickness: .5,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 6),
+          child: Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 6),
+                child: Text(
+                  timeago.format(date.toLocal()),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Merriweather-Italic',
+                      fontSize: 18),
+                  softWrap: true,
+                ),
+              ),
+              neighborhood(goodLocation)
+            ],
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ),
+        ),
+        const Divider(
+          color: Colors.white,
+          thickness: 1,
+        ),
+        comments(),
+        const Divider(
+          color: Colors.white,
+          thickness: 1,
+        ),
+        Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 4),
+              child: Container(
+                width: MediaQuery.of(context).size.width * .82,
+                child: TextField(
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Create Comment',
+                  labelStyle: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
+                  border: OutlineInputBorder(),
+                  isDense: true,
+                  contentPadding: EdgeInsets.all(8),
+                ),
+                onChanged: (String value) {
+                  newComment = value;
+                }),
+              ),
+            ),
+            IconButton(
+                icon: Icon(
+                  Icons.send,
+                  color: Colors.white,
+                ),
+                tooltip: 'Send comment',
+                onPressed: () {
+                  sendComment();
+                })
+          ],
+        ),
+        const Divider(
+          color: Colors.black,
+          thickness: 1,
+        )
+      ],
+    ),
+    );
   }
 }
