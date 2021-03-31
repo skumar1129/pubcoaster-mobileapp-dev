@@ -180,6 +180,7 @@ class _CreatePostState extends State<CreatePost> {
                 'picLink': url
               };
               bool succeed = await postService.addPost(reqBody);
+              print(succeed);
               if (succeed) {
                   final snackBar = SnackBar(
                       content: Text('Successfully created post!',
@@ -231,6 +232,7 @@ class _CreatePostState extends State<CreatePost> {
           'picLink': ''
         };
         bool succeed = await postService.addPost(reqBody);
+        print(succeed);
         if (succeed) {
           final snackBar = SnackBar(
               content: Text('Successfully created post!',

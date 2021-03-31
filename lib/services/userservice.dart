@@ -23,28 +23,40 @@ class UserService {
       'fullName': body['fullName'],
       'picLink': body['picLink']
     };
-    bool succeed;
+    bool succeed = true;
+    var content;
+
     try {
       await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
-      succeed = true;
     } catch (e) {
       print(e);
       succeed = false;
     }
+
+    if (content.statusCode == 500) {
+      succeed = false;
+    }
+
     return succeed;
   }
 
   Future<bool> deleteUser(username) async {
     String path = '/user/$username';
     var endpoint = Uri.http('${Config.userApiUrl}', path);
-    bool succeed;
+    bool succeed = true;
+    var content;
+
     try {
-      await http.delete(endpoint);
-      succeed = true;
+      content = await http.delete(endpoint);
     } catch (e) {
       print(e);
       succeed = false;
     }
+
+    if (content.statusCode == 500) {
+      succeed = false;
+    }
+
     return succeed;
   }
 
@@ -60,14 +72,19 @@ class UserService {
       'fullName': body['fullName'],
       'picLink': body['picLink']
     };
-    bool succeed;
+    bool succeed = true;
+    var content;
     try {
-      await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
-      succeed = true;
+      content = await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
       succeed = false;
     }
+
+    if (content.statusCode == 500) {
+      succeed = false;
+    }
+    
     return succeed;
   }
 
