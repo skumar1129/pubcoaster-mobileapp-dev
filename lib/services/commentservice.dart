@@ -19,12 +19,17 @@ class CommentService {
     // TODO: add more to headers
     Map<String, String> headers = {'Content-Type': 'application/json'};
 
-    bool succeed;
+    bool succeed = true;
+    var content;
+
     try {
-      await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
-      succeed = true;
+      content = await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
+      succeed = false;
+    }
+
+    if (content.statusCode == 500) {
       succeed = false;
     }
 
@@ -39,13 +44,17 @@ class CommentService {
     };
 
     Map<String, String> headers = {'Content-Type': 'application/json'};
-    bool succeed;
+    bool succeed = true;
+    var content;
 
     try {
-      await http.patch(endpoint, headers: headers, body: jsonEncode(reqBody));
-      succeed = true;
+      content = await http.patch(endpoint, headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
+      succeed = false;
+    }
+
+    if (content.statusCode == 500) {
       succeed = false;
     }
 
@@ -55,16 +64,20 @@ class CommentService {
   Future<bool> deleteComment(String uuid) async {
     String path = '/comment/$uuid';
     var endpoint = Uri.http('${Config.postApiUrl}', path);
-    bool succeed;
+    bool succeed = true;
+    var content;
 
     try {
-      await http.delete(endpoint);
-      succeed = true;
+      content = await http.delete(endpoint);
     } catch (e) {
       print(e);
       succeed = false;
     }
 
+    if (content.statusCode == 500) {
+      succeed = false;
+    }
+    
     return succeed;
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+//import 'dart:html';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'config.dart';
@@ -46,12 +47,16 @@ class PostService {
     // TODO: add more to headers
     Map<String, String> headers = {'Content-Type': 'application/json'};
 
-    bool succeed;
+    bool succeed = true;
+    var content;
     try {
-      await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
-      succeed = true;
+      content = await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
+      succeed = false;
+    }
+
+    if (content.statusCode == 500) {
       succeed = false;
     }
 
@@ -69,13 +74,17 @@ class PostService {
     };
 
     Map<String, String> headers = {'Content-Type': 'application/json'};
-    bool succeed;
+    bool succeed = true;
+    var content;
 
     try {
-      await http.patch(endpoint, headers: headers, body: jsonEncode(reqBody));
-      succeed = true;
+      content = await http.patch(endpoint, headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
+      succeed = false;
+    }
+
+    if (content.statusCode == 500) {
       succeed = false;
     }
 
@@ -84,13 +93,17 @@ class PostService {
 
   Future<bool> deletePost(String uuid) async {
     var endpoint = Uri.http('${Config.postApiUrl}', '/post/$uuid');
-    bool succeed;
+    bool succeed = true;
+    var content;
 
     try {
-      await http.delete(endpoint);
-      succeed = true;
+      content = await http.delete(endpoint);
     } catch (e) {
       print(e);
+      succeed = false;
+    }
+
+    if (content.statusCode == 500) {
       succeed = false;
     }
 
