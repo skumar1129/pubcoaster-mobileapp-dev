@@ -14,7 +14,7 @@ class Home extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Divider(thickness: 0.5, color: Colors.white),
-              SizedBox(height: MediaQuery.of(context).size.height * .03),
+              SizedBox(height: MediaQuery.of(context).size.height * .07),
               Padding(
                 padding: const EdgeInsets.only(right: 3, left: 3),
                 child: Text(
