@@ -5,46 +5,52 @@ class LandPage extends StatelessWidget {
   LandPage(this.status);
 
   Widget loading() {
-    return Stack(
-      children: [
-        Text(
-          'Loading....',
-          style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Hindsiliguri-Bold',
-              color: Colors.black),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/img/splash_screen.jpg"),
-                fit: BoxFit.cover),
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Stack(
+        children: [
+          Text(
+            'Loading....',
+            style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Hindsiliguri-Bold',
+                color: Colors.black),
           ),
-        ),
-      ],
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("assets/img/splash_screen.jpg"),
+                  fit: BoxFit.cover),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   Widget error() {
-    return Stack(
-      children: [
-        Text(
-          'An error has occurred, try restarting the app',
-          style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Hindsiliguri-Bold',
-              color: Colors.black),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/img/splash_screen.jpg"),
-                fit: BoxFit.cover),
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Stack(
+        children: [
+          Text(
+            'An error has occurred, try restarting the app',
+            style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Hindsiliguri-Bold',
+                color: Colors.black),
           ),
-        ),
-      ],
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("assets/img/splash_screen.jpg"),
+                  fit: BoxFit.cover),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
