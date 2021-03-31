@@ -52,13 +52,13 @@ class Home extends StatelessWidget {
                       fontFamily: 'Hindsiliguri-Regular'),
                 ),
               ),
-              const Divider(thickness: 6, color: Colors.white),
+              const Divider(thickness: 15, color: Colors.white),
               Image(
                 image: AssetImage('assets/img/home_page.jpg'),
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * .3
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * .1)
+              SizedBox(height: MediaQuery.of(context).size.height * .05)
             ],
           ),
         ),

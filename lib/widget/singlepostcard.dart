@@ -393,10 +393,9 @@ class _SinglePostCardState extends State<SinglePostCard> {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 4),
+                  Flexible(
                     child: Text(
-                      "${widget.comments[index]['createdBy']} : ${widget.comments[index]['text']}",
+                      "  ${widget.comments[index]['createdBy']}: ${widget.comments[index]['text']}",
                       style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'Merriweather-Bold'),
@@ -412,7 +411,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                           Padding(
                               padding: EdgeInsets.only(right: 4),
                               child: Text(
-                                "${timeago.format(date.toLocal())}",
+                                "   ${timeago.format(date.toLocal())}",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontFamily: 'Merriweather-Regular'),
@@ -442,7 +441,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                       return Padding(
                           padding: EdgeInsets.only(right: 4),
                           child: Text(
-                            "${timeago.format(date.toLocal())}",
+                            "   ${timeago.format(date.toLocal())}",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'Merriweather-Regular'),
@@ -458,11 +457,13 @@ class _SinglePostCardState extends State<SinglePostCard> {
                   //TODO: change
                   Padding(
                     padding: EdgeInsets.only(left: 4),
-                    child: Text(
-                      "${widget.comments[index]['createdBy']}:  ",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Bold'),
+                    child: Flexible(
+                      child: Text(
+                        "  ${widget.comments[index]['createdBy']}:  ",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Merriweather-Bold'),
+                      ),
                     ),
                   ),
                   TextField(
