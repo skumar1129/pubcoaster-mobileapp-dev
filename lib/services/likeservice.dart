@@ -17,12 +17,18 @@ class LikeService {
       'Authorization': 'Bearer $token',
       'username': item['username']
     };
-    bool succeed;
+
+    bool succeed = true;
+    var content;
+
     try {
-      await http.post(endpoint, headers: headers);
-      succeed = true;
+      content = await http.post(endpoint, headers: headers);
     } catch (e) {
       print(e);
+      succeed = false;
+    }
+
+    if (content.statusCode == 500) {
       succeed = false;
     }
 
@@ -40,13 +46,18 @@ class LikeService {
       'Authorization': 'Bearer $token',
       'username': item['username']
     };
-    bool succeed;
+
+    bool succeed = true;
+    var content;
 
     try {
-      await http.delete(endpoint, headers: headers);
-      succeed = true;
+      content = await http.delete(endpoint, headers: headers);
     } catch (e) {
       print(e);
+      succeed = false;
+    }
+
+    if (content.statusCode == 500) {
       succeed = false;
     }
 

@@ -1,4 +1,4 @@
-class User {
+class ProfUser {
   final String username;
   final String email;
   final String firstName;
@@ -6,7 +6,7 @@ class User {
   final String fullName;
   final String? picLink;
 
-  User(
+  ProfUser(
       {required this.username,
       required this.email,
       required this.firstName,
@@ -14,8 +14,8 @@ class User {
       required this.fullName,
       this.picLink});
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory ProfUser.fromJson(Map<String, dynamic> json) {
+    return ProfUser(
         username: json['username'],
         email: json['email'],
         firstName: json['firstName'],

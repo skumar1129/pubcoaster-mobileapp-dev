@@ -47,16 +47,21 @@ class PostService {
     // TODO: add more to headers
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
 
     bool succeed;
+    var content;
     try {
-      await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
+      content = await http.post(endpoint,
+          headers: headers, body: jsonEncode(reqBody));
       succeed = true;
     } catch (e) {
       print(e);
+      succeed = false;
+    }
+
+    if (content.statusCode == 500) {
       succeed = false;
     }
 
@@ -76,16 +81,21 @@ class PostService {
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
     bool succeed;
+    var content;
 
     try {
-      await http.patch(endpoint, headers: headers, body: jsonEncode(reqBody));
+      content = await http.patch(endpoint,
+          headers: headers, body: jsonEncode(reqBody));
       succeed = true;
     } catch (e) {
       print(e);
+      succeed = false;
+    }
+
+    if (content.statusCode == 500) {
       succeed = false;
     }
 
@@ -98,15 +108,19 @@ class PostService {
     bool succeed;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
+    var content;
 
     try {
-      await http.delete(endpoint, headers: headers);
+      content = await http.delete(endpoint, headers: headers);
       succeed = true;
     } catch (e) {
       print(e);
+      succeed = false;
+    }
+
+    if (content.statusCode == 500) {
       succeed = false;
     }
 
@@ -118,7 +132,6 @@ class PostService {
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
 
@@ -137,7 +150,6 @@ class PostService {
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
     var endpoint;
@@ -162,7 +174,6 @@ class PostService {
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
     var endpoint;
@@ -187,7 +198,6 @@ class PostService {
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
     var endpoint;
@@ -212,7 +222,6 @@ class PostService {
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
     var endpoint;
@@ -237,7 +246,6 @@ class PostService {
     String user = FirebaseAuth.instance.currentUser!.displayName!;
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
       'Authorization': 'Bearer $token',
       'username': user
     };
@@ -262,7 +270,6 @@ class PostService {
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
     var endpoint;

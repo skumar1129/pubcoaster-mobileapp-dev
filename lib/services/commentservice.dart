@@ -25,12 +25,18 @@ class CommentService {
 
     // TODO: add more to headers
 
-    bool succeed;
+    bool succeed = true;
+    var content;
+
     try {
-      await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
-      succeed = true;
+      content = await http.post(endpoint,
+          headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
+      succeed = false;
+    }
+
+    if (content.statusCode == 500) {
       succeed = false;
     }
 
@@ -49,13 +55,19 @@ class CommentService {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
-    bool succeed;
+
+    bool succeed = true;
+    var content;
 
     try {
-      await http.patch(endpoint, headers: headers, body: jsonEncode(reqBody));
-      succeed = true;
+      content = await http.patch(endpoint,
+          headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
+      succeed = false;
+    }
+
+    if (content.statusCode == 500) {
       succeed = false;
     }
 
@@ -71,13 +83,18 @@ class CommentService {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
-    bool succeed;
+
+    bool succeed = true;
+    var content;
 
     try {
-      await http.delete(endpoint, headers: headers);
-      succeed = true;
+      content = await http.delete(endpoint, headers: headers);
     } catch (e) {
       print(e);
+      succeed = false;
+    }
+
+    if (content.statusCode == 500) {
       succeed = false;
     }
 

@@ -162,6 +162,17 @@ class _CreatePostState extends State<CreatePost> {
                   fontSize: 20)),
           backgroundColor: Colors.red);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else if (descrip.length > 128) { //description is too long
+       final snackBar = SnackBar(
+          content: Text(
+              'Description is too long. Please fit your content within 128 characters.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
       if (filePicked) {
           try {
@@ -388,7 +399,7 @@ class _CreatePostState extends State<CreatePost> {
                     maxLines: 4,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'What\'s good?*'),
+                        labelText: 'What\'s good?* (character limit: 128)'),
                     onChanged: (value) => {
                       if (mounted)
                         {

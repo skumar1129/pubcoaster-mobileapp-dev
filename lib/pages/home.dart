@@ -14,7 +14,7 @@ class Home extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Divider(thickness: 0.5, color: Colors.white),
-              SizedBox(height: MediaQuery.of(context).size.height * .03),
+              SizedBox(height: MediaQuery.of(context).size.height * .07),
               Padding(
                 padding: const EdgeInsets.only(right: 3, left: 3),
                 child: Text(
@@ -52,13 +52,13 @@ class Home extends StatelessWidget {
                       fontFamily: 'Hindsiliguri-Regular'),
                 ),
               ),
-              const Divider(thickness: 6, color: Colors.white),
+              const Divider(thickness: 15, color: Colors.white),
               Image(
                 image: AssetImage('assets/img/home_page.jpg'),
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * .3
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * .1)
+              SizedBox(height: MediaQuery.of(context).size.height * .05)
             ],
           ),
         ),
