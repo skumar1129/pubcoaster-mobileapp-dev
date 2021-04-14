@@ -48,11 +48,10 @@ class FeedPostCard extends StatelessWidget {
 
   Widget user(username) {
     if (username != null) {
-      String goodUsername = utf8.decode(username!.codeUnits);
       return Padding(
         padding: EdgeInsets.only(left: 4),
         child: Text(
-          '$goodUsername',
+          '$username',
           style: TextStyle(
               fontSize: 18,
               color: Colors.white,
@@ -112,13 +111,12 @@ class FeedPostCard extends StatelessWidget {
     }
   }
 
-  Widget nbhood(neighborhood, goodLocation) {
+  Widget nbhood(neighborhood, location) {
     if (neighborhood != null) {
-      String goodNbhood = utf8.decode(neighborhood!.codeUnits);
       return Padding(
         padding: EdgeInsets.only(right: 8),
           child: Text(
-        '${capitalize(goodNbhood)}, $goodLocation',
+        '${capitalize(neighborhood)}, $location',
         style: TextStyle(
             color: Colors.white,
             fontFamily: 'Merriweather-Regular',
@@ -129,7 +127,7 @@ class FeedPostCard extends StatelessWidget {
       return Padding(
         padding: EdgeInsets.only(right: 8),
           child: Text(
-        '$goodLocation',
+        '$location',
         style: TextStyle(
             color: Colors.white,
             fontFamily: 'Merriweather-Regular', fontSize: 16),
@@ -166,9 +164,6 @@ class FeedPostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String goodContent = utf8.decode(content.codeUnits);
-    String goodBar = utf8.decode(bar.codeUnits);
-    String goodLocation = utf8.decode(location.codeUnits);
     var newDate = HttpDate.parse(timestamp);
     // TODO: Look into better way to get real time
     var date = newDate.add(Duration(hours: 5));
@@ -183,7 +178,7 @@ class FeedPostCard extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(left: 8, top: 8),
                   child: Text(
-                    capitalize(goodBar),
+                    capitalize(bar),
                     style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'Merriweather-Bold',
@@ -211,7 +206,7 @@ class FeedPostCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 4, bottom: 4),
               child: Text(
-                goodContent,
+                content,
                 style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Merriweather-Regular',
@@ -249,7 +244,7 @@ class FeedPostCard extends StatelessWidget {
                       softWrap: true,
                     ),
                   ),
-                  nbhood(neighborhood, goodLocation)
+                  nbhood(neighborhood, location)
                 ],
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),

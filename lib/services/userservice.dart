@@ -27,7 +27,7 @@ class UserService {
     var content;
 
     try {
-      await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
+      content = await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
       succeed = false;

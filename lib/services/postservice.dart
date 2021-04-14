@@ -126,13 +126,17 @@ class PostService {
     String path = '/post/location/$location';
     var endpoint;
     endpoint = Uri.http('${Config.postApiUrl}', path);
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
     if (page != null && page > 1) {
-      var params = {'offset': page.toString()};
+      var params = {'offset': page.toString()}; 
       endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
-      response = await http.get(endpoint);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }

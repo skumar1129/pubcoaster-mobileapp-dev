@@ -141,8 +141,8 @@ class _SinglePostCardState extends State<SinglePostCard> {
   editComment(uuid) async {
     if (mounted) {
       setState(() {
-        editCommentVar = true;
         editCommentUuid = uuid;
+        editCommentVar = true;
       });
     }
   }
@@ -390,113 +390,129 @@ class _SinglePostCardState extends State<SinglePostCard> {
             var date = newDate.add(Duration(hours: 5));
             if (editCommentVar == false ||
                 editCommentUuid != widget.comments[index]['uuid']) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: Text(
-                      "  ${widget.comments[index]['createdBy']}: ${widget.comments[index]['text']}",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Bold'),
-                    ),
-                  ),
-                  (() {
-                    if (widget.currentUser ==
-                            widget.comments[index]['createdBy'] &&
-                        editCommentVar == false) {
-                      //not going to let a user edit multiple comments at once
-                      return Row(
-                        children: [
-                          Padding(
-                              padding: EdgeInsets.only(right: 4),
-                              child: Text(
-                                "   ${timeago.format(date.toLocal())}",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Merriweather-Regular'),
-                              )),
-                          IconButton(
-                              icon: Icon(
-                                Icons.edit,
-                                color: Colors.red,
-                              ),
-                              tooltip: 'Edit Comment',
-                              onPressed: () {
-                                editComment(widget.comments[index]['uuid']);
-                              }),
-                          IconButton(
-                              icon: Icon(
-                                Icons.delete,
-                                color: Colors.red,
-                              ),
-                              tooltip: 'Delete Comment',
-                              onPressed: () {
-                                deleteComment(
-                                    index, widget.comments[index]['uuid']);
-                              }),
-                        ],
-                      );
-                    } else {
-                      return Padding(
-                          padding: EdgeInsets.only(right: 4),
-                          child: Text(
-                            "   ${timeago.format(date.toLocal())}",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Merriweather-Regular'),
-                          ));
-                    }
-                  }()),
-                ],
-              );
-            } else {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  //TODO: change
-                  Padding(
-                    padding: EdgeInsets.only(left: 4),
-                    child: Flexible(
+                  //print('uuid: ' + widget.comments[index]['uuid']);
+              return Padding(
+                padding: const EdgeInsets.only(left: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
                       child: Text(
-                        "  ${widget.comments[index]['createdBy']}:  ",
+                        "${widget.comments[index]['createdBy']}: ${widget.comments[index]['text']}",
                         style: TextStyle(
                             color: Colors.white,
+                            fontSize: 15,
                             fontFamily: 'Merriweather-Bold'),
                       ),
                     ),
-                  ),
-                  TextField(
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        labelText: 'New Comment Text',
-                        labelStyle: TextStyle(color: Colors.white),
-                        border: OutlineInputBorder(),
-                        isDense: true,
-                        contentPadding: EdgeInsets.all(8),
+                    (() {
+                      if (widget.currentUser ==
+                              widget.comments[index]['createdBy'] &&
+                          editCommentVar == false) {
+                        //not going to let a user edit multiple comments at once
+                        return Row(
+                          children: [
+                            Padding(
+                                padding: EdgeInsets.only(right: 4),
+                                child: Text(
+                                  "   ${timeago.format(date.toLocal())}",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                      fontFamily: 'Merriweather-Regular'),
+                                )),
+                            IconButton(
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: Colors.red,
+                                ),
+                                tooltip: 'Edit Comment',
+                                onPressed: () {
+                                  editComment(widget.comments[index]['uuid']);
+                                }),
+                            IconButton(
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                                tooltip: 'Delete Comment',
+                                onPressed: () {
+                                  deleteComment(
+                                      index, widget.comments[index]['uuid']);
+                                }),
+                          ],
+                        );
+                      } else {
+                        return Padding(
+                            padding: EdgeInsets.only(right: 4),
+                            child: Text(
+                              "   ${timeago.format(date.toLocal())}",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                  fontFamily: 'Merriweather-Regular'),
+                            ));
+                      }
+                    }()),
+                  ],
+                ),
+              );
+            } else {
+              return Padding(
+                padding: const EdgeInsets.only(left: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    //TODO: change
+                    Flexible(
+                      child: Text(
+                        "${widget.comments[index]['createdBy']}: ",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontFamily: 'Merriweather-Bold'),
                       ),
-                      onChanged: (String value) {
-                        newEditComment = value;
-                      }),
-                  IconButton(
-                      icon: Icon(
-                        Icons.save,
-                        color: Colors.red,
-                      ),
-                      tooltip: 'Save new comment',
-                      onPressed: () {
-                        saveComment(widget.comments[index]['uuid']);
-                      }),
-                  IconButton(
-                      icon: Icon(
-                        Icons.cancel,
-                        color: Colors.red,
-                      ),
-                      tooltip: 'Cancel new comment',
-                      onPressed: () {
-                        cancelComment();
-                      })
-                ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * .42,
+                          child: TextField(
+                            style: TextStyle(color: Colors.white, fontSize: 14),
+                            decoration: InputDecoration(
+                              labelText: 'New Comment Text',
+                              labelStyle: TextStyle(color: Colors.white),
+                              border: OutlineInputBorder(),
+                              isDense: true,
+                              //contentPadding: EdgeInsets.all(8),
+                            ),
+                            onChanged: (String value) {
+                              newEditComment = value;
+                          }),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.save,
+                            color: Colors.red,
+                          ),
+                          tooltip: 'Save new comment',
+                          onPressed: () {
+                            saveComment(widget.comments[index]['uuid']);
+                        }),
+                        IconButton(
+                          icon: Icon(
+                            Icons.cancel,
+                            color: Colors.red,
+                          ),
+                          tooltip: 'Cancel new comment',
+                          onPressed: () {
+                            cancelComment();
+                        })
+                      ]
+                    )
+                  ],
+                ),
               );
             }
           },
