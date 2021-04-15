@@ -113,13 +113,14 @@ class _SinglePostCardState extends State<SinglePostCard> {
       'uuid': widget.uuid,
       'createdBy': widget.currentUser
     };
+    var commentResponse = await commentService.addComment(item);
     var comment = {
       'createdAt': HttpDate.format(DateTime.now()),
       'text': newComment,
       'createdBy': widget.currentUser,
+      'uuid': commentResponse['uuid']
     };
-    bool succeed = await commentService.addComment(item);
-    if (succeed) {
+    if (commentResponse != null) {
       setState(() {
         newComment = "";
         widget.comments.insert(0, comment);
@@ -240,9 +241,12 @@ class _SinglePostCardState extends State<SinglePostCard> {
   }
 
   Widget picture() {
-    if (widget.picLink != '' && widget.picLink!=null) {
+    if (widget.picLink != '' && widget.picLink != null) {
       return Column(children: [
-        Image(image: NetworkImage('${widget.picLink}'), height: MediaQuery.of(context).size.height * .3, width: MediaQuery.of(context).size.width * .8),
+        Image(
+            image: NetworkImage('${widget.picLink}'),
+            height: MediaQuery.of(context).size.height * .3,
+            width: MediaQuery.of(context).size.width * .8),
         const Divider(
           thickness: 1,
           color: Colors.white,
@@ -366,16 +370,18 @@ class _SinglePostCardState extends State<SinglePostCard> {
       return Padding(
         padding: const EdgeInsets.only(top: 6, bottom: 6),
         child: new Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'No comments yet',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-              color: Colors.white, fontFamily: 'Merriweather-Regular', fontSize: 18),
-            )
-        ]),
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'No comments yet',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Merriweather-Regular',
+                    fontSize: 18),
+              )
+            ]),
       );
     } else {
       return ListView.separated(
@@ -384,13 +390,12 @@ class _SinglePostCardState extends State<SinglePostCard> {
           padding: EdgeInsets.all(1),
           itemCount: widget.comments.length,
           itemBuilder: (BuildContext context, int index) {
-            var newDate =
-                HttpDate.parse(widget.comments[index]['createdAt']);
+            var newDate = HttpDate.parse(widget.comments[index]['createdAt']);
             // TODO: Look into better way to get real time
             var date = newDate.add(Duration(hours: 5));
             if (editCommentVar == false ||
                 editCommentUuid != widget.comments[index]['uuid']) {
-                  //print('uuid: ' + widget.comments[index]['uuid']);
+              //print('uuid: ' + widget.comments[index]['uuid']);
               return Padding(
                 padding: const EdgeInsets.only(left: 4),
                 child: Row(
@@ -473,12 +478,10 @@ class _SinglePostCardState extends State<SinglePostCard> {
                             fontFamily: 'Merriweather-Bold'),
                       ),
                     ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * .42,
-                          child: TextField(
+                    Row(mainAxisSize: MainAxisSize.max, children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .42,
+                        child: TextField(
                             style: TextStyle(color: Colors.white, fontSize: 14),
                             decoration: InputDecoration(
                               labelText: 'New Comment Text',
@@ -489,9 +492,9 @@ class _SinglePostCardState extends State<SinglePostCard> {
                             ),
                             onChanged: (String value) {
                               newEditComment = value;
-                          }),
-                        ),
-                        IconButton(
+                            }),
+                      ),
+                      IconButton(
                           icon: Icon(
                             Icons.save,
                             color: Colors.red,
@@ -499,8 +502,8 @@ class _SinglePostCardState extends State<SinglePostCard> {
                           tooltip: 'Save new comment',
                           onPressed: () {
                             saveComment(widget.comments[index]['uuid']);
-                        }),
-                        IconButton(
+                          }),
+                      IconButton(
                           icon: Icon(
                             Icons.cancel,
                             color: Colors.red,
@@ -508,9 +511,8 @@ class _SinglePostCardState extends State<SinglePostCard> {
                           tooltip: 'Cancel new comment',
                           onPressed: () {
                             cancelComment();
-                        })
-                      ]
-                    )
+                          })
+                    ])
                   ],
                 ),
               );
@@ -533,130 +535,131 @@ class _SinglePostCardState extends State<SinglePostCard> {
       color: Colors.black,
       child: Column(
         children: [
-        const Divider(
-          color: Colors.black,
-          thickness: 1,
-        ),
-        // ListTile(
-        Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 4),
-              child: Text(
-                capitalize(goodBar),
-                style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'Merriweather-Bold',
-                    fontSize: 20),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 4),
-              child: Text(
-                'User Rating: ${widget.rating}/10',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'Merriweather-Regular',
-                    fontSize: 15),
-              ),
-            )
-          ],
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        ),
-        // ),
-        const Divider(
-          thickness: 1,
-          color: Colors.white,
-        ),
-        picture(),
-        Padding(
-          padding: const EdgeInsets.only(top: 12, bottom: 12),
-          child: Text(
-            goodContent,
-            style: TextStyle(
-                color: Colors.white,
-                fontFamily: 'Merriweather-Regular',
-                fontSize: 25),
+          const Divider(
+            color: Colors.black,
+            thickness: 1,
           ),
-        ),
-        const Divider(
-          color: Colors.white,
-          thickness: 1,
-        ),
-        Row(
-          children: [user(), likes()],
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        ),
-        const Divider(
-          color: Colors.black,
-          thickness: .5,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 6),
-          child: Row(
+          // ListTile(
+          Row(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 6),
+                padding: const EdgeInsets.only(left: 4),
                 child: Text(
-                  timeago.format(date.toLocal()),
+                  capitalize(goodBar),
                   style: TextStyle(
                       color: Colors.white,
-                      fontFamily: 'Merriweather-Italic',
-                      fontSize: 18),
-                  softWrap: true,
+                      fontFamily: 'Merriweather-Bold',
+                      fontSize: 20),
                 ),
               ),
-              neighborhood(goodLocation)
+              Padding(
+                padding: const EdgeInsets.only(right: 4),
+                child: Text(
+                  'User Rating: ${widget.rating}/10',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Merriweather-Regular',
+                      fontSize: 15),
+                ),
+              )
             ],
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
           ),
-        ),
-        const Divider(
-          color: Colors.white,
-          thickness: 1,
-        ),
-        comments(),
-        const Divider(
-          color: Colors.white,
-          thickness: 1,
-        ),
-        Row(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: 4),
-              child: Container(
-                width: MediaQuery.of(context).size.width * .82,
-                child: TextField(
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  labelText: 'Create Comment',
-                  labelStyle: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),
-                  border: OutlineInputBorder(),
-                  isDense: true,
-                  contentPadding: EdgeInsets.all(8),
-                ),
-                onChanged: (String value) {
-                  newComment = value;
-                }),
-              ),
-            ),
-            IconButton(
-                icon: Icon(
-                  Icons.send,
+          // ),
+          const Divider(
+            thickness: 1,
+            color: Colors.white,
+          ),
+          picture(),
+          Padding(
+            padding: const EdgeInsets.only(top: 12, bottom: 12),
+            child: Text(
+              goodContent,
+              style: TextStyle(
                   color: Colors.white,
+                  fontFamily: 'Merriweather-Regular',
+                  fontSize: 25),
+            ),
+          ),
+          const Divider(
+            color: Colors.white,
+            thickness: 1,
+          ),
+          Row(
+            children: [user(), likes()],
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ),
+          const Divider(
+            color: Colors.black,
+            thickness: .5,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 6),
+                  child: Text(
+                    timeago.format(date.toLocal()),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Merriweather-Italic',
+                        fontSize: 18),
+                    softWrap: true,
+                  ),
                 ),
-                tooltip: 'Send comment',
-                onPressed: () {
-                  sendComment();
-                })
-          ],
-        ),
-        const Divider(
-          color: Colors.black,
-          thickness: 1,
-        )
-      ],
-    ),
+                neighborhood(goodLocation)
+              ],
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ),
+          ),
+          const Divider(
+            color: Colors.white,
+            thickness: 1,
+          ),
+          comments(),
+          const Divider(
+            color: Colors.white,
+            thickness: 1,
+          ),
+          Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 4),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * .82,
+                  child: TextField(
+                      style: TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        labelText: 'Create Comment',
+                        labelStyle: TextStyle(
+                            color: Colors.white, fontStyle: FontStyle.italic),
+                        border: OutlineInputBorder(),
+                        isDense: true,
+                        contentPadding: EdgeInsets.all(8),
+                      ),
+                      onChanged: (String value) {
+                        newComment = value;
+                      }),
+                ),
+              ),
+              IconButton(
+                  icon: Icon(
+                    Icons.send,
+                    color: Colors.white,
+                  ),
+                  tooltip: 'Send comment',
+                  onPressed: () {
+                    sendComment();
+                  })
+            ],
+          ),
+          const Divider(
+            color: Colors.black,
+            thickness: 1,
+          )
+        ],
+      ),
     );
   }
 }
