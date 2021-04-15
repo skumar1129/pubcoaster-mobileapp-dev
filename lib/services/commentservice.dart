@@ -7,7 +7,7 @@ import 'dart:async';
 class CommentService {
   // TODO: Add auth token in header for all calls (will do when firebase is implemented)
 
-  Future<bool> addComment(item) async {
+  Future<dynamic> addComment(item) async {
     String path = '/comment';
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
@@ -25,22 +25,24 @@ class CommentService {
 
     // TODO: add more to headers
 
-    bool succeed = true;
     var content;
+    var comment;
 
     try {
       content = await http.post(endpoint,
           headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
-      succeed = false;
+      comment = null;
     }
+
+    comment = jsonDecode(content.body);
 
     if (content.statusCode == 500) {
-      succeed = false;
+      comment = null;
     }
 
-    return succeed;
+    return comment;
   }
 
   Future<bool> updateComment(String uuid, item) async {
