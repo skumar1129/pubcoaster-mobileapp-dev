@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:strings/strings.dart';
-import 'dart:convert';
 import 'package:NewApp/pages/singlepost.dart';
 import 'package:NewApp/models/postargs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -66,45 +65,45 @@ class FeedPostCard extends StatelessWidget {
   Widget likes(numLikes) {
     if (numLikes == 0) {
       return Padding(
-        padding: EdgeInsets.only(right: 8),
+          padding: EdgeInsets.only(right: 8),
           child: Text(
-        'No Likes Yet',
-       style: TextStyle(
-          fontSize: 16,
-          color: Colors.white,
-          fontFamily: 'Merriweather-Regular'),
-      ));
+            'No Likes Yet',
+            style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+                fontFamily: 'Merriweather-Regular'),
+          ));
     } else if (numLikes == 1) {
       return Padding(
-        padding: EdgeInsets.only(right: 8),
+          padding: EdgeInsets.only(right: 8),
           child: Text(
-        '$numLikes like',
-       style: TextStyle(
-          fontSize: 16,
-          color: Colors.white,
-          fontFamily: 'Merriweather-Regular'),
-      ));
+            '$numLikes like',
+            style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+                fontFamily: 'Merriweather-Regular'),
+          ));
     } else {
       return Padding(
-        padding: EdgeInsets.only(right: 8),
+          padding: EdgeInsets.only(right: 8),
           child: Text(
-        '$numLikes likes',
-        style: TextStyle(
-          fontSize: 16,
-          color: Colors.white,
-          fontFamily: 'Merriweather-Regular'),
-      ));
+            '$numLikes likes',
+            style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+                fontFamily: 'Merriweather-Regular'),
+          ));
     }
   }
 
   Widget picture(picLink, context) {
-     if (picLink != '' && picLink!=null) {
+    if (picLink != '' && picLink != null) {
       return Column(children: [
-        Image(image: NetworkImage('$picLink'), height: MediaQuery.of(context).size.height * .4, width: MediaQuery.of(context).size.width * .92),
-        const Divider(
-          color: Colors.white,
-          thickness: 1.0
-        )
+        Image(
+            image: NetworkImage('$picLink'),
+            height: MediaQuery.of(context).size.height * .4,
+            width: MediaQuery.of(context).size.width * .92),
+        const Divider(color: Colors.white, thickness: 1.0)
       ]);
     } else {
       return Container();
@@ -114,25 +113,26 @@ class FeedPostCard extends StatelessWidget {
   Widget nbhood(neighborhood, location) {
     if (neighborhood != null) {
       return Padding(
-        padding: EdgeInsets.only(right: 8),
+          padding: EdgeInsets.only(right: 8),
           child: Text(
-        '${capitalize(neighborhood)}, $location',
-        style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular',
-            fontSize: 18),
-        softWrap: true,
-      ));
+            '${capitalize(neighborhood)}, $location',
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Merriweather-Regular',
+                fontSize: 18),
+            softWrap: true,
+          ));
     } else {
       return Padding(
-        padding: EdgeInsets.only(right: 8),
+          padding: EdgeInsets.only(right: 8),
           child: Text(
-        '$location',
-        style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular', fontSize: 16),
-        softWrap: true,
-      ));
+            '$location',
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Merriweather-Regular',
+                fontSize: 16),
+            softWrap: true,
+          ));
     }
   }
 
@@ -142,25 +142,30 @@ class FeedPostCard extends StatelessWidget {
         'No comments yet',
         textAlign: TextAlign.center,
         style: TextStyle(
-        color: Colors.white, fontFamily: 'Merriweather-Regular', fontSize: 18),
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular',
+            fontSize: 18),
       );
     } else if (numComments == 1) {
       return Text(
         '$numComments comment',
         textAlign: TextAlign.center,
         style: TextStyle(
-        color: Colors.white, fontFamily: 'Merriweather-Regular', fontSize: 18),
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular',
+            fontSize: 18),
       );
     } else {
       return Text(
         '$numComments comments',
         textAlign: TextAlign.center,
         style: TextStyle(
-        color: Colors.white, fontFamily: 'Merriweather-Regular', fontSize: 18),
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular',
+            fontSize: 18),
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -180,57 +185,45 @@ class FeedPostCard extends StatelessWidget {
                   child: Text(
                     capitalize(bar),
                     style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Bold',
-                          fontSize: 20),
+                        color: Colors.white,
+                        fontFamily: 'Merriweather-Bold',
+                        fontSize: 20),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(right: 8, top: 8),
+                    padding: EdgeInsets.only(right: 8, top: 8),
                     child: Text(
-                  'User Rating: $rating/10',
-                  style: TextStyle(
+                      'User Rating: $rating/10',
+                      style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'Merriweather-Bold',
                           fontSize: 16),
-                ))
+                    ))
               ],
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
             // ),
-            const Divider(
-              color: Colors.white,
-              thickness: 1.0
-            ),
+            const Divider(color: Colors.white, thickness: 1.0),
             picture(picLink, context),
             Padding(
               padding: const EdgeInsets.only(top: 4, bottom: 4),
               child: Text(
                 content,
                 style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Merriweather-Regular',
-                        fontSize: 20),
+                    color: Colors.white,
+                    fontFamily: 'Merriweather-Regular',
+                    fontSize: 20),
               ),
             ),
-            const Divider(
-              color: Colors.white,
-              thickness: 1.0
-            ),
+            const Divider(color: Colors.white, thickness: 1.0),
             Padding(
               padding: const EdgeInsets.only(top: 4, bottom: 4),
               child: Row(
-                children: [
-                  user(username),
-                  likes(numLikes)
-                ],
+                children: [user(username), likes(numLikes)],
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
             ),
-            const Divider(
-              color: Colors.black,
-              thickness: 1.0
-            ),
+            const Divider(color: Colors.black, thickness: 1.0),
             Padding(
               padding: const EdgeInsets.only(top: 4, bottom: 4),
               child: Row(
@@ -240,7 +233,9 @@ class FeedPostCard extends StatelessWidget {
                     child: Text(
                       timeago.format(date.toLocal()),
                       style: TextStyle(
-                          color: Colors.white, fontFamily: 'Merriweather-Italic', fontSize: 14),
+                          color: Colors.white,
+                          fontFamily: 'Merriweather-Italic',
+                          fontSize: 14),
                       softWrap: true,
                     ),
                   ),
@@ -249,24 +244,16 @@ class FeedPostCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
             ),
-            const Divider(
-              color: Colors.white,
-              thickness: 1.0
-            ),
+            const Divider(color: Colors.white, thickness: 1.0),
             Padding(
               padding: const EdgeInsets.only(top: 4),
               child: Row(
-                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  comments(numComments)
-                ],
+                children: [comments(numComments)],
               ),
             ),
-            const Divider(
-              color: Colors.black,
-              thickness: 1.0
-            ),
+            const Divider(color: Colors.black, thickness: 1.0),
           ],
         ),
       ),

@@ -259,11 +259,10 @@ class _SinglePostCardState extends State<SinglePostCard> {
 
   Widget user() {
     if (widget.username != null) {
-      String goodUsername = utf8.decode(widget.username!.codeUnits);
       return Padding(
         padding: EdgeInsets.only(left: 4),
         child: Text(
-          '$goodUsername',
+          '${widget.username}',
           style: TextStyle(
               fontSize: 18,
               color: Colors.white,
@@ -338,13 +337,12 @@ class _SinglePostCardState extends State<SinglePostCard> {
     }
   }
 
-  Widget neighborhood(goodLocation) {
+  Widget neighborhood() {
     if (widget.neighborhood != null) {
-      String goodNbhood = utf8.decode(widget.neighborhood!.codeUnits);
       return Padding(
           padding: EdgeInsets.only(right: 6),
           child: Text(
-            '${capitalize(goodNbhood)}, $goodLocation',
+            '${capitalize(widget.neighborhood!)}, ${widget.location}',
             style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'Merriweather-Regular',
@@ -355,7 +353,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
       return Padding(
           padding: EdgeInsets.only(right: 6),
           child: Text(
-            '$goodLocation',
+            '${widget.location}',
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
@@ -525,9 +523,6 @@ class _SinglePostCardState extends State<SinglePostCard> {
 
   @override
   Widget build(BuildContext context) {
-    String goodContent = utf8.decode(widget.description.codeUnits);
-    String goodBar = utf8.decode(widget.bar.codeUnits);
-    String goodLocation = utf8.decode(widget.location.codeUnits);
     var newDate = HttpDate.parse(widget.timestamp);
     // TODO: Look into better way to get real time
     var date = newDate.add(Duration(hours: 5));
@@ -545,7 +540,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
               Padding(
                 padding: const EdgeInsets.only(left: 4),
                 child: Text(
-                  capitalize(goodBar),
+                  capitalize(widget.bar),
                   style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Merriweather-Bold',
@@ -574,7 +569,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
           Padding(
             padding: const EdgeInsets.only(top: 12, bottom: 12),
             child: Text(
-              goodContent,
+              widget.description,
               style: TextStyle(
                   color: Colors.white,
                   fontFamily: 'Merriweather-Regular',
@@ -608,7 +603,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                     softWrap: true,
                   ),
                 ),
-                neighborhood(goodLocation)
+                neighborhood()
               ],
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
