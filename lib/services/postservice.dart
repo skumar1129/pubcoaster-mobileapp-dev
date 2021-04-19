@@ -28,11 +28,8 @@ List<MyPost> parseMyPosts(dataItems) {
 
 // TODO: Change Uri.http to Uri.https when APIs are deployed
 class PostService {
-  // TODO: Add auth token in header for all calls (will do when firebase is implemented)
-
   Future<bool> addPost(item) async {
     var endpoint = Uri.http('${Config.postApiUrl}', '/post');
-    // TODO: Add user from local storage
     var reqBody = {
       'username': item['username'],
       'anonymous': item['anonymous'],
@@ -44,13 +41,13 @@ class PostService {
       'picLink': item['picLink']
     };
 
-    // TODO: add more to headers
     Map<String, String> headers = {'Content-Type': 'application/json'};
 
     bool succeed = true;
     var content;
     try {
-      content = await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
+      content = await http.post(endpoint,
+          headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
       succeed = false;
@@ -78,7 +75,8 @@ class PostService {
     var content;
 
     try {
-      content = await http.patch(endpoint, headers: headers, body: jsonEncode(reqBody));
+      content = await http.patch(endpoint,
+          headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
       succeed = false;
@@ -131,7 +129,7 @@ class PostService {
       'Accept': 'application/json',
     };
     if (page != null && page > 1) {
-      var params = {'offset': page.toString()}; 
+      var params = {'offset': page.toString()};
       endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;

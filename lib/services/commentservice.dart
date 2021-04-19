@@ -4,19 +4,15 @@ import 'config.dart';
 import 'dart:async';
 
 class CommentService {
-  // TODO: Add auth token in header for all calls (will do when firebase is implemented)
-
   Future<dynamic> addComment(item) async {
     String path = '/comment';
     var endpoint = Uri.http('${Config.postApiUrl}', path);
-    // TODO: Add user from local storage
     var reqBody = {
       'uuid': item['uuid'],
       'createdBy': item['createdBy'],
       'text': item['text'],
     };
 
-    // TODO: add more to headers
     Map<String, String> headers = {'Content-Type': 'application/json'};
 
     var content;
