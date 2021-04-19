@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:jiffy/jiffy.dart';
 import 'package:strings/strings.dart';
 import 'package:NewApp/pages/singlepost.dart';
 import 'package:NewApp/services/postservice.dart';
@@ -247,7 +247,7 @@ class _MyPostCardState extends State<MyPostCard> {
   Widget build(BuildContext context) {
     var newDate = HttpDate.parse(widget.timestamp);
     // TODO: Look into better way to get real time
-    var date = newDate.add(Duration(hours: 5));
+    var date = newDate.add(Duration(hours: 4));
     if (!editMode) {
       return GestureDetector(
         child: Card(
@@ -316,7 +316,7 @@ class _MyPostCardState extends State<MyPostCard> {
                     Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
-                        timeago.format(date.toLocal()),
+                        Jiffy(date).fromNow(),
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Merriweather-Italic',

@@ -3,16 +3,13 @@ import 'config.dart';
 import 'dart:async';
 
 class LikeService {
-  // TODO: Add auth token in header for all calls (will do when firebase is implemented)
-
   Future<bool> addLike(item) async {
     String path = '/like/${item['uuid']}';
     var endpoint = Uri.http('${Config.postApiUrl}', path);
-    // TODO: Add user from local storage
 
     Map<String, String> headers = {'username': item['username']};
     bool succeed = true;
-    var content; 
+    var content;
 
     try {
       content = await http.post(endpoint, headers: headers);
@@ -31,7 +28,6 @@ class LikeService {
   Future<bool> deleteLike(item) async {
     String path = '/like/${item['uuid']}';
     var endpoint = Uri.http('${Config.postApiUrl}', path);
-    // TODO: Add user from local storage
 
     bool succeed = true;
     var content;

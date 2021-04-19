@@ -24,14 +24,16 @@ class _AddUserInfoState extends State<AddUserInfo> {
   Future getImage(bool gallery) async {
     final pickedFile;
     // Let user select photo from gallery
-    if(gallery) {
+    if (gallery) {
       pickedFile = await picker.getImage(
-          source: ImageSource.gallery,);
-    } 
+        source: ImageSource.gallery,
+      );
+    }
     // Otherwise open camera to get new photo
-    else{
+    else {
       pickedFile = await picker.getImage(
-          source: ImageSource.camera,);
+        source: ImageSource.camera,
+      );
     }
 
     if (mounted) {
@@ -47,65 +49,37 @@ class _AddUserInfoState extends State<AddUserInfo> {
     }
   }
 
-   Widget alertText() {
+  Widget alertText() {
     if (!filePicked) {
-      return Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black));
+      return Text('Choose an upload method',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black));
     } else {
-      return Text(_image.toString(), style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black, fontSize: 16));
+      return Text(_image.toString(),
+          style: TextStyle(
+              fontStyle: FontStyle.italic, color: Colors.black, fontSize: 16));
     }
   }
 
   Widget pictureButton() {
     if (!filePicked) {
       return FloatingActionButton(
-        onPressed: () => showDialog(context: context, builder: (BuildContext content) {
-          //getImage()
-          return AlertDialog(
-            title: Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, decoration: TextDecoration.underline, fontSize: 30)),
-            backgroundColor: Colors.white,
-            actions: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 10, bottom: 8),
-                child: FloatingActionButton(child: Icon(Icons.file_upload),
-                  onPressed: () => getImage(true),
-                  tooltip: 'Upload from storage',
-                  backgroundColor: Colors.red,
-                ),
-              ),
-              SizedBox(width: 150),
-              Padding(
-                padding: const EdgeInsets.only(right: 10, bottom: 8),
-                child: FloatingActionButton(
-                  child: Icon(Icons.camera),
-                  tooltip: 'Upload from camera',
-                  onPressed: () => getImage(false),
-                  backgroundColor: Colors.red,
-                ),
-              )
-            ],
-          );
-        }),
-        tooltip: 'Picture (Optional)',
-        child: Icon(Icons.add_a_photo),
-        backgroundColor: Colors.red,
-      );
-    } else {
-      return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 6),
-            child: Text('File Successfully Picked!', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20)),
-          ),
-          FloatingActionButton(
-            onPressed: () => showDialog(context: context, builder: (BuildContext content) {
+        onPressed: () => showDialog(
+            context: context,
+            builder: (BuildContext content) {
               //getImage()
               return AlertDialog(
-                title: Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                title: Text('Choose an upload method',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        decoration: TextDecoration.underline,
+                        fontSize: 30)),
                 backgroundColor: Colors.white,
                 actions: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: FloatingActionButton(child: Icon(Icons.file_upload),
+                    padding: const EdgeInsets.only(left: 10, bottom: 8),
+                    child: FloatingActionButton(
+                      child: Icon(Icons.file_upload),
                       onPressed: () => getImage(true),
                       tooltip: 'Upload from storage',
                       backgroundColor: Colors.red,
@@ -113,7 +87,7 @@ class _AddUserInfoState extends State<AddUserInfo> {
                   ),
                   SizedBox(width: 150),
                   Padding(
-                    padding: const EdgeInsets.only(right: 8),
+                    padding: const EdgeInsets.only(right: 10, bottom: 8),
                     child: FloatingActionButton(
                       child: Icon(Icons.camera),
                       tooltip: 'Upload from camera',
@@ -124,12 +98,58 @@ class _AddUserInfoState extends State<AddUserInfo> {
                 ],
               );
             }),
-            tooltip: 'Picture (Optional)',
-            child: Icon(Icons.add_a_photo),
-            backgroundColor: Colors.red,
-          )
-        ]
+        tooltip: 'Picture (Optional)',
+        child: Icon(Icons.add_a_photo),
+        backgroundColor: Colors.red,
       );
+    } else {
+      return Column(children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 6),
+          child: Text('File Successfully Picked!',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 20)),
+        ),
+        FloatingActionButton(
+          onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext content) {
+                //getImage()
+                return AlertDialog(
+                  title: Text('Choose an upload method',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black)),
+                  backgroundColor: Colors.white,
+                  actions: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: FloatingActionButton(
+                        child: Icon(Icons.file_upload),
+                        onPressed: () => getImage(true),
+                        tooltip: 'Upload from storage',
+                        backgroundColor: Colors.red,
+                      ),
+                    ),
+                    SizedBox(width: 150),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: FloatingActionButton(
+                        child: Icon(Icons.camera),
+                        tooltip: 'Upload from camera',
+                        onPressed: () => getImage(false),
+                        backgroundColor: Colors.red,
+                      ),
+                    )
+                  ],
+                );
+              }),
+          tooltip: 'Picture (Optional)',
+          child: Icon(Icons.add_a_photo),
+          backgroundColor: Colors.red,
+        )
+      ]);
     }
   }
 
@@ -154,53 +174,56 @@ class _AddUserInfoState extends State<AddUserInfo> {
     } else {
       if (filePicked) {
         try {
-            final firebase_storage.Reference storageRef = firebase_storage.FirebaseStorage.instance.ref().child('prof_pics/${_image!.path.split("/").last}');
-            firebase_storage.UploadTask task = storageRef.putFile(_image!);
-            await task.whenComplete(() async {
-              storageRef.getDownloadURL().then((url) async {
-                String fullname = '$firstname $lastname';
-                  var body = {
-                    'username': username,
-                    'email': email,
-                    'firstName': firstname,
-                    'lastName': lastname,
-                    'fullName': fullname,
-                    'picLink': url
-                  };
-                  // TODO: add checks to these calls and possibly adding photo
-                  bool succeed = await userService.createUser(body);
-                  if (!succeed) {
-                    final snackBar = SnackBar(
-                        content: Text(
-                            'Error: could not create user. Check network connection.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontStyle: FontStyle.italic,
-                                fontSize: 20)),
-                        backgroundColor: Colors.red);
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }
-                try {
-                  await FirebaseAuth.instance.currentUser!
-                      .updateProfile(displayName: username, photoURL: url);
-                } catch (e) {
-                  print(e);
-                  final snackBar = SnackBar(
-                      content: Text('Error updating profile! Check network connection.',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.italic,
-                              fontSize: 20)),
-                      backgroundColor: Colors.red);
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                }
-              });
+          final firebase_storage.Reference storageRef = firebase_storage
+              .FirebaseStorage.instance
+              .ref()
+              .child('prof_pics/${_image!.path.split("/").last}');
+          firebase_storage.UploadTask task = storageRef.putFile(_image!);
+          await task.whenComplete(() async {
+            storageRef.getDownloadURL().then((url) async {
+              String fullname = '$firstname $lastname';
+              var body = {
+                'username': username,
+                'email': email,
+                'firstName': firstname,
+                'lastName': lastname,
+                'fullName': fullname,
+                'picLink': url
+              };
+              bool succeed = await userService.createUser(body);
+              if (!succeed) {
+                final snackBar = SnackBar(
+                    content: Text(
+                        'Error: could not create user. Check network connection.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                            fontSize: 20)),
+                    backgroundColor: Colors.red);
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
+              try {
+                await FirebaseAuth.instance.currentUser!
+                    .updateProfile(displayName: username, photoURL: url);
+              } catch (e) {
+                print(e);
+                final snackBar = SnackBar(
+                    content: Text(
+                        'Error updating profile! Check network connection.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                            fontSize: 20)),
+                    backgroundColor: Colors.red);
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
             });
-          } on firebase_core.FirebaseException catch (e) {
-            print(e);
-            final snackBar = SnackBar(
+          });
+        } on firebase_core.FirebaseException catch (e) {
+          print(e);
+          final snackBar = SnackBar(
               content: Text(
                   'Unable to upload file. Please check your network connection.',
                   textAlign: TextAlign.center,
@@ -209,68 +232,67 @@ class _AddUserInfoState extends State<AddUserInfo> {
                       fontStyle: FontStyle.italic,
                       fontSize: 20)),
               backgroundColor: Colors.red);
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
-          final snackBar = SnackBar(
-          content: Text('Successfully updated profile!',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.italic,
-                  fontSize: 20)),
-          backgroundColor: Colors.green);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+        final snackBar = SnackBar(
+            content: Text('Successfully updated profile!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.green);
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
         Navigator.pushReplacementNamed(context, '/home');
       } else {
-          String fullname = '$firstname $lastname';
-          var body = {
-            'username': username,
-            'email': email,
-            'firstName': firstname,
-            'lastName': lastname,
-            'fullName': fullname,
-            'picLink': ''
-          };
-          // TODO: add checks to these calls and possibly adding photo
-          bool succeed = await userService.createUser(body);
-          if (!succeed) {
-            final snackBar = SnackBar(
-                content: Text(
-                    'Error: could not create user. Check network connection.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        fontSize: 20)),
-                backgroundColor: Colors.red);
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
-          try {
-            await FirebaseAuth.instance.currentUser!
-                .updateProfile(displayName: username);
-          } catch (e) {
-            print(e);
-            final snackBar = SnackBar(
-                content: Text('Error updating profile! Check network connection.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        fontSize: 20)),
-                backgroundColor: Colors.red);
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
+        String fullname = '$firstname $lastname';
+        var body = {
+          'username': username,
+          'email': email,
+          'firstName': firstname,
+          'lastName': lastname,
+          'fullName': fullname,
+          'picLink': ''
+        };
+        bool succeed = await userService.createUser(body);
+        if (!succeed) {
           final snackBar = SnackBar(
-          content: Text('Successfully updated profile!',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.italic,
-                  fontSize: 20)),
-          backgroundColor: Colors.green);
+              content: Text(
+                  'Error: could not create user. Check network connection.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 20)),
+              backgroundColor: Colors.red);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+        try {
+          await FirebaseAuth.instance.currentUser!
+              .updateProfile(displayName: username);
+        } catch (e) {
+          print(e);
+          final snackBar = SnackBar(
+              content: Text('Error updating profile! Check network connection.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 20)),
+              backgroundColor: Colors.red);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+        final snackBar = SnackBar(
+            content: Text('Successfully updated profile!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.green);
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
         Navigator.pushReplacementNamed(context, '/home');
-        }
+      }
     }
   }
 
@@ -282,7 +304,7 @@ class _AddUserInfoState extends State<AddUserInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
-        child: SingleChildScrollView(
+          child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -293,7 +315,10 @@ class _AddUserInfoState extends State<AddUserInfo> {
             Text(
               'Hold up, fill out a User Profile',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+              style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline),
             ),
             const Divider(
               color: Colors.white,
@@ -364,11 +389,15 @@ class _AddUserInfoState extends State<AddUserInfo> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       'Back to Sign In',
-                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.red),
                       shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
@@ -385,11 +414,15 @@ class _AddUserInfoState extends State<AddUserInfo> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       'Submit',
-                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.red),
                       shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
@@ -398,13 +431,10 @@ class _AddUserInfoState extends State<AddUserInfo> {
               ],
               mainAxisAlignment: MainAxisAlignment.spaceAround,
             ),
-            SizedBox(
-              height: 200
-            )
+            SizedBox(height: 200)
           ],
         ),
-      )
-      ),
+      )),
     );
   }
 }
