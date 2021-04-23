@@ -4,8 +4,6 @@ import 'config.dart';
 import 'dart:async';
 
 class LikeService {
-  // TODO: Add auth token in header for all calls (will do when firebase is implemented)
-
   Future<bool> addLike(item) async {
     String path = '/like/${item['uuid']}';
     var endpoint = Uri.https('${Config.postApiUrl}', path);

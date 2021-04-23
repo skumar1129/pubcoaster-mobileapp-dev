@@ -27,8 +27,6 @@ List<MyPost> parseMyPosts(dataItems) {
 
 // TODO: Change Uri.http to Uri.https when APIs are deployed
 class PostService {
-  // TODO: Add auth token in header for all calls (will do when firebase is implemented)
-
   Future<bool> addPost(item) async {
     var endpoint = Uri.https('${Config.postApiUrl}', '/post');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();

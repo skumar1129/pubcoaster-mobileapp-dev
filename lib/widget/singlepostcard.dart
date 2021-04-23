@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:jiffy/jiffy.dart';
 import 'package:flutter/material.dart';
 import 'package:strings/strings.dart';
 import 'package:NewApp/services/postservice.dart';
@@ -114,7 +114,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
     };
     var commentResponse = await commentService.addComment(item);
     var comment = {
-      'createdAt': HttpDate.format(DateTime.now()),
+      'createdAt': commentResponse['createdAt'],
       'text': newComment,
       'createdBy': widget.currentUser,
       'uuid': commentResponse['uuid']
@@ -389,7 +389,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
           itemBuilder: (BuildContext context, int index) {
             var newDate = HttpDate.parse(widget.comments[index]['createdAt']);
             // TODO: Look into better way to get real time
-            var date = newDate.add(Duration(hours: 5));
+            var date = newDate.add(Duration(hours: 4));
             if (editCommentVar == false ||
                 editCommentUuid != widget.comments[index]['uuid']) {
               //print('uuid: ' + widget.comments[index]['uuid']);
@@ -417,7 +417,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                             Padding(
                                 padding: EdgeInsets.only(right: 4),
                                 child: Text(
-                                  "   ${timeago.format(date.toLocal())}",
+                                  "   ${Jiffy(date).fromNow()}",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 13,
@@ -448,7 +448,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                         return Padding(
                             padding: EdgeInsets.only(right: 4),
                             child: Text(
-                              "   ${timeago.format(date.toLocal())}",
+                              "   ${Jiffy(date).fromNow()}",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 13,
@@ -524,7 +524,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
   Widget build(BuildContext context) {
     var newDate = HttpDate.parse(widget.timestamp);
     // TODO: Look into better way to get real time
-    var date = newDate.add(Duration(hours: 5));
+    var date = newDate.add(Duration(hours: 4));
     return Card(
       color: Colors.black,
       child: Column(
@@ -594,7 +594,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                 Padding(
                   padding: EdgeInsets.only(left: 6),
                   child: Text(
-                    timeago.format(date.toLocal()),
+                    Jiffy(date).fromNow(),
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Merriweather-Italic',
