@@ -14,7 +14,7 @@ ProfUser parseUser(dataItem) {
 class UserService {
   Future<bool> createUser(body) async {
     String path = '/user';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -32,7 +32,8 @@ class UserService {
     var content;
 
     try {
-      content = await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
+      content = await http.post(endpoint,
+          headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
       succeed = false;
@@ -47,7 +48,7 @@ class UserService {
 
   Future<bool> deleteUser(username) async {
     String path = '/user/$username';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -72,7 +73,7 @@ class UserService {
 
   Future<bool> updateUser(body, username) async {
     String path = '/user/$username';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -105,7 +106,7 @@ class UserService {
 
   Future<ProfUser> getUser(username) async {
     String path = '/user/$username';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
