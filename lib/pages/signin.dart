@@ -100,7 +100,7 @@ class _SignInState extends State<SignIn> {
               Padding(
                   padding: const EdgeInsets.only(top: 16, bottom: 0),
                   child: Text(
-                    'Welcome to Knew Barz!',
+                    'Welcome to Pubcoasters!',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, decoration: TextDecoration.underline),
                   ),
               ),

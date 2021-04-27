@@ -18,7 +18,7 @@ class _NavBarState extends State<NavBar> {
       title: typing
           ? TextBox()
           : const Text(
-              'Knew Barz',
+              'Pubcoasters',
               style: TextStyle(fontFamily: 'Oxygen-Regular', fontSize: 24),
             ),
       leading: IconButton(

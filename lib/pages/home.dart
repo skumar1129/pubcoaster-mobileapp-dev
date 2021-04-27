@@ -18,7 +18,7 @@ class Home extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 3, left: 3),
                 child: Text(
-                  'Welcome to Knew Barz!',
+                  'Welcome to Pubcoasters!',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 35,
