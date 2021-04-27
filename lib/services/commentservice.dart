@@ -1,54 +1,64 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'config.dart';
 import 'dart:async';
 
 class CommentService {
-  // TODO: Add auth token in header for all calls (will do when firebase is implemented)
-
-  Future<bool> addComment(item) async {
+  Future<dynamic> addComment(item) async {
     String path = '/comment';
-    var endpoint = Uri.http('${Config.postApiUrl}', path);
-    // TODO: Add user from local storage
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var endpoint = Uri.https('${Config.postApiUrl}', path);
     var reqBody = {
       'uuid': item['uuid'],
       'createdBy': item['createdBy'],
       'text': item['text'],
     };
 
-    // TODO: add more to headers
-    Map<String, String> headers = {'Content-Type': 'application/json'};
-
-    bool succeed = true;
     var content;
+    var comment;
 
     try {
-      content = await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
+      content = await http.post(endpoint,
+          headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
-      succeed = false;
+      comment = null;
     }
+
+    comment = jsonDecode(content.body);
 
     if (content.statusCode == 500) {
-      succeed = false;
+      comment = null;
     }
 
-    return succeed;
+    return comment;
   }
 
   Future<bool> updateComment(String uuid, item) async {
     String path = '/comment/$uuid';
-    var endpoint = Uri.http('${Config.postApiUrl}', path);
+    var endpoint = Uri.https('${Config.postApiUrl}', path);
     var reqBody = {
       'text': item['text'],
     };
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
 
-    Map<String, String> headers = {'Content-Type': 'application/json'};
     bool succeed = true;
     var content;
 
     try {
-      content = await http.patch(endpoint, headers: headers, body: jsonEncode(reqBody));
+      content = await http.patch(endpoint,
+          headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
       succeed = false;
@@ -63,12 +73,19 @@ class CommentService {
 
   Future<bool> deleteComment(String uuid) async {
     String path = '/comment/$uuid';
-    var endpoint = Uri.http('${Config.postApiUrl}', path);
+    var endpoint = Uri.https('${Config.postApiUrl}', path);
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
     bool succeed = true;
     var content;
 
     try {
-      content = await http.delete(endpoint);
+      content = await http.delete(endpoint, headers: headers);
     } catch (e) {
       print(e);
       succeed = false;
@@ -77,7 +94,7 @@ class CommentService {
     if (content.statusCode == 500) {
       succeed = false;
     }
-    
+
     return succeed;
   }
 }

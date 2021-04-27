@@ -1,8 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:jiffy/jiffy.dart';
 import 'package:strings/strings.dart';
-import 'dart:convert';
 import 'package:NewApp/pages/singlepost.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/models/postargs.dart';
@@ -125,24 +124,22 @@ class _MyPostCardState extends State<MyPostCard> {
   Widget picture() {
     if (widget.picLink != '' && widget.picLink != null) {
       return Column(children: [
-        Image(image: NetworkImage('${widget.picLink}'), height: MediaQuery.of(context).size.height * .4),
-        const Divider(
-          color: Colors.white,
-          thickness: 1.0
-        )
+        Image(
+            image: NetworkImage('${widget.picLink}'),
+            height: MediaQuery.of(context).size.height * .4),
+        const Divider(color: Colors.white, thickness: 1.0)
       ]);
     } else {
       return Container();
     }
   }
 
- Widget user() {
+  Widget user() {
     if (widget.username != null) {
-      String goodUsername = utf8.decode(widget.username!.codeUnits);
       return Padding(
         padding: EdgeInsets.only(left: 8),
         child: Text(
-          '$goodUsername',
+          '${widget.username}',
           style: TextStyle(
               fontSize: 16,
               color: Colors.white,
@@ -157,83 +154,90 @@ class _MyPostCardState extends State<MyPostCard> {
   Widget likes() {
     if (widget.numLikes == 0) {
       return Padding(
-        padding: EdgeInsets.only(right: 8),
+          padding: EdgeInsets.only(right: 8),
           child: Text(
-        'No Likes Yet',
-       style: TextStyle(
-          fontSize: 16,
-          color: Colors.white,
-          fontFamily: 'Merriweather-Regular'),
-      ));
+            'No Likes Yet',
+            style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+                fontFamily: 'Merriweather-Regular'),
+          ));
     } else if (widget.numLikes == 1) {
       return Padding(
-        padding: EdgeInsets.only(right: 8),
+          padding: EdgeInsets.only(right: 8),
           child: Text(
-        '${widget.numLikes} like',
-       style: TextStyle(
-          fontSize: 16,
-          color: Colors.white,
-          fontFamily: 'Merriweather-Regular'),
-      ));
+            '${widget.numLikes} like',
+            style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+                fontFamily: 'Merriweather-Regular'),
+          ));
     } else {
       return Padding(
-        padding: EdgeInsets.only(right: 8),
+          padding: EdgeInsets.only(right: 8),
           child: Text(
-        '${widget.numLikes} likes',
-        style: TextStyle(
-          fontSize: 16,
-          color: Colors.white,
-          fontFamily: 'Merriweather-Regular'),
-      ));
+            '${widget.numLikes} likes',
+            style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+                fontFamily: 'Merriweather-Regular'),
+          ));
     }
   }
 
-  Widget neighborhood(goodLocation) {
+  Widget neighborhood() {
     if (widget.neighborhood != null) {
-      String goodNbhood = utf8.decode(widget.neighborhood!.codeUnits);
       return Padding(
-        padding: EdgeInsets.only(right: 8),
+          padding: EdgeInsets.only(right: 8),
           child: Text(
-        '${capitalize(goodNbhood)}, $goodLocation',
-         style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular', fontSize: 16),
-        softWrap: true,
-      ));
+            '${capitalize(widget.neighborhood!)}, ${widget.location}',
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Merriweather-Regular',
+                fontSize: 16),
+            softWrap: true,
+          ));
     } else {
       return Padding(
-        padding: EdgeInsets.only(right: 8),
+          padding: EdgeInsets.only(right: 8),
           child: Text(
-        '$goodLocation',
-        style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Merriweather-Regular', fontSize: 16),
-        softWrap: true,
-      ));
+            '${widget.location}',
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Merriweather-Regular',
+                fontSize: 16),
+            softWrap: true,
+          ));
     }
   }
 
-Widget comments() {
+  Widget comments() {
     if (widget.numComments == 0) {
       return Text(
         'No comments yet',
         textAlign: TextAlign.center,
         style: TextStyle(
-        color: Colors.white, fontFamily: 'Merriweather-Regular', fontSize: 18),
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular',
+            fontSize: 18),
       );
     } else if (widget.numComments == 1) {
       return Text(
         '${widget.numComments} comment',
         textAlign: TextAlign.center,
         style: TextStyle(
-        color: Colors.white, fontFamily: 'Merriweather-Regular', fontSize: 18),
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular',
+            fontSize: 18),
       );
     } else {
       return Text(
         '${widget.numComments} comments',
         textAlign: TextAlign.center,
         style: TextStyle(
-        color: Colors.white, fontFamily: 'Merriweather-Regular', fontSize: 18),
+            color: Colors.white,
+            fontFamily: 'Merriweather-Regular',
+            fontSize: 18),
       );
     }
   }
@@ -241,12 +245,9 @@ Widget comments() {
   String? dropdownValue;
   @override
   Widget build(BuildContext context) {
-    String goodContent = utf8.decode(widget.content.codeUnits);
-    String goodBar = utf8.decode(widget.bar.codeUnits);
-    String goodLocation = utf8.decode(widget.location.codeUnits);
     var newDate = HttpDate.parse(widget.timestamp);
     // TODO: Look into better way to get real time
-    var date = newDate.add(Duration(hours: 5));
+    var date = newDate.add(Duration(hours: 4));
     if (!editMode) {
       return GestureDetector(
         child: Card(
@@ -259,8 +260,8 @@ Widget comments() {
                   Padding(
                     padding: EdgeInsets.only(left: 8, top: 8),
                     child: Text(
-                      capitalize(goodBar),
-                     style: TextStyle(
+                      capitalize(widget.bar),
+                      style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'Merriweather-Bold',
                           fontSize: 20),
@@ -275,37 +276,31 @@ Widget comments() {
                     color: Colors.red,
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right: 8, top: 8),
+                      padding: EdgeInsets.only(right: 8, top: 8),
                       child: Text(
-                    'User Rating: ${widget.rating}/10',
-                     style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Bold',
-                          fontSize: 16),
-                  ))
+                        'User Rating: ${widget.rating}/10',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Merriweather-Bold',
+                            fontSize: 16),
+                      ))
                 ],
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
               // ),
-              const Divider(
-                color: Colors.white,
-                thickness: 1.0
-              ),
+              const Divider(color: Colors.white, thickness: 1.0),
               picture(),
               Padding(
                 padding: const EdgeInsets.only(top: 4, bottom: 4),
                 child: Text(
-                  goodContent,
-                 style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Merriweather-Regular',
-                        fontSize: 20),
+                  widget.content,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Merriweather-Regular',
+                      fontSize: 20),
                 ),
               ),
-              const Divider(
-                color: Colors.white,
-                thickness: 1.0
-              ),
+              const Divider(color: Colors.white, thickness: 1.0),
               Padding(
                 padding: const EdgeInsets.only(top: 4, bottom: 4),
                 child: Row(
@@ -313,10 +308,7 @@ Widget comments() {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 ),
               ),
-              const Divider(
-                color: Colors.black,
-                thickness: 1.0
-              ),
+              const Divider(color: Colors.black, thickness: 1.0),
               Padding(
                 padding: const EdgeInsets.only(top: 4, bottom: 4),
                 child: Row(
@@ -324,33 +316,29 @@ Widget comments() {
                     Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
-                        timeago.format(date.toLocal()),
+                        Jiffy(date).fromNow(),
                         style: TextStyle(
-                          color: Colors.white, fontFamily: 'Merriweather-Italic', fontSize: 14),
+                            color: Colors.white,
+                            fontFamily: 'Merriweather-Italic',
+                            fontSize: 14),
                         softWrap: true,
                       ),
                     ),
-                    neighborhood(goodLocation)
+                    neighborhood()
                   ],
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 ),
               ),
-              const Divider(
-                color: Colors.white,
-                thickness: 1.0
-              ),
+              const Divider(color: Colors.white, thickness: 1.0),
               Padding(
                 padding: const EdgeInsets.only(top: 4),
                 child: Row(
-                   mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [comments()],
                 ),
               ),
-              const Divider(
-                color: Colors.black,
-                thickness: 1.0
-              ),
+              const Divider(color: Colors.black, thickness: 1.0),
             ],
           ),
         ),
@@ -368,24 +356,25 @@ Widget comments() {
               children: [
                 Flexible(
                   child: Padding(
-                    padding: EdgeInsets.only(top: 8, left: 8),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.white, width: 1.0),
-                        ),
-                        //border: OutlineInputBorder(),
-                        labelText: 'Name of bar',
-                        labelStyle: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Merriweather-Bold')
-                        ),
-                      onChanged: (String value) {
-                        newBar = value;
-                      },
-                      style: TextStyle(
-                        color: Colors.white, fontFamily: 'Merriweather-Bold'),
-                  )),
+                      padding: EdgeInsets.only(top: 8, left: 8),
+                      child: TextField(
+                        decoration: InputDecoration(
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.white, width: 1.0),
+                            ),
+                            //border: OutlineInputBorder(),
+                            labelText: 'Name of bar',
+                            labelStyle: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Merriweather-Bold')),
+                        onChanged: (String value) {
+                          newBar = value;
+                        },
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Merriweather-Bold'),
+                      )),
                 ),
                 IconButton(
                   onPressed: () {
@@ -399,11 +388,10 @@ Widget comments() {
                   padding: const EdgeInsets.only(top: 8, left: 4),
                   child: Text('Rating: ',
                       style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Merriweather-Regular',
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold
-                      )),
+                          color: Colors.white,
+                          fontFamily: 'Merriweather-Regular',
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold)),
                 ),
                 Flexible(
                   child: Padding(
@@ -421,8 +409,7 @@ Widget comments() {
                               style: TextStyle(
                                   fontFamily: 'Merriweather-Regular',
                                   color: Colors.white,
-                                  fontSize: 16
-                              ),
+                                  fontSize: 16),
                             ),
                             value: value);
                       }).toList(),
@@ -441,43 +428,39 @@ Widget comments() {
                   padding: const EdgeInsets.only(top: 8, right: 8),
                   child: Text('/10',
                       style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Merriweather-Regular',
-                        fontSize: 16
-                      )),
+                          color: Colors.white,
+                          fontFamily: 'Merriweather-Regular',
+                          fontSize: 16)),
                 )
               ],
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
             // ),
-            const Divider(
-              color: Colors.white,
-              thickness: 1.0
-            ),
+            const Divider(color: Colors.white, thickness: 1.0),
             picture(),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.white, width: 1.0),
-                  ),
-                  //border: OutlineInputBorder(),
-                  labelStyle: TextStyle(color: Colors.white, fontFamily: 'Merriweather-Bold'),
-                  labelText: 'Post description'
-                ),
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.white, width: 1.0),
+                    ),
+                    //border: OutlineInputBorder(),
+                    labelStyle: TextStyle(
+                        color: Colors.white, fontFamily: 'Merriweather-Bold'),
+                    labelText: 'Post description'),
                 onChanged: (String value) {
                   newContent = value;
                 },
                 style: TextStyle(
-                    color: Colors.white, fontFamily: 'Merriweather-Bold', fontSize: 18),
+                    color: Colors.white,
+                    fontFamily: 'Merriweather-Bold',
+                    fontSize: 18),
               ),
             ),
-            const Divider(
-              color: Colors.white,
-              thickness: 1.0
-            ),
+            const Divider(color: Colors.white, thickness: 1.0),
             Row(
               children: [
                 IconButton(
@@ -501,9 +484,10 @@ Widget comments() {
                     padding: const EdgeInsets.only(left: 8, top: 4, right: 4),
                     child: TextField(
                       decoration: InputDecoration(
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.grey, width: 1.0),
-                        ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.grey, width: 1.0),
+                          ),
                           //border: OutlineInputBorder(),
                           labelStyle: TextStyle(
                               color: Colors.white,
@@ -520,18 +504,17 @@ Widget comments() {
                 Padding(
                   padding: const EdgeInsets.only(top: 4, right: 8),
                   child: Text(
-                    ', $goodLocation',
+                    ', ${widget.location}',
                     style: TextStyle(
-                        color: Colors.white, fontFamily: 'Merriweather-Bold', fontSize: 16),
+                        color: Colors.white,
+                        fontFamily: 'Merriweather-Bold',
+                        fontSize: 16),
                   ),
                 )
               ],
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
-            const Divider(
-              color: Colors.black,
-              thickness: 1.0
-            ),
+            const Divider(color: Colors.black, thickness: 1.0),
           ],
         ),
       );

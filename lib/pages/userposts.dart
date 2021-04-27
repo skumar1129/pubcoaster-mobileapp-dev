@@ -73,21 +73,31 @@ class _UserPostsState extends State<UserPosts> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var items = snapshot.data as List<dynamic>;
-                  // TODO: find a way to return empty container instead of spinner
                   if (items.length == 0) {
-                     return Expanded(
-                          child: Column(
-                            children: [
-                              SizedBox(height: MediaQuery.of(context).size.height * .1),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 12),
-                                child: Text('No posts for ${widget.user} yet', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, decoration: TextDecoration.underline)),
-                              ),
-                              Expanded(child: Image(image: AssetImage('assets/img/city_page.jpg'), height: MediaQuery.of(context).size.height * .4)),
-                              SizedBox(height: MediaQuery.of(context).size.height * .14)
-                            ],
+                    return Expanded(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                              height: MediaQuery.of(context).size.height * .1),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 12),
+                            child: Text('No posts for ${widget.user} yet',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 30,
+                                    decoration: TextDecoration.underline)),
                           ),
-                      ); 
+                          Expanded(
+                              child: Image(
+                                  image: AssetImage('assets/img/city_page.jpg'),
+                                  height:
+                                      MediaQuery.of(context).size.height * .4)),
+                          SizedBox(
+                              height: MediaQuery.of(context).size.height * .14)
+                        ],
+                      ),
+                    );
                   } else {
                     return Expanded(
                         child: Column(
@@ -149,19 +159,30 @@ class _UserPostsState extends State<UserPosts> {
                     ));
                   }
                 } else if (snapshot.hasError) {
-                   return Expanded(
-                          child: Column(
-                            children: [
-                              SizedBox(height: MediaQuery.of(context).size.height * .1),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 12),
-                                child: Text('There was an error getting the posts', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, decoration: TextDecoration.underline)),
-                              ),
-                              Expanded(child: Image(image: AssetImage('assets/img/city_page.jpg'), height: MediaQuery.of(context).size.height * .4)),
-                              SizedBox(height: MediaQuery.of(context).size.height * .14)
-                            ],
-                          ),
-                    ); 
+                  return Expanded(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * .1),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: Text('There was an error getting the posts',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  decoration: TextDecoration.underline)),
+                        ),
+                        Expanded(
+                            child: Image(
+                                image: AssetImage('assets/img/city_page.jpg'),
+                                height:
+                                    MediaQuery.of(context).size.height * .4)),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * .14)
+                      ],
+                    ),
+                  );
                 }
                 return Center(child: CircularProgressIndicator());
               })

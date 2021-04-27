@@ -1,5 +1,4 @@
 import 'dart:convert';
-//import 'dart:html';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'config.dart';
@@ -28,10 +27,9 @@ List<MyPost> parseMyPosts(dataItems) {
 
 // TODO: Change Uri.http to Uri.https when APIs are deployed
 class PostService {
-  // TODO: Add auth token in header for all calls (will do when firebase is implemented)
-
   Future<bool> addPost(item) async {
-    var endpoint = Uri.http('${Config.postApiUrl}', '/post');
+    var endpoint = Uri.https('${Config.postApiUrl}', '/post');
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     // TODO: Add user from local storage
     var reqBody = {
       'username': item['username'],
@@ -45,12 +43,17 @@ class PostService {
     };
 
     // TODO: add more to headers
-    Map<String, String> headers = {'Content-Type': 'application/json'};
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
 
-    bool succeed = true;
+    bool succeed;
     var content;
     try {
-      content = await http.post(endpoint, headers: headers, body: jsonEncode(reqBody));
+      content = await http.post(endpoint,
+          headers: headers, body: jsonEncode(reqBody));
+      succeed = true;
     } catch (e) {
       print(e);
       succeed = false;
@@ -64,7 +67,8 @@ class PostService {
   }
 
   Future<bool> updatePost(String uuid, item) async {
-    var endpoint = Uri.http('${Config.postApiUrl}', '/post/$uuid');
+    var endpoint = Uri.https('${Config.postApiUrl}', '/post/$uuid');
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     var reqBody = {
       'picLink': '',
       'neighborhood': item['nbhood'],
@@ -73,12 +77,17 @@ class PostService {
       'description': item['description']
     };
 
-    Map<String, String> headers = {'Content-Type': 'application/json'};
-    bool succeed = true;
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    bool succeed;
     var content;
 
     try {
-      content = await http.patch(endpoint, headers: headers, body: jsonEncode(reqBody));
+      content = await http.patch(endpoint,
+          headers: headers, body: jsonEncode(reqBody));
+      succeed = true;
     } catch (e) {
       print(e);
       succeed = false;
@@ -92,12 +101,18 @@ class PostService {
   }
 
   Future<bool> deletePost(String uuid) async {
-    var endpoint = Uri.http('${Config.postApiUrl}', '/post/$uuid');
-    bool succeed = true;
+    var endpoint = Uri.https('${Config.postApiUrl}', '/post/$uuid');
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    bool succeed;
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
     var content;
 
     try {
-      content = await http.delete(endpoint);
+      content = await http.delete(endpoint, headers: headers);
+      succeed = true;
     } catch (e) {
       print(e);
       succeed = false;
@@ -111,10 +126,16 @@ class PostService {
   }
 
   Future<SinglePost> getPost(String uuid) async {
-    var endpoint = Uri.http('${Config.postApiUrl}', '/post/$uuid');
+    var endpoint = Uri.https('${Config.postApiUrl}', '/post/$uuid');
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
     var response;
     try {
-      response = await http.get(endpoint);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -124,15 +145,16 @@ class PostService {
 
   Future<List<FeedPost>> getLocationPosts(String location, [int? page]) async {
     String path = '/post/location/$location';
-    var endpoint;
-    endpoint = Uri.http('${Config.postApiUrl}', path);
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
     };
+    var endpoint;
+    endpoint = Uri.https('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
-      var params = {'offset': page.toString()}; 
-      endpoint = Uri.http('${Config.postApiUrl}', path, params);
+      var params = {'offset': page.toString()};
+      endpoint = Uri.https('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
@@ -147,15 +169,20 @@ class PostService {
   Future<List<FeedPost>> getLocBarPosts(String location, String bar,
       [int? page]) async {
     String path = '/post/locbar/$location/$bar';
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
     var endpoint;
-    endpoint = Uri.http('${Config.postApiUrl}', path);
+    endpoint = Uri.https('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.http('${Config.postApiUrl}', path, params);
+      endpoint = Uri.https('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
-      response = await http.get(endpoint);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -166,15 +193,20 @@ class PostService {
   Future<List<FeedPost>> getLocNbhoodPosts(String location, String nbhood,
       [int? page]) async {
     String path = '/post/locnbhood/$location/$nbhood';
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
     var endpoint;
-    endpoint = Uri.http('${Config.postApiUrl}', path);
+    endpoint = Uri.https('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.http('${Config.postApiUrl}', path, params);
+      endpoint = Uri.https('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
-      response = await http.get(endpoint);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -185,15 +217,20 @@ class PostService {
   Future<List<FeedPost>> getLocUserPosts(String location, String user,
       [int? page]) async {
     String path = '/post/locuser/$location/$user';
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
     var endpoint;
-    endpoint = Uri.http('${Config.postApiUrl}', path);
+    endpoint = Uri.https('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.http('${Config.postApiUrl}', path, params);
+      endpoint = Uri.https('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
-      response = await http.get(endpoint);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -203,13 +240,18 @@ class PostService {
 
   Future<List<MyPost>> getMyPosts([int? page]) async {
     String path = '/mypost/user';
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     String user = FirebaseAuth.instance.currentUser!.displayName!;
-    Map<String, String> headers = {'username': user};
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+      'username': user
+    };
     var endpoint;
-    endpoint = Uri.http('${Config.postApiUrl}', path);
+    endpoint = Uri.https('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.http('${Config.postApiUrl}', path, params);
+      endpoint = Uri.https('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
@@ -223,15 +265,20 @@ class PostService {
 
   Future<List<FeedPost>> getUserPosts(String user, [int? page]) async {
     String path = '/post/user/$user';
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
     var endpoint;
-    endpoint = Uri.http('${Config.postApiUrl}', path);
+    endpoint = Uri.https('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.http('${Config.postApiUrl}', path, params);
+      endpoint = Uri.https('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
-      response = await http.get(endpoint);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
