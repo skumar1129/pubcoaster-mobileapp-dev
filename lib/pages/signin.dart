@@ -102,6 +102,7 @@ class _SignInState extends State<SignIn> {
                   child: Text(
                     'Welcome to Pubcoasters!',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, decoration: TextDecoration.underline),
+                    textAlign: TextAlign.center,
                   ),
               ),
               const Divider(thickness: 0.001, color: Colors.white),

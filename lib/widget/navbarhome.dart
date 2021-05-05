@@ -19,7 +19,7 @@ class _NavBarState extends State<NavBar> {
           ? TextBox()
           : const Text(
               'Pubcoasters',
-              style: TextStyle(fontFamily: 'Oxygen-Regular', fontSize: 24),
+              style: TextStyle(fontFamily: 'Oxygen-Regular', fontSize: 21),
             ),
       leading: IconButton(
         icon: Icon(typing ? Icons.chevron_left : Icons.search, size: 30),
