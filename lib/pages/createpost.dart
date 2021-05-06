@@ -70,28 +70,24 @@ class _CreatePostState extends State<CreatePost> {
         onPressed: () => showDialog(context: context, builder: (BuildContext content) {
           //getImage()
           return AlertDialog(
-            title: Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+            title: Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 23), textAlign: TextAlign.center,),
             backgroundColor: Colors.white,
-            actions: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: FloatingActionButton(child: Icon(Icons.file_upload),
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FloatingActionButton(child: Icon(Icons.file_upload),
                   onPressed: () => getImage(true),
                   tooltip: 'Upload from storage',
                   backgroundColor: Colors.red,
                 ),
-              ),
-              SizedBox(width: 150),
-              Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: FloatingActionButton(
+                FloatingActionButton(
                   child: Icon(Icons.camera),
                   tooltip: 'Upload from camera',
                   onPressed: () => getImage(false),
                   backgroundColor: Colors.red,
-                ),
-              )
-            ],
+                )
+              ]
+            )
           );
         }),
         tooltip: 'Picture (Optional)',
@@ -109,28 +105,24 @@ class _CreatePostState extends State<CreatePost> {
             onPressed: () => showDialog(context: context, builder: (BuildContext content) {
               //getImage()
               return AlertDialog(
-                title: Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, decoration: TextDecoration.underline, fontSize: 30)),
+                title: Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 23), textAlign: TextAlign.center,),
                 backgroundColor: Colors.white,
-                actions: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10, bottom: 8),
-                    child: FloatingActionButton(child: Icon(Icons.file_upload),
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FloatingActionButton(child: Icon(Icons.file_upload),
                       onPressed: () => getImage(true),
                       tooltip: 'Upload from storage',
                       backgroundColor: Colors.red,
                     ),
-                  ),
-                  SizedBox(width: 150),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10, bottom: 8),
-                    child: FloatingActionButton(
+                    FloatingActionButton(
                       child: Icon(Icons.camera),
                       tooltip: 'Upload from camera',
                       onPressed: () => getImage(false),
                       backgroundColor: Colors.red,
-                    ),
-                  )
-                ],
+                    )
+                  ]
+                )
               );
             }),
             tooltip: 'Picture (Optional)',

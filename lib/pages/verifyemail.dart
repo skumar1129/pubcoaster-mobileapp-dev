@@ -68,10 +68,10 @@ class _VerifyEmailState extends State<VerifyEmail> {
               goToSignIn();
             },
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(5.0),
               child: Text(
                 'Go to sign in',
-                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
               ),
             ),
             style: ButtonStyle(
@@ -97,10 +97,10 @@ class _VerifyEmailState extends State<VerifyEmail> {
                     resendEmail();
                   },
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(5.0),
                     child: Text(
                       'Resend Email',
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                   ),
                   style: ButtonStyle(
@@ -122,7 +122,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
                       'Go back to sign up',
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                   ),
                   style: ButtonStyle(
