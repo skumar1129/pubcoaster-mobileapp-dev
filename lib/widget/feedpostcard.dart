@@ -170,8 +170,6 @@ class FeedPostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var newDate = HttpDate.parse(timestamp);
-    // TODO: Look into better way to get real time
-    var date = newDate.add(Duration(hours: 4));
     return GestureDetector(
       child: Card(
         color: Colors.black,
@@ -231,7 +229,7 @@ class FeedPostCard extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(left: 8),
                     child: Text(
-                      Jiffy(date).fromNow(),
+                      Jiffy(newDate).fromNow(),
                       style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'Merriweather-Italic',
