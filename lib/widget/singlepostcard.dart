@@ -520,6 +520,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
   @override
   Widget build(BuildContext context) {
     var newDate = HttpDate.parse(widget.timestamp);
+    var _controller = TextEditingController();
     return Card(
       color: Colors.black,
       child: Column(
@@ -618,6 +619,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                 child: Container(
                   width: MediaQuery.of(context).size.width * .82,
                   child: TextField(
+                      controller: _controller,
                       style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         labelText: 'Create Comment',
@@ -640,6 +642,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                   tooltip: 'Send comment',
                   onPressed: () {
                     sendComment();
+                    _controller.clear();
                   })
             ],
           ),
