@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:NewApp/services/userservice.dart';
 
 class UserProfile extends StatefulWidget {
   UserProfile(this.userInfo, this.numPosts);
@@ -9,15 +15,248 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  bool editName = false;
+  bool editBio = false;
+  String? newFirstName;
+  String? newLastName;
+  String? newBio;
+  File? _image;
+  bool filePicked = false;
+  final userService = new UserService();
+  final picker = ImagePicker();
+
+  Future getImage(bool gallery) async {
+    final pickedFile;
+    // Let user select photo from gallery
+    if (gallery) {
+      pickedFile = await picker.getImage(
+        source: ImageSource.gallery,
+      );
+    }
+    // Otherwise open camera to get new photo
+    else {
+      pickedFile = await picker.getImage(
+        source: ImageSource.camera,
+      );
+    }
+
+    if (mounted) {
+      setState(() {
+        if (pickedFile != null) {
+          _image = File(pickedFile.path);
+          filePicked = true;
+          Navigator.of(context).pop();
+        } else {
+          print('No image selected.');
+        }
+      });
+    }
+  }
+
+  updateUserName(String? firstName, String? lastName) async {
+    if (firstName != null && lastName != null) {
+      try {
+        var body = {
+          'firstName': firstName,
+          'email': null,
+          'bio': null,
+          'lastName': lastName,
+          'fullName': '$firstName $lastName',
+          'picLink': null
+        };
+        await userService.updateUser(body, widget.userInfo.username);
+      } catch (e) {
+        print(e);
+        final snackBar = SnackBar(
+            content: Text('Error submitting update. Check network connection',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } else {
+      final snackBar = SnackBar(
+          content: Text('Error make sure to fill out both first and last name',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  updateBio(String? bio) async {
+    if (bio != null) {
+      try {
+        var body = {
+          'firstName': null,
+          'email': null,
+          'bio': bio,
+          'lastName': null,
+          'fullName': null,
+          'picLink': null
+        };
+        await userService.updateUser(body, widget.userInfo.username);
+      } catch (e) {
+        print(e);
+        final snackBar = SnackBar(
+            content: Text('Error submitting update. Check network connection',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } else {
+      final snackBar = SnackBar(
+          content: Text('Error make sure bio is filled out',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
   Widget _avatar() {
     if (widget.userInfo.picLink != null) {
-      return CircleAvatar(
-        backgroundImage: NetworkImage(widget.userInfo.picLink),
+      return GestureDetector(
+        child: CircleAvatar(
+          backgroundImage: NetworkImage(widget.userInfo.picLink),
+          radius: MediaQuery.of(context).size.width * .2,
+        ),
+        onTap: () {},
       );
     } else {
-      return CircleAvatar(
-          backgroundColor: Colors.grey,
-          radius: MediaQuery.of(context).size.width * .15);
+      return GestureDetector(
+        child: CircleAvatar(
+          radius: MediaQuery.of(context).size.width * .2,
+          child: Icon(Icons.add_a_photo),
+          backgroundColor: Colors.red,
+        ),
+        onTap: () {},
+      );
+    }
+  }
+
+  Widget _postsCreated() {
+    if (widget.numPosts == 1) {
+      return Column(
+        children: [
+          IconButton(
+              icon: Icon(
+                Icons.my_library_books,
+                color: Colors.red,
+              ),
+              onPressed: () {}),
+          Text('${widget.numPosts} post created'),
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          IconButton(
+              icon: Icon(
+                Icons.my_library_books,
+                color: Colors.red,
+              ),
+              onPressed: () {}),
+          Text('${widget.numPosts} posts created'),
+        ],
+      );
+    }
+  }
+
+  Widget _barsLiked() {
+    if (widget.userInfo.numBars == 1) {
+      return Column(
+        children: [
+          IconButton(
+              icon: Icon(
+                Icons.business,
+                color: Colors.red,
+              ),
+              onPressed: () {}),
+          Text('${widget.userInfo.numBars} bar liked')
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          IconButton(
+              icon: Icon(
+                Icons.business,
+                color: Colors.red,
+              ),
+              onPressed: () {}),
+          Text('${widget.userInfo.numBars} bars liked')
+        ],
+      );
+    }
+  }
+
+  Widget _brandsLiked() {
+    if (widget.userInfo.numBrands == 1) {
+      return Column(
+        children: [
+          IconButton(
+              icon: Icon(
+                Icons.branding_watermark,
+                color: Colors.red,
+              ),
+              onPressed: () {}),
+          Text('${widget.userInfo.numBrands} brand liked'),
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          IconButton(
+              icon: Icon(
+                Icons.branding_watermark,
+                color: Colors.red,
+              ),
+              onPressed: () {}),
+          Text('${widget.userInfo.numBrands} brands liked'),
+        ],
+      );
+    }
+  }
+
+  Widget _drinksLiked() {
+    if (widget.userInfo.numDrinks == 1) {
+      return Column(
+        children: [
+          IconButton(
+              icon: Icon(
+                Icons.local_drink,
+                color: Colors.red,
+              ),
+              onPressed: () {}),
+          Text('${widget.userInfo.numDrinks} drink liked')
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          IconButton(
+              icon: Icon(
+                Icons.local_drink,
+                color: Colors.red,
+              ),
+              onPressed: () {}),
+          Text('${widget.userInfo.numDrinks} drinks liked')
+        ],
+      );
     }
   }
 
@@ -37,56 +276,217 @@ class _UserProfileState extends State<UserProfile> {
         Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Icon(
-                    Icons.my_library_books,
-                    color: Colors.red,
-                  ),
-                  Text('${widget.numPosts} posts created'),
-                ],
-              ),
-              VerticalDivider(),
-              Column(
-                children: [
-                  Icon(
-                    Icons.business,
-                    color: Colors.red,
-                  ),
-                  Text('${widget.userInfo.numBars} bars liked')
-                ],
-              ),
-            ],
+            children: [_postsCreated(), VerticalDivider(), _barsLiked()],
           ),
         ),
         Container(
             child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              children: [
-                Icon(
-                  Icons.branding_watermark,
-                  color: Colors.red,
-                ),
-                Text('${widget.userInfo.numBrands} brands liked'),
-              ],
-            ),
-            VerticalDivider(),
-            Column(
-              children: [
-                Icon(
-                  Icons.local_drink,
-                  color: Colors.red,
-                ),
-                Text('${widget.userInfo.numDrinks} drinks liked')
-              ],
-            )
-          ],
+          children: [_brandsLiked(), VerticalDivider(), _drinksLiked()],
         ))
       ],
     );
+  }
+
+  Widget _userFullName() {
+    if (editName) {
+      return Row(
+        children: [
+          VerticalDivider(),
+          Flexible(
+            child: TextField(
+              decoration: InputDecoration(
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: Colors.black, width: 1.0),
+                  ),
+                  //border: OutlineInputBorder(),
+                  labelText: 'First Name',
+                  labelStyle: TextStyle(
+                      color: Colors.black, fontFamily: 'Merriweather-Bold')),
+              onChanged: (String value) {
+                newFirstName = value;
+              },
+              style: TextStyle(
+                  color: Colors.black, fontFamily: 'Merriweather-Bold'),
+            ),
+          ),
+          VerticalDivider(),
+          Flexible(
+            child: TextField(
+              decoration: InputDecoration(
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: Colors.black, width: 1.0),
+                  ),
+                  //border: OutlineInputBorder(),
+                  labelText: 'Last Name',
+                  labelStyle: TextStyle(
+                      color: Colors.black, fontFamily: 'Merriweather-Bold')),
+              onChanged: (String value) {
+                newLastName = value;
+              },
+              style: TextStyle(
+                  color: Colors.black, fontFamily: 'Merriweather-Bold'),
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              if (mounted) {
+                setState(() {
+                  editName = false;
+                  newFirstName = null;
+                  newLastName = null;
+                });
+              }
+            },
+            icon: Icon(Icons.cancel),
+            tooltip: 'Cancel Edit',
+            color: Colors.red,
+          ),
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: () {
+              updateUserName(newFirstName, newLastName);
+            },
+            color: Colors.red,
+            tooltip: 'Save',
+          ),
+        ],
+      );
+    } else
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            '${widget.userInfo.fullName}',
+            style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Merriweather-Bold',
+                fontSize: 20),
+          ),
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              if (mounted) {
+                setState(() {
+                  editName = true;
+                });
+              }
+            },
+            color: Colors.red,
+            tooltip: 'Edit Name',
+          ),
+        ],
+      );
+  }
+
+  Widget _userBio() {
+    if (widget.userInfo.bio != null) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            '${widget.userInfo.bio}',
+            style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Merriweather-Bold',
+                fontSize: 20),
+          ),
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              if (mounted) {
+                setState(() {
+                  editBio = true;
+                });
+              }
+            },
+            color: Colors.red,
+            tooltip: 'Edit Bio',
+          ),
+        ],
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'No bio yet',
+            style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Merriweather-Bold',
+                fontSize: 20),
+          ),
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              if (mounted) {
+                setState(() {
+                  editBio = true;
+                });
+              }
+            },
+            color: Colors.red,
+            tooltip: 'Edit Bio',
+          ),
+        ],
+      );
+    }
+  }
+
+  Widget _editUserBio() {
+    if (editBio) {
+      return Row(
+        children: [
+          VerticalDivider(),
+          Flexible(
+            child: TextField(
+              decoration: InputDecoration(
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: Colors.black, width: 1.0),
+                  ),
+                  //border: OutlineInputBorder(),
+                  labelText: 'Bio',
+                  labelStyle: TextStyle(
+                      color: Colors.black, fontFamily: 'Merriweather-Bold')),
+              onChanged: (String value) {
+                newFirstName = value;
+              },
+              style: TextStyle(
+                  color: Colors.black, fontFamily: 'Merriweather-Bold'),
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              if (mounted) {
+                setState(() {
+                  editBio = false;
+                  newBio = null;
+                });
+              }
+            },
+            icon: Icon(Icons.cancel),
+            tooltip: 'Cancel Edit',
+            color: Colors.red,
+          ),
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: () {
+              updateBio(newBio);
+            },
+            color: Colors.red,
+            tooltip: 'Save',
+          ),
+        ],
+      );
+    } else {
+      return _userBio();
+    }
   }
 
   @override
@@ -102,28 +502,17 @@ class _UserProfileState extends State<UserProfile> {
         ),
         Divider(
           color: Colors.black,
+          thickness: 2,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('${widget.userInfo.fullName}'),
-            IconButton(
-                icon: Icon(Icons.edit), onPressed: () {}, color: Colors.red),
-          ],
-        ),
+        _userFullName(),
         Divider(
           color: Colors.black,
+          thickness: 2,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('${widget.userInfo.bio}'),
-            IconButton(
-                icon: Icon(Icons.edit), onPressed: () {}, color: Colors.red),
-          ],
-        ),
+        _editUserBio(),
         Divider(
           color: Colors.black,
+          thickness: 2,
         )
       ],
     );
