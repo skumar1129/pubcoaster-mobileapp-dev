@@ -5,6 +5,10 @@ class ProfUser {
   final String lastName;
   final String fullName;
   final String? picLink;
+  final String? bio;
+  final int numBars;
+  final int numDrinks;
+  final int numBrands;
 
   ProfUser(
       {required this.username,
@@ -12,6 +16,10 @@ class ProfUser {
       required this.firstName,
       required this.lastName,
       required this.fullName,
+      required this.numBars,
+      required this.numBrands,
+      required this.numDrinks,
+      this.bio,
       this.picLink});
 
   factory ProfUser.fromJson(Map<String, dynamic> json) {
@@ -20,6 +28,11 @@ class ProfUser {
         email: json['email'],
         firstName: json['firstName'],
         lastName: json['lastName'],
-        fullName: json['fullName']);
+        fullName: json['fullName'],
+        picLink: json['picLink'],
+        bio: json['bio'],
+        numBars: json['numBars'],
+        numBrands: json['numBrands'],
+        numDrinks: json['numDrinks']);
   }
 }

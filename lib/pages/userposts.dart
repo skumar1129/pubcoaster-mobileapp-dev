@@ -51,7 +51,8 @@ class _UserPostsState extends State<UserPosts> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }
-    return response;
+
+    return response[1];
   }
 
   @override
