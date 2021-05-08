@@ -4,6 +4,7 @@ import 'package:NewApp/widget/navbarhome.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/feedpostcard.dart';
 import 'package:NewApp/services/userservice.dart';
+import 'package:NewApp/widget/userprofile.dart';
 
 class UserPosts extends StatefulWidget {
   UserPosts(this.user);
@@ -93,15 +94,7 @@ class _UserPostsState extends State<UserPosts> {
                 child: Column(
                   children: [
                     SizedBox(height: MediaQuery.of(context).size.height * .1),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: Text('No posts for ${widget.user} yet',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              decoration: TextDecoration.underline)),
-                    ),
+                    UserProfile(userInfo, totalPosts),
                     Expanded(
                         child: Image(
                             image: AssetImage('assets/img/city_page.jpg'),
@@ -114,13 +107,7 @@ class _UserPostsState extends State<UserPosts> {
               return Expanded(
                   child: Column(
                 children: [
-                  Text(
-                    'Posts for ${widget.user}',
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Oxygen-Bold'),
-                  ),
+                  UserProfile(userInfo, totalPosts),
                   Expanded(
                     child: Scrollbar(
                         child: RefreshIndicator(
