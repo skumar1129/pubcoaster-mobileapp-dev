@@ -5,15 +5,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:NewApp/services/userservice.dart';
 
-class UserProfile extends StatefulWidget {
-  UserProfile(this.userInfo, this.numPosts);
+class MyUserProfile extends StatefulWidget {
+  MyUserProfile(this.userInfo, this.numPosts);
   final userInfo;
   final numPosts;
   @override
-  _UserProfileState createState() => _UserProfileState();
+  _MyUserProfileState createState() => _MyUserProfileState();
 }
 
-class _UserProfileState extends State<UserProfile> {
+class _MyUserProfileState extends State<MyUserProfile> {
   bool editName = false;
   bool editBio = false;
   String? newFirstName;

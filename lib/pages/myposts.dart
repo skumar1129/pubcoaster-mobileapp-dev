@@ -89,7 +89,7 @@ class _MyPostsState extends State<MyPosts> {
               return Expanded(
                 child: Column(
                   children: [
-                    UserProfile(userInfo, totalPosts),
+                    MyUserProfile(userInfo, totalPosts),
                     SizedBox(height: MediaQuery.of(context).size.height * .1),
                     Padding(
                       padding: const EdgeInsets.only(top: 12),
@@ -112,7 +112,7 @@ class _MyPostsState extends State<MyPosts> {
               return Expanded(
                   child: Column(
                 children: [
-                  UserProfile(userInfo, totalPosts),
+                  MyUserProfile(userInfo, totalPosts),
                   Expanded(
                     child: Scrollbar(
                         child: RefreshIndicator(
