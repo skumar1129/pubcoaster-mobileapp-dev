@@ -114,7 +114,7 @@ class UserService {
     };
     var response;
     try {
-      response = http.get(endpoint, headers: headers);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }

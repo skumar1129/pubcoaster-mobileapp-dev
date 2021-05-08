@@ -260,7 +260,7 @@ class PostService {
     return compute(parseMyPosts, json.decode(response.body));
   }
 
-  Future<List<FeedPost>> getUserPosts(String user, [int? page]) async {
+  Future<List<dynamic>> getUserPosts(String user, [int? page]) async {
     String path = '/post/user/$user';
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
@@ -280,6 +280,10 @@ class PostService {
       print(e);
     }
 
-    return compute(parseFeedPosts, json.decode(response.body));
+    var responseBody = json.decode(response.body);
+    return [
+      responseBody['totalCount'],
+      compute(parseFeedPosts, responseBody['post'])
+    ];
   }
 }
