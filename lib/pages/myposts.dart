@@ -4,7 +4,7 @@ import 'package:NewApp/widget/navbarhome.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/mypostcard.dart';
 import 'package:NewApp/services/userservice.dart';
-import 'package:NewApp/widget/userprofile.dart';
+import 'package:NewApp/widget/myuserprofile.dart';
 
 class MyPosts extends StatefulWidget {
   @override
