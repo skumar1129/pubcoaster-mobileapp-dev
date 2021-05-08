@@ -90,7 +90,7 @@ class UserService {
     bool succeed = true;
     var content;
     try {
-      content = await http.post(endpoint,
+      content = await http.patch(endpoint,
           headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);

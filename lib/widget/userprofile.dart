@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,9 +20,169 @@ class _UserProfileState extends State<UserProfile> {
   String? newLastName;
   String? newBio;
   File? _image;
-  bool filePicked = false;
   final userService = new UserService();
   final picker = ImagePicker();
+
+  Widget _postDialog() {
+    return AlertDialog(
+      title: Text(
+        'Just look down the screen bro',
+        style: TextStyle(
+            fontWeight: FontWeight.bold, color: Colors.black, fontSize: 23),
+        textAlign: TextAlign.center,
+      ),
+      backgroundColor: Colors.white,
+    );
+  }
+
+  _updatePicture(File? image) async {
+    if (image != null) {
+      try {
+        final firebase_storage.Reference storageRef = firebase_storage
+            .FirebaseStorage.instance
+            .ref()
+            .child('prof_pics/${_image!.path.split("/").last}');
+        firebase_storage.UploadTask task = storageRef.putFile(_image!);
+        await task.whenComplete(() async {
+          storageRef.getDownloadURL().then((url) async {
+            var body = {
+              'firstName': null,
+              'email': null,
+              'bio': null,
+              'lastName': null,
+              'fullName': null,
+              'picLink': url
+            };
+            bool succeed =
+                await userService.updateUser(body, widget.userInfo.username);
+            if (!succeed) {
+              final snackBar = SnackBar(
+                  content: Text(
+                      'Error: could not update picture. Check network connection.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 20)),
+                  backgroundColor: Colors.red);
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+            try {
+              await FirebaseAuth.instance.currentUser!.updateProfile(
+                  displayName: widget.userInfo.username, photoURL: url);
+              Navigator.pushReplacementNamed(context, '/mypost');
+            } catch (e) {
+              print(e);
+              final snackBar = SnackBar(
+                  content: Text(
+                      'Error updating picture! Check network connection.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 20)),
+                  backgroundColor: Colors.red);
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+          });
+        });
+      } catch (e) {
+        print(e);
+        final snackBar = SnackBar(
+            content: Text('Error updating picture! Check network connection.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    }
+  }
+
+  _deleteAccount() async {
+    try {
+      bool succeed = await userService.deleteUser(widget.userInfo.username);
+      if (succeed) {
+        await FirebaseAuth.instance.currentUser!.delete();
+        Navigator.pushReplacementNamed(context, '/signin');
+        final snackBar = SnackBar(
+            content: Text('Deleted. Okay, bye',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.green);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } catch (e) {
+      print(e);
+      final snackBar = SnackBar(
+          content: Text(
+              'Error deleting the user. Check your network connection',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  Widget _deleteDialog() {
+    return AlertDialog(
+        title: Text(
+          'Confirm deleting your account',
+          style: TextStyle(
+              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 23),
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.white,
+        content:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          FloatingActionButton(
+            child: Icon(Icons.cancel),
+            onPressed: () => Navigator.of(context).pop(),
+            tooltip: 'Cancel',
+            backgroundColor: Colors.red,
+          ),
+          FloatingActionButton(
+            child: Icon(Icons.check),
+            tooltip: 'Confirm',
+            onPressed: () => _deleteAccount(),
+            backgroundColor: Colors.red,
+          )
+        ]));
+  }
+
+  Widget _pictureDialog() {
+    return AlertDialog(
+        title: Text(
+          'Choose an upload method',
+          style: TextStyle(
+              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 23),
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.white,
+        content:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          FloatingActionButton(
+            child: Icon(Icons.file_upload),
+            onPressed: () => getImage(true),
+            tooltip: 'Upload from storage',
+            backgroundColor: Colors.red,
+          ),
+          FloatingActionButton(
+            child: Icon(Icons.camera),
+            tooltip: 'Upload from camera',
+            onPressed: () => getImage(false),
+            backgroundColor: Colors.red,
+          )
+        ]));
+  }
 
   Future getImage(bool gallery) async {
     final pickedFile;
@@ -44,13 +203,13 @@ class _UserProfileState extends State<UserProfile> {
       setState(() {
         if (pickedFile != null) {
           _image = File(pickedFile.path);
-          filePicked = true;
-          Navigator.of(context).pop();
         } else {
           print('No image selected.');
         }
       });
     }
+    await _updatePicture(_image);
+    Navigator.of(context).pop();
   }
 
   updateUserName(String? firstName, String? lastName) async {
@@ -64,7 +223,11 @@ class _UserProfileState extends State<UserProfile> {
           'fullName': '$firstName $lastName',
           'picLink': null
         };
-        await userService.updateUser(body, widget.userInfo.username);
+        bool succeed =
+            await userService.updateUser(body, widget.userInfo.username);
+        if (succeed) {
+          Navigator.pushReplacementNamed(context, '/mypost');
+        }
       } catch (e) {
         print(e);
         final snackBar = SnackBar(
@@ -101,7 +264,11 @@ class _UserProfileState extends State<UserProfile> {
           'fullName': null,
           'picLink': null
         };
-        await userService.updateUser(body, widget.userInfo.username);
+        bool succeed =
+            await userService.updateUser(body, widget.userInfo.username);
+        if (succeed) {
+          Navigator.pushReplacementNamed(context, '/mypost');
+        }
       } catch (e) {
         print(e);
         final snackBar = SnackBar(
@@ -134,7 +301,13 @@ class _UserProfileState extends State<UserProfile> {
           backgroundImage: NetworkImage(widget.userInfo.picLink),
           radius: MediaQuery.of(context).size.width * .2,
         ),
-        onTap: () {},
+        onTap: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext content) {
+                return _pictureDialog();
+              });
+        },
       );
     } else {
       return GestureDetector(
@@ -143,7 +316,13 @@ class _UserProfileState extends State<UserProfile> {
           child: Icon(Icons.add_a_photo),
           backgroundColor: Colors.red,
         ),
-        onTap: () {},
+        onTap: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext content) {
+                return _pictureDialog();
+              });
+        },
       );
     }
   }
@@ -157,7 +336,13 @@ class _UserProfileState extends State<UserProfile> {
                 Icons.my_library_books,
                 color: Colors.red,
               ),
-              onPressed: () {}),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext content) {
+                      return _postDialog();
+                    });
+              }),
           Text('${widget.numPosts} post created'),
         ],
       );
@@ -169,7 +354,13 @@ class _UserProfileState extends State<UserProfile> {
                 Icons.my_library_books,
                 color: Colors.red,
               ),
-              onPressed: () {}),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext content) {
+                      return _postDialog();
+                    });
+              }),
           Text('${widget.numPosts} posts created'),
         ],
       );
@@ -264,7 +455,14 @@ class _UserProfileState extends State<UserProfile> {
     return Column(
       children: [
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext content) {
+                return _deleteDialog();
+              },
+            );
+          },
           child: Text('Delete Account'),
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
@@ -455,7 +653,7 @@ class _UserProfileState extends State<UserProfile> {
                   labelStyle: TextStyle(
                       color: Colors.black, fontFamily: 'Merriweather-Bold')),
               onChanged: (String value) {
-                newFirstName = value;
+                newBio = value;
               },
               style: TextStyle(
                   color: Colors.black, fontFamily: 'Merriweather-Bold'),
