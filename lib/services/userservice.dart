@@ -80,7 +80,7 @@ class UserService {
       'Authorization': 'Bearer $token'
     };
     var reqBody = {
-      'username': body['username'],
+      'bio': body['bio'],
       'email': body['email'],
       'firstName': body['firstName'],
       'lastName': body['lastName'],
@@ -90,7 +90,7 @@ class UserService {
     bool succeed = true;
     var content;
     try {
-      content = await http.post(endpoint,
+      content = await http.patch(endpoint,
           headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
@@ -108,6 +108,24 @@ class UserService {
     String path = '/user/$username';
     var endpoint = Uri.http('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var response;
+    try {
+      response = await http.get(endpoint, headers: headers);
+    } catch (e) {
+      print(e);
+    }
+    return compute(parseUser, json.decode(response.body));
+  }
+
+  Future<ProfUser> getMyUser() async {
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    String user = FirebaseAuth.instance.currentUser!.displayName!;
+    String path = '/user/$user';
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'

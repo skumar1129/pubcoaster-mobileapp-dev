@@ -24,16 +24,15 @@ class ProfUser {
 
   factory ProfUser.fromJson(Map<String, dynamic> json) {
     return ProfUser(
-      username: json['username'],
-      email: json['email'],
-      firstName: json['firstName'],
-      lastName: json['lastName'],
-      fullName: json['fullName'],
-      picLink: json['picLink'],
-      bio: json['bio'],
-      numBars: json['numBars'],
-      numBrands: json['numBrands'],
-      numDrinks: json['numDrinks'],
-    );
+        username: json['username'],
+        email: json['email'],
+        firstName: json['firstName'],
+        lastName: json['lastName'],
+        fullName: json['fullName'],
+        picLink: json['picLink'],
+        bio: json['bio'],
+        numBars: json['numBars'],
+        numBrands: json['numBrands'],
+        numDrinks: json['numDrinks']);
   }
 }
