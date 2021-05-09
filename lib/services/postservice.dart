@@ -282,6 +282,7 @@ class PostService {
     } catch (e) {
       print(e);
     }
+
     var responseBody = json.decode(response.body);
     return [
       responseBody['totalCount'],
