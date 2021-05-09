@@ -213,16 +213,38 @@ class _MyUserProfileState extends State<MyUserProfile> {
   }
 
   updateUserName(String? firstName, String? lastName) async {
-    if (firstName != null && lastName != null) {
+    if (firstName != null || lastName != null) {
       try {
-        var body = {
-          'firstName': firstName,
-          'email': null,
-          'bio': null,
-          'lastName': lastName,
-          'fullName': '$firstName $lastName',
-          'picLink': null
-        };
+        var body = {};
+        if (firstName != null && lastName != null) {
+          body = {
+            'firstName': firstName,
+            'email': null,
+            'bio': null,
+            'lastName': lastName,
+            'fullName': '$firstName $lastName',
+            'picLink': null
+          };
+        } else if (firstName != null && lastName == null) {
+          body = {
+            'firstName': firstName,
+            'email': null,
+            'bio': null,
+            'lastName': widget.userInfo.lastName,
+            'fullName': '$firstName ${widget.userInfo.lastName}',
+            'picLink': null
+          };
+        } else if (lastName != null && firstName == null) {
+          body = {
+            'firstName': widget.userInfo.firstName,
+            'email': null,
+            'bio': null,
+            'lastName': lastName,
+            'fullName': '${widget.userInfo.firstName} $lastName',
+            'picLink': null
+          };
+        }
+
         bool succeed =
             await userService.updateUser(body, widget.userInfo.username);
         if (succeed) {
@@ -242,7 +264,7 @@ class _MyUserProfileState extends State<MyUserProfile> {
       }
     } else {
       final snackBar = SnackBar(
-          content: Text('Error make sure to fill out both first and last name',
+          content: Text('Error make sure to fill out first or last name',
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
