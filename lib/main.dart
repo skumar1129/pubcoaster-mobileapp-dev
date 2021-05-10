@@ -17,6 +17,9 @@ import 'package:NewApp/pages/userposts.dart';
 import 'package:NewApp/models/postargs.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:NewApp/pages/landpage.dart';
+import 'package:NewApp/pages/userbar.dart';
+import 'package:NewApp/pages/userlocation.dart';
+import 'package:NewApp/pages/usernbhood.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -85,7 +88,13 @@ class MyApp extends StatelessWidget {
                   LocUserPosts.route: (context) =>
                       LocUserPosts(settings.arguments as String),
                   UserPosts.route: (context) =>
-                      UserPosts(settings.arguments as String)
+                      UserPosts(settings.arguments as String),
+                  UserLocation.route: (context) =>
+                      UserLocation(settings.arguments as String),
+                  UserBar.route: (context) =>
+                      UserBar(settings.arguments as String),
+                  UserNbhood.route: (context) =>
+                      UserNbhood(settings.arguments as String)
                 };
                 WidgetBuilder builder = routes[settings.name]!;
                 return MaterialPageRoute(

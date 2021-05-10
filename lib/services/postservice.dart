@@ -289,4 +289,88 @@ class PostService {
       compute(parseFeedPosts, responseBody['post'])
     ];
   }
+
+  Future<List<dynamic>> getUserLocationPosts(String user, String location,
+      [int? page]) async {
+    String path = '/post/userloc/$user/$location';
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var endpoint;
+    endpoint = Uri.http('${Config.postApiUrl}', path);
+    if (page != null && page > 1) {
+      var params = {'offset': page.toString()};
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
+    }
+    var response;
+    try {
+      response = await http.get(endpoint, headers: headers);
+    } catch (e) {
+      print(e);
+    }
+
+    var responseBody = json.decode(response.body);
+    return [
+      responseBody['totalCount'],
+      compute(parseFeedPosts, responseBody['post'])
+    ];
+  }
+
+  Future<List<dynamic>> getUserBarPosts(String user, String bar,
+      [int? page]) async {
+    String path = '/post/userbar/$user/$bar';
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var endpoint;
+    endpoint = Uri.http('${Config.postApiUrl}', path);
+    if (page != null && page > 1) {
+      var params = {'offset': page.toString()};
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
+    }
+    var response;
+    try {
+      response = await http.get(endpoint, headers: headers);
+    } catch (e) {
+      print(e);
+    }
+
+    var responseBody = json.decode(response.body);
+    return [
+      responseBody['totalCount'],
+      compute(parseFeedPosts, responseBody['post'])
+    ];
+  }
+
+  Future<List<dynamic>> getUserNbhoodPosts(String user, String nbhood,
+      [int? page]) async {
+    String path = '/post/usernbhood/$user/$nbhood';
+    var token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var endpoint;
+    endpoint = Uri.http('${Config.postApiUrl}', path);
+    if (page != null && page > 1) {
+      var params = {'offset': page.toString()};
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
+    }
+    var response;
+    try {
+      response = await http.get(endpoint, headers: headers);
+    } catch (e) {
+      print(e);
+    }
+
+    var responseBody = json.decode(response.body);
+    return [
+      responseBody['totalCount'],
+      compute(parseFeedPosts, responseBody['post'])
+    ];
+  }
 }
