@@ -1,32 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:NewApp/services/postservice.dart';
-import 'package:NewApp/widget/navbarlocation.dart';
+import 'package:strings/strings.dart';
 import 'package:NewApp/widget/bottomnav.dart';
-import 'package:NewApp/widget/feedpostcard.dart';
+import 'package:NewApp/widget/navbarlocation.dart';
+import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/services/userservice.dart';
 import 'package:NewApp/widget/userprofile.dart';
+import 'package:NewApp/widget/feedpostcard.dart';
 import 'package:NewApp/widget/userfilter.dart';
 
-class UserPosts extends StatefulWidget {
-  UserPosts(this.user);
-  final String user;
-  static const route = '/userposts';
-
+class UserBar extends StatefulWidget {
+  UserBar(this.userbar);
+  final String userbar;
+  static String route = '/userbar';
   @override
-  _UserPostsState createState() => _UserPostsState();
+  _UserBarState createState() => _UserBarState();
 }
 
-class _UserPostsState extends State<UserPosts> {
+class _UserBarState extends State<UserBar> {
+  String user = '';
+  String bar = '';
   Future<dynamic>? posts;
   final postService = new PostService();
   Future<dynamic>? userInfo;
   final userService = new UserService();
 
-  getUserPosts(String user, [int? offset]) async {
+  getUserBarPosts(String user, String bar, [int? offset]) async {
     var response;
     if (offset != null) {
       try {
-        response = await postService.getUserPosts(user, offset);
+        response = await postService.getUserBarPosts(user, bar, offset);
         totalPosts = response[0];
       } catch (e) {
         print(e);
@@ -43,13 +45,13 @@ class _UserPostsState extends State<UserPosts> {
       }
     } else {
       try {
-        response = await postService.getUserPosts(user);
+        response = await postService.getUserBarPosts(user, bar);
         totalPosts = response[0];
       } catch (e) {
         print(e);
         final snackBar = SnackBar(
             content: Text(
-                'Error: could not retrieve posts. Check network connection.',
+                'Error: could retrieve posts. Check network connection.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -59,7 +61,6 @@ class _UserPostsState extends State<UserPosts> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }
-
     return response[1];
   }
 
@@ -97,6 +98,17 @@ class _UserPostsState extends State<UserPosts> {
                   children: [
                     SizedBox(height: MediaQuery.of(context).size.height * .1),
                     UserProfile(userInfo, totalPosts),
+                    Text(
+                      '$user has no posts at ${capitalize(bar)}',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                          fontFamily: 'Oxygen-Bold'),
+                    ),
+                    Divider(
+                      color: Colors.white,
+                    ),
                     Expanded(
                         child: Image(
                             image: AssetImage('assets/img/city_page.jpg'),
@@ -110,6 +122,14 @@ class _UserPostsState extends State<UserPosts> {
                   child: Column(
                 children: [
                   UserProfile(userInfo, totalPosts),
+                  Text(
+                    '$user\'s posts at ${capitalize(bar)}',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                        fontFamily: 'Oxygen-Bold'),
+                  ),
                   Expanded(
                     child: Scrollbar(
                         child: RefreshIndicator(
@@ -121,7 +141,7 @@ class _UserPostsState extends State<UserPosts> {
                           itemBuilder: (context, index) {
                             if (index == items.length && index < totalPosts!) {
                               offset++;
-                              var newPosts = getUserPosts(widget.user, offset);
+                              var newPosts = getUserBarPosts(user, bar, offset);
                               newPosts.then((posts) {
                                 if (posts != null) {
                                   if (mounted) {
@@ -153,7 +173,7 @@ class _UserPostsState extends State<UserPosts> {
                                 items[index].uuid);
                           }),
                       onRefresh: () {
-                        return getUserPosts(widget.user);
+                        return getUserBarPosts(user, bar);
                       },
                     )),
                   )
@@ -190,8 +210,10 @@ class _UserPostsState extends State<UserPosts> {
   @override
   void initState() {
     super.initState();
-    posts = getUserPosts(widget.user);
-    userInfo = getUserInfo(widget.user);
+    user = widget.userbar.split('-')[0];
+    bar = widget.userbar.split('-')[1];
+    posts = getUserBarPosts(user, bar);
+    userInfo = getUserInfo(user);
   }
 
   int offset = 1;
@@ -200,9 +222,12 @@ class _UserPostsState extends State<UserPosts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: UserFilter(widget.user),
+      drawer: UserFilter(user),
       body: Column(
-        children: [NavBarLoc(), userPosts()],
+        children: [
+          NavBarLoc(),
+          userPosts(),
+        ],
       ),
       bottomNavigationBar: BottomNav(),
     );

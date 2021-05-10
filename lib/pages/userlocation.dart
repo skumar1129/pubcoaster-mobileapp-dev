@@ -1,32 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:NewApp/services/postservice.dart';
-import 'package:NewApp/widget/navbarlocation.dart';
 import 'package:NewApp/widget/bottomnav.dart';
-import 'package:NewApp/widget/feedpostcard.dart';
+import 'package:NewApp/widget/navbarlocation.dart';
+import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/services/userservice.dart';
 import 'package:NewApp/widget/userprofile.dart';
+import 'package:NewApp/widget/feedpostcard.dart';
 import 'package:NewApp/widget/userfilter.dart';
 
-class UserPosts extends StatefulWidget {
-  UserPosts(this.user);
-  final String user;
-  static const route = '/userposts';
-
+class UserLocation extends StatefulWidget {
+  UserLocation(this.userloc);
+  final String userloc;
+  static const route = '/userlocation';
   @override
-  _UserPostsState createState() => _UserPostsState();
+  _UserLocationState createState() => _UserLocationState();
 }
 
-class _UserPostsState extends State<UserPosts> {
+class _UserLocationState extends State<UserLocation> {
+  String user = '';
+  String location = '';
   Future<dynamic>? posts;
   final postService = new PostService();
   Future<dynamic>? userInfo;
   final userService = new UserService();
 
-  getUserPosts(String user, [int? offset]) async {
+  getUserLocationPosts(String user, String location, [int? offset]) async {
     var response;
     if (offset != null) {
       try {
-        response = await postService.getUserPosts(user, offset);
+        response =
+            await postService.getUserLocationPosts(user, location, offset);
         totalPosts = response[0];
       } catch (e) {
         print(e);
@@ -43,7 +45,7 @@ class _UserPostsState extends State<UserPosts> {
       }
     } else {
       try {
-        response = await postService.getUserPosts(user);
+        response = await postService.getUserLocationPosts(user, location);
         totalPosts = response[0];
       } catch (e) {
         print(e);
@@ -59,7 +61,6 @@ class _UserPostsState extends State<UserPosts> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }
-
     return response[1];
   }
 
@@ -97,6 +98,17 @@ class _UserPostsState extends State<UserPosts> {
                   children: [
                     SizedBox(height: MediaQuery.of(context).size.height * .1),
                     UserProfile(userInfo, totalPosts),
+                    Text(
+                      '$user has no posts in $location',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                          fontFamily: 'Oxygen-Bold'),
+                    ),
+                    Divider(
+                      color: Colors.white,
+                    ),
                     Expanded(
                         child: Image(
                             image: AssetImage('assets/img/city_page.jpg'),
@@ -110,6 +122,14 @@ class _UserPostsState extends State<UserPosts> {
                   child: Column(
                 children: [
                   UserProfile(userInfo, totalPosts),
+                  Text(
+                    '$user\'s posts in $location',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                        fontFamily: 'Oxygen-Bold'),
+                  ),
                   Expanded(
                     child: Scrollbar(
                         child: RefreshIndicator(
@@ -121,7 +141,8 @@ class _UserPostsState extends State<UserPosts> {
                           itemBuilder: (context, index) {
                             if (index == items.length && index < totalPosts!) {
                               offset++;
-                              var newPosts = getUserPosts(widget.user, offset);
+                              var newPosts =
+                                  getUserLocationPosts(user, location, offset);
                               newPosts.then((posts) {
                                 if (posts != null) {
                                   if (mounted) {
@@ -153,7 +174,7 @@ class _UserPostsState extends State<UserPosts> {
                                 items[index].uuid);
                           }),
                       onRefresh: () {
-                        return getUserPosts(widget.user);
+                        return getUserLocationPosts(user, location);
                       },
                     )),
                   )
@@ -190,8 +211,10 @@ class _UserPostsState extends State<UserPosts> {
   @override
   void initState() {
     super.initState();
-    posts = getUserPosts(widget.user);
-    userInfo = getUserInfo(widget.user);
+    user = widget.userloc.split('-')[0];
+    location = widget.userloc.split('-')[1];
+    posts = getUserLocationPosts(user, location);
+    userInfo = getUserInfo(user);
   }
 
   int offset = 1;
@@ -200,9 +223,12 @@ class _UserPostsState extends State<UserPosts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: UserFilter(widget.user),
+      drawer: UserFilter(user),
       body: Column(
-        children: [NavBarLoc(), userPosts()],
+        children: [
+          NavBarLoc(),
+          userPosts(),
+        ],
       ),
       bottomNavigationBar: BottomNav(),
     );
