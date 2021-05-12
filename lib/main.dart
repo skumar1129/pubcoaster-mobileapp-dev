@@ -1,3 +1,4 @@
+import 'package:NewApp/models/userlikedargs.dart';
 import 'package:flutter/material.dart';
 import 'package:NewApp/pages/home.dart';
 import 'package:NewApp/pages/splashscreen.dart';
@@ -20,6 +21,8 @@ import 'package:NewApp/pages/landpage.dart';
 import 'package:NewApp/pages/userbar.dart';
 import 'package:NewApp/pages/userlocation.dart';
 import 'package:NewApp/pages/usernbhood.dart';
+import 'package:NewApp/pages/userlikedtype.dart';
+import 'package:NewApp/pages/myuserlikedtype.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +43,7 @@ class MyApp extends StatelessWidget {
 
           if (snapshot.connectionState == ConnectionState.done) {
             return MaterialApp(
-              title: 'New App',
+              title: 'PubCoasters',
               theme: ThemeData(
                 // This is the theme of your application.
                 //
@@ -77,6 +80,16 @@ class MyApp extends StatelessWidget {
                   return MaterialPageRoute(builder: (context) {
                     return SinglePost(args.uuid, args.currentUser);
                   });
+                } else if (settings.name == UserLikedType.route) {
+                  final UserLiked args = settings.arguments as UserLiked;
+                  return MaterialPageRoute(builder: (context) {
+                    return UserLikedType(args.type, args.user);
+                  });
+                } else if (settings.name == MyUserLikedType.route) {
+                  final UserLiked args = settings.arguments as UserLiked;
+                  return MaterialPageRoute(builder: (context) {
+                    return MyUserLikedType(args.type, args.user);
+                  });
                 }
                 var routes = <String, WidgetBuilder>{
                   LocationPosts.route: (context) =>
@@ -94,7 +107,7 @@ class MyApp extends StatelessWidget {
                   UserBar.route: (context) =>
                       UserBar(settings.arguments as String),
                   UserNbhood.route: (context) =>
-                      UserNbhood(settings.arguments as String)
+                      UserNbhood(settings.arguments as String),
                 };
                 WidgetBuilder builder = routes[settings.name]!;
                 return MaterialPageRoute(

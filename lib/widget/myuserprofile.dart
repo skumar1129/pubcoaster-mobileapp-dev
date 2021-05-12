@@ -4,6 +4,8 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:NewApp/services/userservice.dart';
+import 'package:NewApp/pages/myuserlikedtype.dart';
+import 'package:NewApp/models/userlikedargs.dart';
 
 class MyUserProfile extends StatefulWidget {
   MyUserProfile(this.userInfo, this.numPosts);
@@ -398,7 +400,11 @@ class _MyUserProfileState extends State<MyUserProfile> {
                 Icons.business,
                 color: Colors.red,
               ),
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, MyUserLikedType.route,
+                    arguments:
+                        UserLiked(type: 'bar', user: widget.userInfo.username));
+              }),
           Text('${widget.userInfo.numBars} bar liked')
         ],
       );
@@ -410,7 +416,11 @@ class _MyUserProfileState extends State<MyUserProfile> {
                 Icons.business,
                 color: Colors.red,
               ),
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, MyUserLikedType.route,
+                    arguments:
+                        UserLiked(type: 'bar', user: widget.userInfo.username));
+              }),
           Text('${widget.userInfo.numBars} bars liked')
         ],
       );
@@ -426,7 +436,11 @@ class _MyUserProfileState extends State<MyUserProfile> {
                 Icons.branding_watermark,
                 color: Colors.red,
               ),
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, MyUserLikedType.route,
+                    arguments: UserLiked(
+                        type: 'brand', user: widget.userInfo.username));
+              }),
           Text('${widget.userInfo.numBrands} brand liked'),
         ],
       );
@@ -438,7 +452,11 @@ class _MyUserProfileState extends State<MyUserProfile> {
                 Icons.branding_watermark,
                 color: Colors.red,
               ),
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, MyUserLikedType.route,
+                    arguments: UserLiked(
+                        type: 'brand', user: widget.userInfo.username));
+              }),
           Text('${widget.userInfo.numBrands} brands liked'),
         ],
       );
@@ -454,7 +472,11 @@ class _MyUserProfileState extends State<MyUserProfile> {
                 Icons.local_drink,
                 color: Colors.red,
               ),
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, MyUserLikedType.route,
+                    arguments: UserLiked(
+                        type: 'drink', user: widget.userInfo.username));
+              }),
           Text('${widget.userInfo.numDrinks} drink liked')
         ],
       );
@@ -466,7 +488,11 @@ class _MyUserProfileState extends State<MyUserProfile> {
                 Icons.local_drink,
                 color: Colors.red,
               ),
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, MyUserLikedType.route,
+                    arguments: UserLiked(
+                        type: 'drink', user: widget.userInfo.username));
+              }),
           Text('${widget.userInfo.numDrinks} drinks liked')
         ],
       );
