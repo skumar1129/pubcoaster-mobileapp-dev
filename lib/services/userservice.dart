@@ -4,10 +4,31 @@ import 'package:http/http.dart' as http;
 import 'config.dart';
 import 'dart:async';
 import 'package:NewApp/models/user.dart';
+import 'package:NewApp/models/userbar.dart';
+import 'package:NewApp/models/userbrand.dart';
+import 'package:NewApp/models/userdrink.dart';
 import 'package:flutter/foundation.dart';
 
 ProfUser parseUser(dataItem) {
   var response = ProfUser.fromJson(dataItem);
+  return response;
+}
+
+List<UserBar> parseUserBar(dataItems) {
+  var response =
+      dataItems.map<UserBar>((json) => UserBar.fromJson(json)).toList();
+  return response;
+}
+
+List<UserBrand> parseUserBrand(dataItems) {
+  var response =
+      dataItems.map<UserBrand>((json) => UserBar.fromJson(json)).toList();
+  return response;
+}
+
+List<UserDrink> parseUserDrink(dataItems) {
+  var response =
+      dataItems.map<UserDrink>((json) => UserBar.fromJson(json)).toList();
   return response;
 }
 
@@ -159,7 +180,7 @@ class UserService {
       print(e);
     }
     var responseBody = json.decode(response.body);
-    return responseBody['bars'];
+    return compute(parseUserBar, responseBody['bars']);
   }
 
   Future<dynamic> getUserBrand(username, [page]) async {
@@ -183,7 +204,7 @@ class UserService {
     }
 
     var responseBody = json.decode(response.body);
-    return responseBody['brands'];
+    return compute(parseUserBrand, responseBody['brands']);
   }
 
   Future<dynamic> getUserDrink(username, [page]) async {
@@ -206,7 +227,7 @@ class UserService {
       print(e);
     }
     var responseBody = json.decode(response.body);
-    return responseBody['drinks'];
+    return compute(parseUserDrink, responseBody['drinks']);
   }
 
   Future<bool> createUserBar(body) async {
@@ -249,7 +270,11 @@ class UserService {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'
     };
-    var reqBody = {'username': body['username'], 'brand': body['brand']};
+    var reqBody = {
+      'username': body['username'],
+      'brand': body['brand'],
+      'type': body['type']
+    };
     bool succeed = true;
     var content;
 

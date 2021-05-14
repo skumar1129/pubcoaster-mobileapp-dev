@@ -17,6 +17,8 @@ class MyUserLikedType extends StatefulWidget {
 class _MyUserLikedTypeState extends State<MyUserLikedType> {
   final userService = new UserService();
   Future<dynamic>? userLikedType;
+  int offset = 1;
+  int itemsLength = 5;
 
   getUserDrink([int? page]) async {
     var response;
@@ -135,26 +137,46 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
               child: Column(
                 children: [
                   Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            'Your liked ${capitalize(widget.type)}s',
-                            style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
-                                fontFamily: 'Oxygen-Bold'),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.add_comment),
-                            onPressed: () {},
-                            color: Colors.red,
-                            tooltip: 'Add new liked ${widget.type}',
-                          ),
-                        ],
-                      )),
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'Your liked ${capitalize(widget.type)}s',
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
+                              fontFamily: 'Oxygen-Bold'),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.add_comment),
+                          onPressed: () {},
+                          color: Colors.red,
+                          tooltip: 'Add new liked ${widget.type}',
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Scrollbar(
+                      child: RefreshIndicator(
+                        child: ListView.builder(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: items.length,
+                          itemBuilder: (context, index) {
+                            print(items[index]['barName']);
+                            return Container();
+                          },
+                        ),
+                        onRefresh: () {
+                          return getUserBar();
+                        },
+                      ),
+                    ),
+                  )
                 ],
               ),
             );
