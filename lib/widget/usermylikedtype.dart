@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:NewApp/services/userservice.dart';
+import 'package:NewApp/models/userbar.dart';
+import 'package:NewApp/models/userbrand.dart';
+import 'package:NewApp/models/userdrink.dart';
+import 'package:strings/strings.dart';
+import 'package:NewApp/models/userlikedargs.dart';
+import 'package:NewApp/pages/myuserlikedtype.dart';
 
 class UserMyLikedType extends StatelessWidget {
   UserMyLikedType(this.type, this.info);
@@ -7,63 +13,219 @@ class UserMyLikedType extends StatelessWidget {
   final dynamic info;
   final userService = new UserService();
 
-  Widget _drinkInfo() {
-    return Row(
-      children: [
-        IconButton(
-          icon: Icon(
-            Icons.remove_sharp,
-          ),
-          onPressed: () {},
-        ),
-        Icon(
-          Icons.local_drink,
-        )
-      ],
-    );
+  deleteBar(String uuid, String user, context) async {
+    var body = {'username': user, 'uuid': uuid};
+    bool succeed = await userService.deleteUserBar(body);
+    if (succeed) {
+      Navigator.pushReplacementNamed(context, MyUserLikedType.route,
+          arguments: UserLiked(type: type, user: user));
+    } else {
+      final snackBar = SnackBar(
+          content: Text('Error with deleting bar. Check network connection.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
-  Widget _barInfo() {
+  deleteBrand(String uuid, String user, context) async {
+    var body = {'username': user, 'uuid': uuid};
+    bool succeed = await userService.deleteUserBrand(body);
+    if (succeed) {
+      Navigator.pushReplacementNamed(context, MyUserLikedType.route,
+          arguments: UserLiked(type: type, user: user));
+    } else {
+      final snackBar = SnackBar(
+          content: Text('Error with deleting brand. Check network connection.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  deleteDrink(String uuid, String user, context) async {
+    var body = {'username': user, 'uuid': uuid};
+    bool succeed = await userService.deleteUserDrink(body);
+    if (succeed) {
+      Navigator.pushReplacementNamed(context, MyUserLikedType.route,
+          arguments: UserLiked(type: type, user: user));
+    } else {
+      final snackBar = SnackBar(
+          content: Text('Error with deleting drink. Check network connection.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  Widget _drinkInfo(context) {
+    UserDrink drinkInfo = info as UserDrink;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         IconButton(
           icon: Icon(
             Icons.remove_sharp,
+            color: Colors.red,
           ),
-          onPressed: () {},
+          onPressed: () {
+            deleteDrink(drinkInfo.uuid, drinkInfo.user, context);
+          },
+        ),
+        Text(
+          '${capitalize(drinkInfo.drinkName)},',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Merriweather-Bold',
+            fontSize: 20,
+          ),
         ),
         Icon(
-          Icons.business,
+          Icons.local_drink,
+          color: Colors.red,
         )
       ],
     );
   }
 
-  Widget _brandInfo() {
+  Widget _barDisplay(UserBar info) {
+    if (info.neighborhood == '') {
+      return Column(
+        children: [
+          Text(
+            '${capitalize(info.barName)}',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Merriweather-Bold',
+              fontSize: 20,
+            ),
+          ),
+          Text(
+            '${info.location}',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Merriweather-Bold',
+              fontSize: 20,
+            ),
+          ),
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          Text(
+            '${capitalize(info.barName)}',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Merriweather-Bold',
+              fontSize: 20,
+            ),
+          ),
+          Text(
+            '${capitalize(info.neighborhood)}, ${info.location}',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Merriweather-Bold',
+              fontSize: 20,
+            ),
+          ),
+        ],
+      );
+    }
+  }
+
+  Widget _barInfo(context) {
+    UserBar barInfo = info as UserBar;
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         IconButton(
           icon: Icon(
             Icons.remove_sharp,
+            color: Colors.red,
           ),
-          onPressed: () {},
+          onPressed: () {
+            deleteBar(barInfo.uuid, barInfo.user, context);
+          },
         ),
+        _barDisplay(barInfo),
         Icon(
-          Icons.branding_watermark,
+          Icons.business,
+          color: Colors.red,
         )
       ],
     );
   }
 
-  Widget _typeInfo() {
+  Widget _brandInfo(context) {
+    UserBrand brandInfo = info as UserBrand;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        IconButton(
+          icon: Icon(
+            Icons.remove_sharp,
+            color: Colors.red,
+          ),
+          onPressed: () {
+            deleteBrand(brandInfo.uuid, brandInfo.user, context);
+          },
+        ),
+        Column(
+          children: [
+            Text(
+              'Name: ${capitalize(brandInfo.brandName)}',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Merriweather-Bold',
+                fontSize: 20,
+              ),
+            ),
+            Text(
+              'Type: ${capitalize(brandInfo.type)}',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Merriweather-Bold',
+                fontSize: 20,
+              ),
+            )
+          ],
+        ),
+        Icon(
+          Icons.branding_watermark,
+          color: Colors.red,
+        )
+      ],
+    );
+  }
+
+  Widget _typeInfo(context) {
     switch (type) {
       case 'bar':
-        return _barInfo();
+        return _barInfo(context);
       case 'drink':
-        return _drinkInfo();
+        return _drinkInfo(context);
       case 'brand':
-        return _brandInfo();
+        return _brandInfo(context);
       default:
         return Container();
     }
@@ -72,7 +234,14 @@ class UserMyLikedType extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: _typeInfo(),
+      shadowColor: Colors.black,
+      shape: StadiumBorder(
+        side: BorderSide(
+          color: Colors.black,
+          width: 2.0,
+        ),
+      ),
+      child: _typeInfo(context),
     );
   }
 }

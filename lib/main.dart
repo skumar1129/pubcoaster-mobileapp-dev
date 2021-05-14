@@ -23,6 +23,8 @@ import 'package:NewApp/pages/userlocation.dart';
 import 'package:NewApp/pages/usernbhood.dart';
 import 'package:NewApp/pages/userlikedtype.dart';
 import 'package:NewApp/pages/myuserlikedtype.dart';
+import 'package:NewApp/pages/createuserliked.dart';
+import 'package:NewApp/pages/allusertypes.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -71,7 +73,7 @@ class MyApp extends StatelessWidget {
                 '/verifyemail': (context) => VerifyEmail(),
                 '/adduserinfo': (context) => AddUserInfo(),
                 '/home': (context) => Home(),
-                '/mypost': (context) => MyPosts()
+                '/mypost': (context) => MyPosts(),
               },
               onGenerateRoute: (RouteSettings settings) {
                 //single post scenario
@@ -89,6 +91,16 @@ class MyApp extends StatelessWidget {
                   final UserLiked args = settings.arguments as UserLiked;
                   return MaterialPageRoute(builder: (context) {
                     return MyUserLikedType(args.type, args.user);
+                  });
+                } else if (settings.name == CreateUserLiked.route) {
+                  final UserLiked args = settings.arguments as UserLiked;
+                  return MaterialPageRoute(builder: (context) {
+                    return CreateUserLiked(args.type, args.user);
+                  });
+                } else if (settings.name == AllUserTypes.route) {
+                  final UserLiked args = settings.arguments as UserLiked;
+                  return MaterialPageRoute(builder: (context) {
+                    return AllUserTypes(args.type, args.user);
                   });
                 }
                 var routes = <String, WidgetBuilder>{

@@ -3,6 +3,9 @@ import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/navbarhome.dart';
 import 'package:NewApp/services/userservice.dart';
 import 'package:strings/strings.dart';
+import 'package:NewApp/widget/usermylikedtype.dart';
+import 'package:NewApp/pages/allusertypes.dart';
+import 'package:NewApp/models/userlikedargs.dart';
 
 class MyUserLikedType extends StatefulWidget {
   MyUserLikedType(this.type, this.user);
@@ -118,7 +121,12 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                           ),
                           IconButton(
                             icon: Icon(Icons.add_comment),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(
+                                  context, AllUserTypes.route,
+                                  arguments: UserLiked(
+                                      type: widget.type, user: widget.user));
+                            },
                             color: Colors.red,
                             tooltip: 'Add new liked ${widget.type}',
                           ),
@@ -151,7 +159,12 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                         ),
                         IconButton(
                           icon: Icon(Icons.add_comment),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                                context, AllUserTypes.route,
+                                arguments: UserLiked(
+                                    type: widget.type, user: widget.user));
+                          },
                           color: Colors.red,
                           tooltip: 'Add new liked ${widget.type}',
                         ),
@@ -167,8 +180,27 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                           shrinkWrap: true,
                           itemCount: items.length,
                           itemBuilder: (context, index) {
-                            print(items[index]['barName']);
-                            return Container();
+                            if (index == items.length &&
+                                items.length < itemsLength) {
+                            } else if (index == items.length &&
+                                items.length > -itemsLength) {
+                              itemsLength += 5;
+                              offset++;
+                              var newUserBar = getUserBar(offset);
+                              newUserBar.then((item) {
+                                if (item != null) {
+                                  if (mounted) {
+                                    setState(() {
+                                      items.addAll(item);
+                                    });
+                                  }
+                                }
+                              });
+                              return IntrinsicWidth(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            return UserMyLikedType('bar', items[index]);
                           },
                         ),
                         onRefresh: () {
@@ -236,7 +268,12 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                           ),
                           IconButton(
                             icon: Icon(Icons.add_comment),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(
+                                  context, AllUserTypes.route,
+                                  arguments: UserLiked(
+                                      type: widget.type, user: widget.user));
+                            },
                             color: Colors.red,
                             tooltip: 'Add new liked ${widget.type}',
                           ),
@@ -255,26 +292,70 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
               child: Column(
                 children: [
                   Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            'Your liked ${capitalize(widget.type)}s',
-                            style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
-                                fontFamily: 'Oxygen-Bold'),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.add_comment),
-                            onPressed: () {},
-                            color: Colors.red,
-                            tooltip: 'Add new liked ${widget.type}',
-                          ),
-                        ],
-                      )),
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'Your liked ${capitalize(widget.type)}s',
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
+                              fontFamily: 'Oxygen-Bold'),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.add_comment),
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                                context, AllUserTypes.route,
+                                arguments: UserLiked(
+                                    type: widget.type, user: widget.user));
+                          },
+                          color: Colors.red,
+                          tooltip: 'Add new liked ${widget.type}',
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Scrollbar(
+                      child: RefreshIndicator(
+                        child: ListView.builder(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: items.length,
+                          itemBuilder: (context, index) {
+                            if (index == items.length &&
+                                items.length < itemsLength) {
+                            } else if (index == items.length &&
+                                items.length > -itemsLength) {
+                              itemsLength += 5;
+                              offset++;
+                              var newUserBar = getUserDrink(offset);
+                              newUserBar.then((item) {
+                                if (item != null) {
+                                  if (mounted) {
+                                    setState(() {
+                                      items.addAll(item);
+                                    });
+                                  }
+                                }
+                              });
+                              return IntrinsicWidth(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            return UserMyLikedType('drink', items[index]);
+                          },
+                        ),
+                        onRefresh: () {
+                          return getUserDrink();
+                        },
+                      ),
+                    ),
+                  )
                 ],
               ),
             );
@@ -333,7 +414,12 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                                   decoration: TextDecoration.underline)),
                           IconButton(
                             icon: Icon(Icons.add_comment),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(
+                                  context, AllUserTypes.route,
+                                  arguments: UserLiked(
+                                      type: widget.type, user: widget.user));
+                            },
                             color: Colors.red,
                             tooltip: 'Add new liked ${widget.type}',
                           ),
@@ -352,26 +438,70 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
               child: Column(
                 children: [
                   Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            'Your liked ${capitalize(widget.type)}s',
-                            style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
-                                fontFamily: 'Oxygen-Bold'),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.add_comment),
-                            onPressed: () {},
-                            color: Colors.red,
-                            tooltip: 'Add new liked ${widget.type}',
-                          ),
-                        ],
-                      )),
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'Your liked ${capitalize(widget.type)}s',
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
+                              fontFamily: 'Oxygen-Bold'),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.add_comment),
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                                context, AllUserTypes.route,
+                                arguments: UserLiked(
+                                    type: widget.type, user: widget.user));
+                          },
+                          color: Colors.red,
+                          tooltip: 'Add new liked ${widget.type}',
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Scrollbar(
+                      child: RefreshIndicator(
+                        child: ListView.builder(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: items.length,
+                          itemBuilder: (context, index) {
+                            if (index == items.length &&
+                                items.length < itemsLength) {
+                            } else if (index == items.length &&
+                                items.length > -itemsLength) {
+                              itemsLength += 5;
+                              offset++;
+                              var newUserBar = getUserBrand(offset);
+                              newUserBar.then((item) {
+                                if (item != null) {
+                                  if (mounted) {
+                                    setState(() {
+                                      items.addAll(item);
+                                    });
+                                  }
+                                }
+                              });
+                              return IntrinsicWidth(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            return UserMyLikedType('brand', items[index]);
+                          },
+                        ),
+                        onRefresh: () {
+                          return getUserBrand();
+                        },
+                      ),
+                    ),
+                  )
                 ],
               ),
             );

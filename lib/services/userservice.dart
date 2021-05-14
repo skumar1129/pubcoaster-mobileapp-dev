@@ -22,13 +22,13 @@ List<UserBar> parseUserBar(dataItems) {
 
 List<UserBrand> parseUserBrand(dataItems) {
   var response =
-      dataItems.map<UserBrand>((json) => UserBar.fromJson(json)).toList();
+      dataItems.map<UserBrand>((json) => UserBrand.fromJson(json)).toList();
   return response;
 }
 
 List<UserDrink> parseUserDrink(dataItems) {
   var response =
-      dataItems.map<UserDrink>((json) => UserBar.fromJson(json)).toList();
+      dataItems.map<UserDrink>((json) => UserDrink.fromJson(json)).toList();
   return response;
 }
 

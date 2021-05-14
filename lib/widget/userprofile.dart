@@ -16,7 +16,10 @@ class _UserProfileState extends State<UserProfile> {
       title: Text(
         'Just look down the screen bro',
         style: TextStyle(
-            fontWeight: FontWeight.bold, color: Colors.black, fontSize: 23),
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+          fontSize: 23,
+        ),
         textAlign: TextAlign.center,
       ),
       backgroundColor: Colors.white,

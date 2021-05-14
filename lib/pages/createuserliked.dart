@@ -6,6 +6,7 @@ class CreateUserLiked extends StatefulWidget {
   CreateUserLiked(this.type, this.user);
   final String type;
   final String user;
+  static const route = '/createuserliked';
   @override
   _CreateUserLikedState createState() => _CreateUserLikedState();
 }
