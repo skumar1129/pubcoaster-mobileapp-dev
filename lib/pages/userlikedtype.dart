@@ -3,6 +3,7 @@ import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/navbarhome.dart';
 import 'package:NewApp/services/userservice.dart';
 import 'package:strings/strings.dart';
+import 'package:NewApp/widget/userlikedtype.dart';
 
 class UserLikedType extends StatefulWidget {
   UserLikedType(this.type, this.user);
@@ -134,6 +135,45 @@ class _UserLikedTypeState extends State<UserLikedType> {
                           fontFamily: 'Oxygen-Bold'),
                     ),
                   ),
+                  Expanded(
+                    child: Scrollbar(
+                      child: RefreshIndicator(
+                        child: ListView.builder(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: items.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index == items.length &&
+                                items.length < itemsLength) {
+                              return Container();
+                            } else if (index == items.length &&
+                                items.length >= itemsLength) {
+                              itemsLength += 5;
+                              offset++;
+                              var newUserBar = getUserBar(offset);
+                              newUserBar.then((item) {
+                                if (item != null) {
+                                  if (mounted) {
+                                    setState(() {
+                                      items.addAll(item);
+                                    });
+                                  }
+                                }
+                              });
+                              return IntrinsicWidth(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            return UserLikedTypeWidget('bar', items[index]);
+                          },
+                        ),
+                        onRefresh: () {
+                          return getUserBar();
+                        },
+                      ),
+                    ),
+                  )
                 ],
               ),
             );
@@ -211,6 +251,45 @@ class _UserLikedTypeState extends State<UserLikedType> {
                           fontFamily: 'Oxygen-Bold'),
                     ),
                   ),
+                  Expanded(
+                    child: Scrollbar(
+                      child: RefreshIndicator(
+                        child: ListView.builder(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: items.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index == items.length &&
+                                items.length < itemsLength) {
+                              return Container();
+                            } else if (index == items.length &&
+                                items.length >= itemsLength) {
+                              itemsLength += 5;
+                              offset++;
+                              var newUserDrink = getUserDrink(offset);
+                              newUserDrink.then((item) {
+                                if (item != null) {
+                                  if (mounted) {
+                                    setState(() {
+                                      items.addAll(item);
+                                    });
+                                  }
+                                }
+                              });
+                              return IntrinsicWidth(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            return UserLikedTypeWidget('drink', items[index]);
+                          },
+                        ),
+                        onRefresh: () {
+                          return getUserDrink();
+                        },
+                      ),
+                    ),
+                  )
                 ],
               ),
             );
@@ -288,6 +367,45 @@ class _UserLikedTypeState extends State<UserLikedType> {
                           fontFamily: 'Oxygen-Bold'),
                     ),
                   ),
+                  Expanded(
+                    child: Scrollbar(
+                      child: RefreshIndicator(
+                        child: ListView.builder(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: items.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index == items.length &&
+                                items.length < itemsLength) {
+                              return Container();
+                            } else if (index == items.length &&
+                                items.length >= itemsLength) {
+                              itemsLength += 5;
+                              offset++;
+                              var newUserBrand = getUserBrand(offset);
+                              newUserBrand.then((item) {
+                                if (item != null) {
+                                  if (mounted) {
+                                    setState(() {
+                                      items.addAll(item);
+                                    });
+                                  }
+                                }
+                              });
+                              return IntrinsicWidth(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            return UserLikedTypeWidget('brand', items[index]);
+                          },
+                        ),
+                        onRefresh: () {
+                          return getUserBrand();
+                        },
+                      ),
+                    ),
+                  )
                 ],
               ),
             );
@@ -351,6 +469,9 @@ class _UserLikedTypeState extends State<UserLikedType> {
         break;
     }
   }
+
+  int itemsLength = 5;
+  int offset = 1;
 
   @override
   Widget build(BuildContext context) {

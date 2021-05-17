@@ -178,12 +178,13 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                           physics: AlwaysScrollableScrollPhysics(),
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
-                          itemCount: items.length,
+                          itemCount: items.length + 1,
                           itemBuilder: (context, index) {
                             if (index == items.length &&
                                 items.length < itemsLength) {
+                              return Container();
                             } else if (index == items.length &&
-                                items.length > -itemsLength) {
+                                items.length >= itemsLength) {
                               itemsLength += 5;
                               offset++;
                               var newUserBar = getUserBar(offset);
@@ -325,10 +326,11 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                           physics: AlwaysScrollableScrollPhysics(),
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
-                          itemCount: items.length,
+                          itemCount: items.length + 1,
                           itemBuilder: (context, index) {
                             if (index == items.length &&
                                 items.length < itemsLength) {
+                              return Container();
                             } else if (index == items.length &&
                                 items.length > -itemsLength) {
                               itemsLength += 5;
@@ -471,10 +473,11 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                           physics: AlwaysScrollableScrollPhysics(),
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
-                          itemCount: items.length,
+                          itemCount: items.length + 1,
                           itemBuilder: (context, index) {
                             if (index == items.length &&
                                 items.length < itemsLength) {
+                              return Container();
                             } else if (index == items.length &&
                                 items.length > -itemsLength) {
                               itemsLength += 5;

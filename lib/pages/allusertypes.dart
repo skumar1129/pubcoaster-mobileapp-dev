@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/navbarhome.dart';
 import 'package:NewApp/services/bardrinkbrandservice.dart';
+import 'package:NewApp/widget/useralltypes.dart';
+import 'package:strings/strings.dart';
+import 'package:NewApp/pages/createuserliked.dart';
+import 'package:NewApp/models/userlikedargs.dart';
 
 class AllUserTypes extends StatefulWidget {
   AllUserTypes(this.type, this.user);
@@ -20,6 +24,7 @@ class _AllUserTypesState extends State<AllUserTypes> {
   int offset = 1;
   int itemsLength = 5;
   bool searched = false;
+  String? searchType;
 
   getAllBars([int? page]) async {
     var response;
@@ -157,7 +162,102 @@ class _AllUserTypesState extends State<AllUserTypes> {
     return FutureBuilder(
       future: userType,
       builder: (context, snapshot) {
-        return Container();
+        if (snapshot.hasData) {
+          var items = snapshot.data as List<dynamic>;
+          if (items.length == 0) {
+            return Expanded(
+              child: Column(
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * .1),
+                  Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            'No ${capitalize(widget.type)}s have been created yet',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                decoration: TextDecoration.underline),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.add_comment),
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(
+                                  context, CreateUserLiked.route,
+                                  arguments: UserLiked(
+                                      type: widget.type, user: widget.user));
+                            },
+                            color: Colors.red,
+                            tooltip: 'Add new liked ${widget.type}',
+                          ),
+                        ],
+                      )),
+                  Expanded(
+                      child: Image(
+                          image: AssetImage('assets/img/city_page.jpg'),
+                          height: MediaQuery.of(context).size.height * .4)),
+                  SizedBox(height: MediaQuery.of(context).size.height * .14)
+                ],
+              ),
+            );
+          } else {
+            return Expanded(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: new BorderSide(color: Colors.black)),
+                        labelText: 'Search ${widget.type}s',
+                        labelStyle: TextStyle(color: Colors.black),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.search),
+                          color: Colors.black,
+                          onPressed: () {},
+                        ),
+                      ),
+                      onChanged: (value) => {
+                        if (mounted)
+                          {
+                            setState(() => {searchType = value})
+                          }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        } else if (snapshot.hasError) {
+          return Expanded(
+            child: Column(
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height * .1),
+                Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: Text(
+                      'There was an error getting the ${capitalize(widget.type)}s',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                          decoration: TextDecoration.underline)),
+                ),
+                Expanded(
+                    child: Image(
+                        image: AssetImage('assets/img/city_page.jpg'),
+                        height: MediaQuery.of(context).size.height * .4)),
+                SizedBox(height: MediaQuery.of(context).size.height * .14)
+              ],
+            ),
+          );
+        }
+        return Center(child: CircularProgressIndicator());
       },
     );
   }
@@ -166,7 +266,79 @@ class _AllUserTypesState extends State<AllUserTypes> {
     return FutureBuilder(
       future: userType,
       builder: (context, snapshot) {
-        return Container();
+        if (snapshot.hasData) {
+          var items = snapshot.data as List<dynamic>;
+          if (items.length == 0) {
+            return Expanded(
+              child: Column(
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * .1),
+                  Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            'No ${capitalize(widget.type)}s have been created yet',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                decoration: TextDecoration.underline),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.add_comment),
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(
+                                  context, CreateUserLiked.route,
+                                  arguments: UserLiked(
+                                      type: widget.type, user: widget.user));
+                            },
+                            color: Colors.red,
+                            tooltip: 'Add new liked ${widget.type}',
+                          ),
+                        ],
+                      )),
+                  Expanded(
+                      child: Image(
+                          image: AssetImage('assets/img/city_page.jpg'),
+                          height: MediaQuery.of(context).size.height * .4)),
+                  SizedBox(height: MediaQuery.of(context).size.height * .14)
+                ],
+              ),
+            );
+          } else {
+            return Expanded(
+              child: Column(
+                children: [],
+              ),
+            );
+          }
+        } else if (snapshot.hasError) {
+          return Expanded(
+            child: Column(
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height * .1),
+                Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: Text(
+                      'There was an error getting the ${capitalize(widget.type)}s',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                          decoration: TextDecoration.underline)),
+                ),
+                Expanded(
+                    child: Image(
+                        image: AssetImage('assets/img/city_page.jpg'),
+                        height: MediaQuery.of(context).size.height * .4)),
+                SizedBox(height: MediaQuery.of(context).size.height * .14)
+              ],
+            ),
+          );
+        }
+        return Center(child: CircularProgressIndicator());
       },
     );
   }
@@ -175,14 +347,86 @@ class _AllUserTypesState extends State<AllUserTypes> {
     return FutureBuilder(
       future: userType,
       builder: (context, snapshot) {
-        return Container();
+        if (snapshot.hasData) {
+          var items = snapshot.data as List<dynamic>;
+          if (items.length == 0) {
+            return Expanded(
+              child: Column(
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * .1),
+                  Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            'No ${capitalize(widget.type)}s have been created yet',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                decoration: TextDecoration.underline),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.add_comment),
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(
+                                  context, CreateUserLiked.route,
+                                  arguments: UserLiked(
+                                      type: widget.type, user: widget.user));
+                            },
+                            color: Colors.red,
+                            tooltip: 'Add new liked ${widget.type}',
+                          ),
+                        ],
+                      )),
+                  Expanded(
+                      child: Image(
+                          image: AssetImage('assets/img/city_page.jpg'),
+                          height: MediaQuery.of(context).size.height * .4)),
+                  SizedBox(height: MediaQuery.of(context).size.height * .14)
+                ],
+              ),
+            );
+          } else {
+            return Expanded(
+              child: Column(
+                children: [],
+              ),
+            );
+          }
+        } else if (snapshot.hasError) {
+          return Expanded(
+            child: Column(
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height * .1),
+                Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: Text(
+                      'There was an error getting the ${capitalize(widget.type)}s',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                          decoration: TextDecoration.underline)),
+                ),
+                Expanded(
+                    child: Image(
+                        image: AssetImage('assets/img/city_page.jpg'),
+                        height: MediaQuery.of(context).size.height * .4)),
+                SizedBox(height: MediaQuery.of(context).size.height * .14)
+              ],
+            ),
+          );
+        }
+        return Center(child: CircularProgressIndicator());
       },
     );
   }
 
   Widget _barByName() {
     return FutureBuilder(
-      future: userType,
+      future: typeByName,
       builder: (context, snapshot) {
         return Container();
       },
@@ -191,7 +435,7 @@ class _AllUserTypesState extends State<AllUserTypes> {
 
   Widget _drinkByName() {
     return FutureBuilder(
-      future: userType,
+      future: typeByName,
       builder: (context, snapshot) {
         return Container();
       },
@@ -200,7 +444,7 @@ class _AllUserTypesState extends State<AllUserTypes> {
 
   Widget _brandByName() {
     return FutureBuilder(
-      future: userType,
+      future: typeByName,
       builder: (context, snapshot) {
         return Container();
       },
@@ -265,7 +509,7 @@ class _AllUserTypesState extends State<AllUserTypes> {
       body: Column(
         children: [
           NavBar(),
-          _typeAll(),
+          _returnType(),
         ],
       ),
       bottomNavigationBar: BottomNav(),

@@ -85,7 +85,7 @@ class UserMyLikedType extends StatelessWidget {
           },
         ),
         Text(
-          '${capitalize(drinkInfo.drinkName)},',
+          '${capitalize(drinkInfo.drinkName)}',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
