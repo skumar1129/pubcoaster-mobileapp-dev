@@ -116,7 +116,7 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 30,
+                                fontSize: 25,
                                 decoration: TextDecoration.underline),
                           ),
                           IconButton(

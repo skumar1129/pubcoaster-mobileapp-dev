@@ -26,13 +26,13 @@ class _AllUserTypesState extends State<AllUserTypes> {
   bool searched = false;
   String? searchType;
 
-  getAllBars([int? page]) async {
+  getAllBars(String user, [int? page]) async {
     var response;
     try {
       if (page != null) {
-        response = await typeService.getAllBars(page);
+        response = await typeService.getAllBars(widget.user, page);
       } else {
-        response = await typeService.getAllBars();
+        response = await typeService.getAllBars(widget.user);
       }
     } catch (e) {
       print(e);
@@ -50,13 +50,13 @@ class _AllUserTypesState extends State<AllUserTypes> {
     return response;
   }
 
-  getAllDrinks([int? page]) async {
+  getAllDrinks(String user, [int? page]) async {
     var response;
     try {
       if (page != null) {
-        response = await typeService.getAllDrinks(page);
+        response = await typeService.getAllDrinks(user, page);
       } else {
-        response = await typeService.getAllDrinks();
+        response = await typeService.getAllDrinks(user);
       }
     } catch (e) {
       print(e);
@@ -74,13 +74,13 @@ class _AllUserTypesState extends State<AllUserTypes> {
     return response;
   }
 
-  getAllBrands([int? page]) async {
+  getAllBrands(String user, [int? page]) async {
     var response;
     try {
       if (page != null) {
-        response = await typeService.getAllBrands(page);
+        response = await typeService.getAllBrands(user, page);
       } else {
-        response = await typeService.getAllBrands();
+        response = await typeService.getAllBrands(user);
       }
     } catch (e) {
       print(e);
@@ -98,10 +98,10 @@ class _AllUserTypesState extends State<AllUserTypes> {
     return response;
   }
 
-  getBarByName(String name) async {
+  getBarByName(String name, String user) async {
     var response;
     try {
-      response = await typeService.getBarByName(name);
+      response = await typeService.getBarByName(name, user);
     } catch (e) {
       print(e);
       final snackBar = SnackBar(
@@ -118,10 +118,10 @@ class _AllUserTypesState extends State<AllUserTypes> {
     return response;
   }
 
-  getDrinkByName(String name) async {
+  getDrinkByName(String name, String user) async {
     var response;
     try {
-      response = await typeService.getDrinkByName(name);
+      response = await typeService.getDrinkByName(name, user);
     } catch (e) {
       print(e);
       final snackBar = SnackBar(
@@ -138,10 +138,10 @@ class _AllUserTypesState extends State<AllUserTypes> {
     return response;
   }
 
-  getBrandByName(String name) async {
+  getBrandByName(String name, String user) async {
     var response;
     try {
-      response = await typeService.getBrandByName(name);
+      response = await typeService.getBrandByName(name, user);
     } catch (e) {
       print(e);
       final snackBar = SnackBar(
@@ -156,6 +156,66 @@ class _AllUserTypesState extends State<AllUserTypes> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
     return response;
+  }
+
+  searchBar() {
+    if (searchType != null) {
+      var info = getBarByName(searchType!, widget.user);
+      setState(() {
+        typeByName = info;
+        searched = true;
+      });
+    } else {
+      final snackBar = SnackBar(
+          content: Text('Fill out the field please',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  searchBrand() {
+    if (searchType != null) {
+      var info = getBrandByName(searchType!, widget.user);
+      setState(() {
+        typeByName = info;
+        searched = true;
+      });
+    } else {
+      final snackBar = SnackBar(
+          content: Text('Fill out the field please',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  searchDrink() {
+    if (searchType != null) {
+      var info = getDrinkByName(searchType!, widget.user);
+      setState(() {
+        typeByName = info;
+        searched = true;
+      });
+    } else {
+      final snackBar = SnackBar(
+          content: Text('Fill out the field please',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   Widget _allBars() {
@@ -218,7 +278,9 @@ class _AllUserTypesState extends State<AllUserTypes> {
                         suffixIcon: IconButton(
                           icon: Icon(Icons.search),
                           color: Colors.black,
-                          onPressed: () {},
+                          onPressed: () {
+                            searchBar();
+                          },
                         ),
                       ),
                       onChanged: (value) => {
@@ -229,6 +291,46 @@ class _AllUserTypesState extends State<AllUserTypes> {
                       },
                     ),
                   ),
+                  Expanded(
+                    child: Scrollbar(
+                      child: RefreshIndicator(
+                        child: ListView.builder(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: items.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index == items.length &&
+                                items.length < itemsLength) {
+                              return Container();
+                            } else if (index == items.length &&
+                                items.length >= itemsLength) {
+                              itemsLength += 5;
+                              offset++;
+                              var newBars = getAllBars(widget.user, offset);
+                              newBars.then((item) {
+                                if (item != null) {
+                                  if (mounted) {
+                                    setState(() {
+                                      items.addAll(item);
+                                    });
+                                  }
+                                }
+                              });
+                              return IntrinsicWidth(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            return UserAllTypes(
+                                'bar', items[index], widget.user);
+                          },
+                        ),
+                        onRefresh: () {
+                          return getAllBars(widget.user);
+                        },
+                      ),
+                    ),
+                  )
                 ],
               ),
             );
@@ -310,7 +412,72 @@ class _AllUserTypesState extends State<AllUserTypes> {
           } else {
             return Expanded(
               child: Column(
-                children: [],
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: new BorderSide(color: Colors.black)),
+                        labelText: 'Search ${widget.type}s',
+                        labelStyle: TextStyle(color: Colors.black),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.search),
+                          color: Colors.black,
+                          onPressed: () {
+                            searchDrink();
+                          },
+                        ),
+                      ),
+                      onChanged: (value) => {
+                        if (mounted)
+                          {
+                            setState(() => {searchType = value})
+                          }
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: Scrollbar(
+                      child: RefreshIndicator(
+                        child: ListView.builder(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: items.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index == items.length &&
+                                items.length < itemsLength) {
+                              return Container();
+                            } else if (index == items.length &&
+                                items.length >= itemsLength) {
+                              itemsLength += 5;
+                              offset++;
+                              var newDrinks = getAllDrinks(widget.user, offset);
+                              newDrinks.then((item) {
+                                if (item != null) {
+                                  if (mounted) {
+                                    setState(() {
+                                      items.addAll(item);
+                                    });
+                                  }
+                                }
+                              });
+                              return IntrinsicWidth(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            return UserAllTypes(
+                                'drink', items[index], widget.user);
+                          },
+                        ),
+                        onRefresh: () {
+                          return getAllDrinks(widget.user);
+                        },
+                      ),
+                    ),
+                  )
+                ],
               ),
             );
           }
@@ -391,7 +558,72 @@ class _AllUserTypesState extends State<AllUserTypes> {
           } else {
             return Expanded(
               child: Column(
-                children: [],
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: new BorderSide(color: Colors.black)),
+                        labelText: 'Search ${widget.type}s',
+                        labelStyle: TextStyle(color: Colors.black),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.search),
+                          color: Colors.black,
+                          onPressed: () {
+                            searchBrand();
+                          },
+                        ),
+                      ),
+                      onChanged: (value) => {
+                        if (mounted)
+                          {
+                            setState(() => {searchType = value})
+                          }
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: Scrollbar(
+                      child: RefreshIndicator(
+                        child: ListView.builder(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: items.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index == items.length &&
+                                items.length < itemsLength) {
+                              return Container();
+                            } else if (index == items.length &&
+                                items.length >= itemsLength) {
+                              itemsLength += 5;
+                              offset++;
+                              var newBrands = getAllBrands(widget.user, offset);
+                              newBrands.then((item) {
+                                if (item != null) {
+                                  if (mounted) {
+                                    setState(() {
+                                      items.addAll(item);
+                                    });
+                                  }
+                                }
+                              });
+                              return IntrinsicWidth(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            return UserAllTypes(
+                                'brands', items[index], widget.user);
+                          },
+                        ),
+                        onRefresh: () {
+                          return getAllBrands(widget.user);
+                        },
+                      ),
+                    ),
+                  )
+                ],
               ),
             );
           }
@@ -490,13 +722,13 @@ class _AllUserTypesState extends State<AllUserTypes> {
     super.initState();
     switch (widget.type) {
       case 'bar':
-        userType = getAllBars();
+        userType = getAllBars(widget.user);
         break;
       case 'drink':
-        userType = getAllDrinks();
+        userType = getAllDrinks(widget.user);
         break;
       case 'brand':
-        userType = getAllBrands();
+        userType = getAllBrands(widget.user);
         break;
       default:
         break;

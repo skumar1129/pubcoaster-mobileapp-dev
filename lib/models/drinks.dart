@@ -1,10 +1,19 @@
 class Drinks {
-  final String drink;
+  final String drinkName;
   final String uuid;
+  bool liked;
 
-  Drinks({required this.drink, required this.uuid});
+  Drinks({
+    required this.drinkName,
+    required this.uuid,
+    required this.liked,
+  });
 
   factory Drinks.fromJson(Map<String, dynamic> json) {
-    return Drinks(drink: json['name'], uuid: json['uuid']);
+    return Drinks(
+      drinkName: json['drinkName'],
+      uuid: json['uuid'],
+      liked: json['userLiked'],
+    );
   }
 }

@@ -45,12 +45,18 @@ NameDrink parseNameDrink(dataItem) {
 }
 
 class BarDrinkBrandService {
-  Future<dynamic> getAllBars([page]) async {
+  Future<dynamic> getAllBars(user, [page]) async {
     String path = '/bars';
-    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path);
+    var params = {
+      'user': user,
+    };
+    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     if (page != null && page > 1) {
-      var params = {'offset': page.toString()};
+      var params = {
+        'user': user,
+        'offset': page.toString(),
+      };
       endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
     }
     Map<String, String> headers = {
@@ -67,12 +73,18 @@ class BarDrinkBrandService {
     return compute(parseBars, responseBody);
   }
 
-  Future<dynamic> getAllDrinks([page]) async {
+  Future<dynamic> getAllDrinks(user, [page]) async {
     String path = '/drinks';
-    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path);
+    var params = {
+      'user': user,
+    };
+    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     if (page != null && page > 1) {
-      var params = {'offset': page.toString()};
+      var params = {
+        'user': user,
+        'offset': page.toString(),
+      };
       endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
     }
     Map<String, String> headers = {
@@ -89,12 +101,18 @@ class BarDrinkBrandService {
     return compute(parseDrinks, responseBody);
   }
 
-  Future<dynamic> getAllBrands([page]) async {
+  Future<dynamic> getAllBrands(user, [page]) async {
     String path = '/brands';
-    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path);
+    var params = {
+      'user': user,
+    };
+    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     if (page != null && page > 1) {
-      var params = {'offset': page.toString()};
+      var params = {
+        'user': user,
+        'offset': page.toString(),
+      };
       endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
     }
     Map<String, String> headers = {
@@ -111,9 +129,18 @@ class BarDrinkBrandService {
     return compute(parseBrands, responseBody);
   }
 
-  Future<dynamic> getBarByName(name) async {
+  Future<dynamic> getBarByName(name, user, [page]) async {
     String path = '/bar/$name';
-    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path);
+    var params = {
+      'user': user,
+    };
+    if (page != null && page > 1) {
+      params = {
+        'user': user,
+        'offset': page.toString(),
+      };
+    }
+    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -129,9 +156,12 @@ class BarDrinkBrandService {
     return compute(parseNameBar, responseBody);
   }
 
-  Future<dynamic> getDrinkByName(name) async {
+  Future<dynamic> getDrinkByName(name, user) async {
     String path = '/drink/$name';
-    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path);
+    var params = {
+      'user': user,
+    };
+    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -147,9 +177,12 @@ class BarDrinkBrandService {
     return compute(parseNameDrink, responseBody);
   }
 
-  Future<dynamic> getBrandByName(name) async {
+  Future<dynamic> getBrandByName(name, user) async {
     String path = '/brand/$name';
-    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path);
+    var params = {
+      'user': user,
+    };
+    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
