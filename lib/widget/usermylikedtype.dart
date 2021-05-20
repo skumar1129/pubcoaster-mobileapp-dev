@@ -72,31 +72,43 @@ class UserMyLikedType extends StatelessWidget {
 
   Widget _drinkInfo(context) {
     UserDrink drinkInfo = info as UserDrink;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return Column(
       children: [
-        IconButton(
-          icon: Icon(
-            Icons.remove_sharp,
-            color: Colors.red,
-          ),
-          onPressed: () {
-            deleteDrink(drinkInfo.uuid, drinkInfo.user, context);
-          },
+        Divider(
+          color: Colors.white,
+          thickness: 0.25,
         ),
-        Text(
-          '${capitalize(drinkInfo.drinkName)}',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Merriweather-Bold',
-            fontSize: 20,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.remove_sharp,
+                color: Colors.red,
+              ),
+              onPressed: () {
+                deleteDrink(drinkInfo.uuid, drinkInfo.user, context);
+              },
+            ),
+            Text(
+              '${capitalize(drinkInfo.drinkName)}',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Merriweather-Bold',
+                fontSize: 20,
+              ),
+            ),
+            Icon(
+              Icons.local_drink,
+              color: Colors.red,
+            ),
+          ],
         ),
-        Icon(
-          Icons.local_drink,
-          color: Colors.red,
-        )
+        Divider(
+          color: Colors.white,
+          thickness: 0.25,
+        ),
       ],
     );
   }
@@ -105,6 +117,10 @@ class UserMyLikedType extends StatelessWidget {
     if (info.neighborhood == '') {
       return Column(
         children: [
+          Divider(
+            color: Colors.white,
+            thickness: 0.25,
+          ),
           Text(
             '${capitalize(info.barName)}',
             style: TextStyle(
@@ -123,11 +139,19 @@ class UserMyLikedType extends StatelessWidget {
               fontSize: 20,
             ),
           ),
+          Divider(
+            color: Colors.white,
+            thickness: 0.25,
+          ),
         ],
       );
     } else {
       return Column(
         children: [
+          Divider(
+            color: Colors.white,
+            thickness: 0.25,
+          ),
           Text(
             '${capitalize(info.barName)}',
             style: TextStyle(
@@ -145,6 +169,10 @@ class UserMyLikedType extends StatelessWidget {
               fontFamily: 'Merriweather-Bold',
               fontSize: 20,
             ),
+          ),
+          Divider(
+            color: Colors.white,
+            thickness: 0.25,
           ),
         ],
       );
@@ -176,44 +204,56 @@ class UserMyLikedType extends StatelessWidget {
 
   Widget _brandInfo(context) {
     UserBrand brandInfo = info as UserBrand;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return Column(
       children: [
-        IconButton(
-          icon: Icon(
-            Icons.remove_sharp,
-            color: Colors.red,
-          ),
-          onPressed: () {
-            deleteBrand(brandInfo.uuid, brandInfo.user, context);
-          },
+        Divider(
+          color: Colors.white,
+          thickness: 0.25,
         ),
-        Column(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text(
-              'Name: ${capitalize(brandInfo.brandName)}',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Merriweather-Bold',
-                fontSize: 20,
+            IconButton(
+              icon: Icon(
+                Icons.remove_sharp,
+                color: Colors.red,
               ),
+              onPressed: () {
+                deleteBrand(brandInfo.uuid, brandInfo.user, context);
+              },
             ),
-            Text(
-              'Type: ${capitalize(brandInfo.type)}',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Merriweather-Bold',
-                fontSize: 20,
-              ),
+            Column(
+              children: [
+                Text(
+                  'Name: ${capitalize(brandInfo.brandName)}',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Merriweather-Bold',
+                    fontSize: 20,
+                  ),
+                ),
+                Text(
+                  'Type: ${capitalize(brandInfo.type)}',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Merriweather-Bold',
+                    fontSize: 20,
+                  ),
+                )
+              ],
+            ),
+            Icon(
+              Icons.branding_watermark,
+              color: Colors.red,
             )
           ],
         ),
-        Icon(
-          Icons.branding_watermark,
-          color: Colors.red,
-        )
+        Divider(
+          color: Colors.white,
+          thickness: 0.25,
+        ),
       ],
     );
   }

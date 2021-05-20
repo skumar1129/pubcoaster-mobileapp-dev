@@ -25,6 +25,7 @@ import 'package:NewApp/pages/userlikedtype.dart';
 import 'package:NewApp/pages/myuserlikedtype.dart';
 import 'package:NewApp/pages/createuserliked.dart';
 import 'package:NewApp/pages/allusertypes.dart';
+import 'package:NewApp/pages/typebyname.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -101,6 +102,11 @@ class MyApp extends StatelessWidget {
                   final UserLiked args = settings.arguments as UserLiked;
                   return MaterialPageRoute(builder: (context) {
                     return AllUserTypes(args.type, args.user);
+                  });
+                } else if (settings.name == TypeByName.route) {
+                  final UserLiked args = settings.arguments as UserLiked;
+                  return MaterialPageRoute(builder: (context) {
+                    return TypeByName(args.type, args.user, args.search!);
                   });
                 }
                 var routes = <String, WidgetBuilder>{

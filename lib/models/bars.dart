@@ -1,7 +1,7 @@
 class Bars {
   final String barName;
-  final String type;
-  final String address;
+  final String? type;
+  final String? address;
   final String neighborhood;
   final String uuid;
   final String location;
@@ -9,8 +9,8 @@ class Bars {
 
   Bars({
     required this.barName,
-    required this.type,
-    required this.address,
+    this.type,
+    this.address,
     required this.neighborhood,
     required this.uuid,
     required this.location,

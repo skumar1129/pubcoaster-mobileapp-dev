@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:NewApp/widget/navbarhome.dart';
 import 'package:NewApp/widget/bottomnav.dart';
+import 'package:NewApp/services/userservice.dart';
+import 'package:NewApp/pages/myuserlikedtype.dart';
+import 'package:NewApp/models/userlikedargs.dart';
 
 class CreateUserLiked extends StatefulWidget {
   CreateUserLiked(this.type, this.user);
@@ -12,21 +15,394 @@ class CreateUserLiked extends StatefulWidget {
 }
 
 class _CreateUserLikedState extends State<CreateUserLiked> {
+  final userService = new UserService();
+  String? location;
+  String? neighborhood;
+  String? barName;
+  String? brandName;
+  String? type;
+  String? drinkName;
+
+  createUserBar() async {
+    if (barName != null && location != null) {
+      bool succeed = false;
+      var body = {
+        'neighborhood': (neighborhood != null) ? neighborhood : '',
+        'username': widget.user,
+        'location': location,
+        'bar': barName,
+      };
+      succeed = await userService.createUserBar(body);
+      if (succeed) {
+      } else {}
+    } else {}
+  }
+
+  createUserBrand() async {
+    if (brandName != null && type != null) {
+      bool succeed = false;
+      var body = {
+        'username': widget.user,
+        'brand': brandName,
+        'type': type,
+      };
+      succeed = await userService.createUserBrand(body);
+      if (succeed) {
+      } else {}
+    } else {}
+  }
+
+  createUserDrink() async {
+    if (drinkName != null) {
+      bool succeed = false;
+      var body = {
+        'username': widget.user,
+        'drink': drinkName,
+      };
+      succeed = await userService.createUserDrink(body);
+      if (succeed) {
+      } else {}
+    } else {}
+  }
+
   Widget _createDrink() {
     return Form(
-      child: SingleChildScrollView(),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 8, bottom: 0),
+              child: Center(
+                child: Text(
+                  'Create a New Drink to like',
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline),
+                ),
+              ),
+            ),
+            const Divider(
+              color: Colors.white,
+              thickness: 1.5,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 4, right: 4),
+              child: TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(), labelText: 'Drink*'),
+                onChanged: (value) => {
+                  if (mounted)
+                    {
+                      setState(() => {drinkName = value})
+                    }
+                },
+              ),
+            ),
+            const Divider(
+              color: Colors.white,
+              thickness: 1.5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                        context, MyUserLikedType.route,
+                        arguments:
+                            UserLiked(type: widget.type, user: widget.user));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    ),
+                  ),
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.red),
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(color: Colors.red)))),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    createUserDrink();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    ),
+                  ),
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.red),
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(color: Colors.red)))),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
 
   Widget _createBrand() {
     return Form(
-      child: SingleChildScrollView(),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 8, bottom: 0),
+              child: Center(
+                child: Text(
+                  'Create a New Brand to like',
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline),
+                ),
+              ),
+            ),
+            const Divider(
+              color: Colors.white,
+              thickness: 1.5,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 4, right: 4),
+              child: TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(), labelText: 'Brand*'),
+                onChanged: (value) => {
+                  if (mounted)
+                    {
+                      setState(() => {drinkName = value})
+                    }
+                },
+              ),
+            ),
+            const Divider(
+              color: Colors.white,
+              thickness: 1.5,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 4, right: 4),
+              child: TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(), labelText: 'Type*'),
+                onChanged: (value) => {
+                  if (mounted)
+                    {
+                      setState(() => {type = value})
+                    }
+                },
+              ),
+            ),
+            const Divider(
+              color: Colors.white,
+              thickness: 1.5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                        context, MyUserLikedType.route,
+                        arguments:
+                            UserLiked(type: widget.type, user: widget.user));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    ),
+                  ),
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.red),
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(color: Colors.red)))),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    createUserBrand();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    ),
+                  ),
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.red),
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(color: Colors.red)))),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
 
   Widget _createBar() {
     return Form(
-      child: SingleChildScrollView(),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 8, bottom: 0),
+              child: Center(
+                child: Text(
+                  'Create a New Bar to like',
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline),
+                ),
+              ),
+            ),
+            const Divider(
+              color: Colors.white,
+              thickness: 1.5,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 4, right: 4),
+              child: TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(), labelText: 'Bar*'),
+                onChanged: (value) => {
+                  if (mounted)
+                    {
+                      setState(() => {barName = value})
+                    }
+                },
+              ),
+            ),
+            const Divider(
+              color: Colors.white,
+              thickness: 1.5,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 4, right: 4),
+              child: TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(), labelText: 'Location*'),
+                onChanged: (value) => {
+                  if (mounted)
+                    {
+                      setState(() => {location = value})
+                    }
+                },
+              ),
+            ),
+            const Divider(
+              color: Colors.white,
+              thickness: 1.5,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 4, right: 4),
+              child: TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(), labelText: 'Neighborhood'),
+                onChanged: (value) => {
+                  if (mounted)
+                    {
+                      setState(() => {neighborhood = value})
+                    }
+                },
+              ),
+            ),
+            const Divider(
+              color: Colors.white,
+              thickness: 1.5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                        context, MyUserLikedType.route,
+                        arguments:
+                            UserLiked(type: widget.type, user: widget.user));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    ),
+                  ),
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.red),
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(color: Colors.red)))),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    createUserBar();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    ),
+                  ),
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.red),
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(color: Colors.red)))),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -49,7 +425,14 @@ class _CreateUserLikedState extends State<CreateUserLiked> {
       body: ListView(
         children: [
           NavBar(),
-          _createDisplay(),
+          Padding(
+            padding: const EdgeInsets.only(right: 4, left: 4, top: 6),
+            child: Container(
+              decoration: BoxDecoration(border: Border.all(width: 4)),
+              padding: const EdgeInsets.only(right: 4, left: 4, top: 10),
+              child: _createDisplay(),
+            ),
+          )
         ],
       ),
       bottomNavigationBar: BottomNav(),

@@ -6,6 +6,7 @@ import 'package:NewApp/widget/useralltypes.dart';
 import 'package:strings/strings.dart';
 import 'package:NewApp/pages/createuserliked.dart';
 import 'package:NewApp/models/userlikedargs.dart';
+import 'package:NewApp/pages/typebyname.dart';
 
 class AllUserTypes extends StatefulWidget {
   AllUserTypes(this.type, this.user);
@@ -20,19 +21,17 @@ class AllUserTypes extends StatefulWidget {
 class _AllUserTypesState extends State<AllUserTypes> {
   final typeService = new BarDrinkBrandService();
   Future<dynamic>? userType;
-  Future<dynamic>? typeByName;
   int offset = 1;
   int itemsLength = 5;
-  bool searched = false;
   String? searchType;
 
   getAllBars(String user, [int? page]) async {
     var response;
     try {
       if (page != null) {
-        response = await typeService.getAllBars(widget.user, page);
+        response = await typeService.getAllBars(user, page);
       } else {
-        response = await typeService.getAllBars(widget.user);
+        response = await typeService.getAllBars(user);
       }
     } catch (e) {
       print(e);
@@ -98,46 +97,6 @@ class _AllUserTypesState extends State<AllUserTypes> {
     return response;
   }
 
-  getBarByName(String name, String user) async {
-    var response;
-    try {
-      response = await typeService.getBarByName(name, user);
-    } catch (e) {
-      print(e);
-      final snackBar = SnackBar(
-          content: Text(
-              'Error: could not retrieve bar information. Check network connection.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.italic,
-                  fontSize: 20)),
-          backgroundColor: Colors.red);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-    return response;
-  }
-
-  getDrinkByName(String name, String user) async {
-    var response;
-    try {
-      response = await typeService.getDrinkByName(name, user);
-    } catch (e) {
-      print(e);
-      final snackBar = SnackBar(
-          content: Text(
-              'Error: could not retrieve drink information. Check network connection.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.italic,
-                  fontSize: 20)),
-          backgroundColor: Colors.red);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-    return response;
-  }
-
   getBrandByName(String name, String user) async {
     var response;
     try {
@@ -160,11 +119,9 @@ class _AllUserTypesState extends State<AllUserTypes> {
 
   searchBar() {
     if (searchType != null) {
-      var info = getBarByName(searchType!, widget.user);
-      setState(() {
-        typeByName = info;
-        searched = true;
-      });
+      Navigator.pushReplacementNamed(context, TypeByName.route,
+          arguments: UserLiked(
+              type: widget.type, user: widget.user, search: searchType));
     } else {
       final snackBar = SnackBar(
           content: Text('Fill out the field please',
@@ -180,11 +137,9 @@ class _AllUserTypesState extends State<AllUserTypes> {
 
   searchBrand() {
     if (searchType != null) {
-      var info = getBrandByName(searchType!, widget.user);
-      setState(() {
-        typeByName = info;
-        searched = true;
-      });
+      Navigator.pushReplacementNamed(context, TypeByName.route,
+          arguments: UserLiked(
+              type: widget.type, user: widget.user, search: searchType));
     } else {
       final snackBar = SnackBar(
           content: Text('Fill out the field please',
@@ -200,11 +155,9 @@ class _AllUserTypesState extends State<AllUserTypes> {
 
   searchDrink() {
     if (searchType != null) {
-      var info = getDrinkByName(searchType!, widget.user);
-      setState(() {
-        typeByName = info;
-        searched = true;
-      });
+      Navigator.pushReplacementNamed(context, TypeByName.route,
+          arguments: UserLiked(
+              type: widget.type, user: widget.user, search: searchType));
     } else {
       final snackBar = SnackBar(
           content: Text('Fill out the field please',
@@ -234,13 +187,15 @@ class _AllUserTypesState extends State<AllUserTypes> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text(
-                            'No ${capitalize(widget.type)}s have been created yet',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30,
-                                decoration: TextDecoration.underline),
+                          Expanded(
+                            child: Text(
+                              'No ${capitalize(widget.type)}s have been created yet',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  decoration: TextDecoration.underline),
+                            ),
                           ),
                           IconButton(
                             icon: Icon(Icons.add_comment),
@@ -259,6 +214,22 @@ class _AllUserTypesState extends State<AllUserTypes> {
                       child: Image(
                           image: AssetImage('assets/img/city_page.jpg'),
                           height: MediaQuery.of(context).size.height * .4)),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                          context, CreateUserLiked.route,
+                          arguments:
+                              UserLiked(type: widget.type, user: widget.user));
+                    },
+                    child: Text('Create new ${widget.type} to like'),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red),
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(color: Colors.red)))),
+                  ),
                   SizedBox(height: MediaQuery.of(context).size.height * .14)
                 ],
               ),
@@ -279,7 +250,7 @@ class _AllUserTypesState extends State<AllUserTypes> {
                           icon: Icon(Icons.search),
                           color: Colors.black,
                           onPressed: () {
-                            searchBar();
+                            // searchBar();
                           },
                         ),
                       ),
@@ -330,7 +301,24 @@ class _AllUserTypesState extends State<AllUserTypes> {
                         },
                       ),
                     ),
-                  )
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                          context, CreateUserLiked.route,
+                          arguments:
+                              UserLiked(type: widget.type, user: widget.user));
+                    },
+                    child: Text('Create new ${widget.type} to like'),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red),
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(color: Colors.red)))),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * .05)
                 ],
               ),
             );
@@ -405,6 +393,22 @@ class _AllUserTypesState extends State<AllUserTypes> {
                       child: Image(
                           image: AssetImage('assets/img/city_page.jpg'),
                           height: MediaQuery.of(context).size.height * .4)),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                          context, CreateUserLiked.route,
+                          arguments:
+                              UserLiked(type: widget.type, user: widget.user));
+                    },
+                    child: Text('Create new ${widget.type} to like'),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red),
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(color: Colors.red)))),
+                  ),
                   SizedBox(height: MediaQuery.of(context).size.height * .14)
                 ],
               ),
@@ -476,7 +480,24 @@ class _AllUserTypesState extends State<AllUserTypes> {
                         },
                       ),
                     ),
-                  )
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                          context, CreateUserLiked.route,
+                          arguments:
+                              UserLiked(type: widget.type, user: widget.user));
+                    },
+                    child: Text('Create new ${widget.type} to like'),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red),
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(color: Colors.red)))),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * .05)
                 ],
               ),
             );
@@ -551,6 +572,22 @@ class _AllUserTypesState extends State<AllUserTypes> {
                       child: Image(
                           image: AssetImage('assets/img/city_page.jpg'),
                           height: MediaQuery.of(context).size.height * .4)),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                          context, CreateUserLiked.route,
+                          arguments:
+                              UserLiked(type: widget.type, user: widget.user));
+                    },
+                    child: Text('Create new ${widget.type} to like'),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red),
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(color: Colors.red)))),
+                  ),
                   SizedBox(height: MediaQuery.of(context).size.height * .14)
                 ],
               ),
@@ -614,7 +651,7 @@ class _AllUserTypesState extends State<AllUserTypes> {
                               );
                             }
                             return UserAllTypes(
-                                'brands', items[index], widget.user);
+                                'brand', items[index], widget.user);
                           },
                         ),
                         onRefresh: () {
@@ -622,7 +659,24 @@ class _AllUserTypesState extends State<AllUserTypes> {
                         },
                       ),
                     ),
-                  )
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                          context, CreateUserLiked.route,
+                          arguments:
+                              UserLiked(type: widget.type, user: widget.user));
+                    },
+                    child: Text('Create new ${widget.type} to like'),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red),
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(color: Colors.red)))),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * .05)
                 ],
               ),
             );
@@ -656,33 +710,6 @@ class _AllUserTypesState extends State<AllUserTypes> {
     );
   }
 
-  Widget _barByName() {
-    return FutureBuilder(
-      future: typeByName,
-      builder: (context, snapshot) {
-        return Container();
-      },
-    );
-  }
-
-  Widget _drinkByName() {
-    return FutureBuilder(
-      future: typeByName,
-      builder: (context, snapshot) {
-        return Container();
-      },
-    );
-  }
-
-  Widget _brandByName() {
-    return FutureBuilder(
-      future: typeByName,
-      builder: (context, snapshot) {
-        return Container();
-      },
-    );
-  }
-
   Widget _typeAll() {
     switch (widget.type) {
       case 'bar':
@@ -693,27 +720,6 @@ class _AllUserTypesState extends State<AllUserTypes> {
         return _allBrands();
       default:
         return Container();
-    }
-  }
-
-  Widget _typeName() {
-    switch (widget.type) {
-      case 'bar':
-        return _barByName();
-      case 'drink':
-        return _drinkByName();
-      case 'brand':
-        return _brandByName();
-      default:
-        return Container();
-    }
-  }
-
-  Widget _returnType() {
-    if (searched) {
-      return _typeName();
-    } else {
-      return _typeAll();
     }
   }
 
@@ -741,7 +747,7 @@ class _AllUserTypesState extends State<AllUserTypes> {
       body: Column(
         children: [
           NavBar(),
-          _returnType(),
+          _typeAll(),
         ],
       ),
       bottomNavigationBar: BottomNav(),

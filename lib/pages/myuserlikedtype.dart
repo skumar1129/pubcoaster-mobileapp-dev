@@ -111,13 +111,15 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text(
-                            'No liked ${capitalize(widget.type)}s for you yet',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25,
-                                decoration: TextDecoration.underline),
+                          Expanded(
+                            child: Text(
+                              'No liked ${capitalize(widget.type)}s for you yet',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  decoration: TextDecoration.underline),
+                            ),
                           ),
                           IconButton(
                             icon: Icon(Icons.add_comment),
@@ -259,21 +261,26 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text(
-                            'No liked ${capitalize(widget.type)}s for you yet',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
+                          Expanded(
+                            child: Text(
+                              'No liked ${capitalize(widget.type)}s for you yet',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 30,
-                                decoration: TextDecoration.underline),
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
                           ),
                           IconButton(
                             icon: Icon(Icons.add_comment),
                             onPressed: () {
                               Navigator.pushReplacementNamed(
-                                  context, AllUserTypes.route,
-                                  arguments: UserLiked(
-                                      type: widget.type, user: widget.user));
+                                context,
+                                AllUserTypes.route,
+                                arguments: UserLiked(
+                                    type: widget.type, user: widget.user),
+                              );
                             },
                             color: Colors.red,
                             tooltip: 'Add new liked ${widget.type}',
@@ -407,13 +414,16 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text(
+                          Expanded(
+                            child: Text(
                               'No liked ${capitalize(widget.type)}s for you yet',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 30,
-                                  decoration: TextDecoration.underline)),
+                                  decoration: TextDecoration.underline),
+                            ),
+                          ),
                           IconButton(
                             icon: Icon(Icons.add_comment),
                             onPressed: () {

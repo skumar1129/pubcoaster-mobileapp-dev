@@ -32,14 +32,16 @@ class _CreatePostState extends State<CreatePost> {
   Future getImage(bool gallery) async {
     final pickedFile;
     // Let user select photo from gallery
-    if(gallery) {
+    if (gallery) {
       pickedFile = await picker.getImage(
-          source: ImageSource.gallery,);
-    } 
+        source: ImageSource.gallery,
+      );
+    }
     // Otherwise open camera to get new photo
-    else{
+    else {
       pickedFile = await picker.getImage(
-          source: ImageSource.camera,);
+        source: ImageSource.camera,
+      );
     }
 
     if (mounted) {
@@ -55,66 +57,34 @@ class _CreatePostState extends State<CreatePost> {
     }
   }
 
-
   Widget alertText() {
     if (!filePicked) {
-      return Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black));
+      return Text('Choose an upload method',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black));
     } else {
-      return Text(_image.toString(), style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black, fontSize: 16));
+      return Text(_image.toString(),
+          style: TextStyle(
+              fontStyle: FontStyle.italic, color: Colors.black, fontSize: 16));
     }
   }
 
   Widget pictureButton() {
     if (!filePicked) {
       return FloatingActionButton(
-        onPressed: () => showDialog(context: context, builder: (BuildContext content) {
-          //getImage()
-          return AlertDialog(
-            title: Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-            backgroundColor: Colors.white,
-            actions: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: FloatingActionButton(child: Icon(Icons.file_upload),
-                  onPressed: () => getImage(true),
-                  tooltip: 'Upload from storage',
-                  backgroundColor: Colors.red,
-                ),
-              ),
-              SizedBox(width: 150),
-              Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: FloatingActionButton(
-                  child: Icon(Icons.camera),
-                  tooltip: 'Upload from camera',
-                  onPressed: () => getImage(false),
-                  backgroundColor: Colors.red,
-                ),
-              )
-            ],
-          );
-        }),
-        tooltip: 'Picture (Optional)',
-        child: Icon(Icons.add_a_photo),
-        backgroundColor: Colors.red,
-      );
-    } else {
-      return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 6),
-            child: Text('File Successfully Picked!', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20)),
-          ),
-          FloatingActionButton(
-            onPressed: () => showDialog(context: context, builder: (BuildContext content) {
+        onPressed: () => showDialog(
+            context: context,
+            builder: (BuildContext content) {
               //getImage()
               return AlertDialog(
-                title: Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, decoration: TextDecoration.underline, fontSize: 30)),
+                title: Text('Choose an upload method',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.black)),
                 backgroundColor: Colors.white,
                 actions: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(left: 10, bottom: 8),
-                    child: FloatingActionButton(child: Icon(Icons.file_upload),
+                    padding: const EdgeInsets.only(left: 8),
+                    child: FloatingActionButton(
+                      child: Icon(Icons.file_upload),
                       onPressed: () => getImage(true),
                       tooltip: 'Upload from storage',
                       backgroundColor: Colors.red,
@@ -122,7 +92,7 @@ class _CreatePostState extends State<CreatePost> {
                   ),
                   SizedBox(width: 150),
                   Padding(
-                    padding: const EdgeInsets.only(right: 10, bottom: 8),
+                    padding: const EdgeInsets.only(right: 8),
                     child: FloatingActionButton(
                       child: Icon(Icons.camera),
                       tooltip: 'Upload from camera',
@@ -133,12 +103,61 @@ class _CreatePostState extends State<CreatePost> {
                 ],
               );
             }),
-            tooltip: 'Picture (Optional)',
-            child: Icon(Icons.add_a_photo),
-            backgroundColor: Colors.red,
-          )
-        ]
+        tooltip: 'Picture (Optional)',
+        child: Icon(Icons.add_a_photo),
+        backgroundColor: Colors.red,
       );
+    } else {
+      return Column(children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 6),
+          child: Text('File Successfully Picked!',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 20)),
+        ),
+        FloatingActionButton(
+          onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext content) {
+                //getImage()
+                return AlertDialog(
+                  title: Text('Choose an upload method',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          decoration: TextDecoration.underline,
+                          fontSize: 30)),
+                  backgroundColor: Colors.white,
+                  actions: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, bottom: 8),
+                      child: FloatingActionButton(
+                        child: Icon(Icons.file_upload),
+                        onPressed: () => getImage(true),
+                        tooltip: 'Upload from storage',
+                        backgroundColor: Colors.red,
+                      ),
+                    ),
+                    SizedBox(width: 150),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10, bottom: 8),
+                      child: FloatingActionButton(
+                        child: Icon(Icons.camera),
+                        tooltip: 'Upload from camera',
+                        onPressed: () => getImage(false),
+                        backgroundColor: Colors.red,
+                      ),
+                    )
+                  ],
+                );
+              }),
+          tooltip: 'Picture (Optional)',
+          child: Icon(Icons.add_a_photo),
+          backgroundColor: Colors.red,
+        )
+      ]);
     }
   }
 
@@ -162,8 +181,9 @@ class _CreatePostState extends State<CreatePost> {
                   fontSize: 20)),
           backgroundColor: Colors.red);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    } else if (descrip.length > 128) { //description is too long
-       final snackBar = SnackBar(
+    } else if (descrip.length > 128) {
+      //description is too long
+      final snackBar = SnackBar(
           content: Text(
               'Description is too long. Please fit your content within 128 characters.',
               textAlign: TextAlign.center,
@@ -175,11 +195,14 @@ class _CreatePostState extends State<CreatePost> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
       if (filePicked) {
-          try {
-            final firebase_storage.Reference storageRef = firebase_storage.FirebaseStorage.instance.ref().child('post_pics/${_image!.path.split("/").last}');
-            firebase_storage.UploadTask task = storageRef.putFile(_image!);
-            await task.whenComplete(() async {
-              storageRef.getDownloadURL().then((url) async {
+        try {
+          final firebase_storage.Reference storageRef = firebase_storage
+              .FirebaseStorage.instance
+              .ref()
+              .child('post_pics/${_image!.path.split("/").last}');
+          firebase_storage.UploadTask task = storageRef.putFile(_image!);
+          await task.whenComplete(() async {
+            storageRef.getDownloadURL().then((url) async {
               var reqBody = {
                 'username': user,
                 'anonymous': anon,
@@ -192,33 +215,34 @@ class _CreatePostState extends State<CreatePost> {
               };
               bool succeed = await postService.addPost(reqBody);
               if (succeed) {
-                  final snackBar = SnackBar(
-                      content: Text('Successfully created post!',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.italic,
-                              fontSize: 20)),
-                      backgroundColor: Colors.green);
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  Navigator.pushReplacementNamed(context, LocationPosts.route,
-                      arguments: location);
-                } else {
-                  final snackBar = SnackBar(
-                      content: Text('Error: could not create post. Check connection',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.italic,
-                              fontSize: 20)),
-                      backgroundColor: Colors.red);
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                }
-              });
+                final snackBar = SnackBar(
+                    content: Text('Successfully created post!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                            fontSize: 20)),
+                    backgroundColor: Colors.green);
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                Navigator.pushReplacementNamed(context, LocationPosts.route,
+                    arguments: location);
+              } else {
+                final snackBar = SnackBar(
+                    content: Text(
+                        'Error: could not create post. Check connection',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                            fontSize: 20)),
+                    backgroundColor: Colors.red);
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
             });
-          } on firebase_core.FirebaseException catch (e) {
-            print(e);
-            final snackBar = SnackBar(
+          });
+        } on firebase_core.FirebaseException catch (e) {
+          print(e);
+          final snackBar = SnackBar(
               content: Text(
                   'Unable to upload file. Please check your network connection.',
                   textAlign: TextAlign.center,
@@ -227,10 +251,9 @@ class _CreatePostState extends State<CreatePost> {
                       fontStyle: FontStyle.italic,
                       fontSize: 20)),
               backgroundColor: Colors.red);
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
-      }
-      else {
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+      } else {
         var reqBody = {
           'username': user,
           'anonymous': anon,
@@ -286,209 +309,240 @@ class _CreatePostState extends State<CreatePost> {
               padding: const EdgeInsets.only(right: 4, left: 4, top: 10),
               child: Form(
                 child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 0),
-                    child: Center(
-                      child: Text(
-                        'Create a New Post',
-                        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
-                      ),
-                    ),
-                  ),
-                  const Divider(
-                    color: Colors.white,
-                    thickness: 1.5,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 6, right: 6, top: 4),
-                    child: DropdownButtonFormField(
-                    items: [
-                      'Columbus',
-                      'Chicago',
-                      'New York',
-                      'Denver',
-                      'Washington DC',
-                      'San Francisco',
-                      'Orlando',
-                      'Phoenix',
-                      'Boston',
-                      'Los Angeles'
-                    ]
-                        .map((String value) => DropdownMenuItem<String>(
-                              child: Text(value),
-                              value: value,
-                            ))
-                        .toList(),
-                    onChanged: (String? value) {
-                      if (mounted) {
-                        setState(() {
-                          location = value!;
-                        });
-                      }
-                    },
-                    hint: Text('Location*'),
-                    decoration: InputDecoration(focusColor: Colors.black)
-                  ),
-                    ),
-                    const Divider(
-                  color: Colors.white,
-                  thickness: .5,
-                    ),
-                    Padding(
-                  padding: const EdgeInsets.only(left: 4, right: 4),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Bar*'),
-                    onChanged: (value) => {
-                      if (mounted)
-                        {
-                          setState(() => {bar = value})
-                        }
-                    },
-                  ),
-                    ),
-                const Divider(
-                  color: Colors.white,
-                  thickness: 0.5,
-                  ),
-                    Padding(
-                  padding: const EdgeInsets.only(left: 4, right: 4),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Neighborhood'),
-                    onChanged: (value) => {
-                      if (mounted)
-                        {
-                          setState(() => {neighborhood = value})
-                        }
-                    },
-                  ),
-                    ),
-                    const Divider(
-                  color: Colors.white,
-                  thickness: 0.5,
-                    ),
-                    Padding(
-                  padding: const EdgeInsets.only(left: 6, right: 6),
-                  child: DropdownButtonFormField(
-                    items: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-                        .map((String value) => DropdownMenuItem<String>(
-                              child: Text(value),
-                              value: value,
-                            ))
-                        .toList(),
-                    onChanged: (String? value) {
-                      if (mounted) {
-                        setState(() {
-                          rating = int.parse(value!);
-                        });
-                      }
-                    },
-                    hint: Text('Rating*'),
-                  ),
-                    ),
-                    const Divider(
-                  color: Colors.white,
-                  thickness: 0.75,
-                    ),
-                    Padding(
-                  padding: const EdgeInsets.only(left: 4, right: 4),
-                  child: TextField(
-                    maxLines: 4,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'What\'s good?* (character limit: 128)'),
-                    onChanged: (value) => {
-                      if (mounted)
-                        {
-                          setState(() => {content = value})
-                        }
-                    },
-                  ),
-                    ),
-                    Padding(
-                  padding: const EdgeInsets.only(top: 4),
-                  child: CheckboxListTile(
-                      value: anonymous,
-                      title: Text('Make post anonymous?', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-                      onChanged: (bool? value) {
-                        if (mounted) {
-                          setState(() {
-                            anonymous = value!;
-                          });
-                        }
-                      },
-                      secondary: Icon(Icons.security, size: 30)
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6),
-                      child: pictureButton()
-                    ),
-                    Padding(
-                  padding: const EdgeInsets.only(top: 6),
-                  child: const Divider(
-                    color: Colors.white,
-                    thickness: .5,
-                  ),
-                  ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 4),
-                  child: Row(
+                  child: Column(
                     children: <Widget>[
-                      ElevatedButton(
-                        onPressed: () {
-                          goBack();
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8, bottom: 0),
+                        child: Center(
                           child: Text(
-                            'Cancel',
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                            'Create a New Post',
+                            style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline),
                           ),
                         ),
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.red),
-                            shape: MaterialStateProperty.all<OutlinedBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(color: Colors.red)))),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          submitPost(
-                              location, bar, neighborhood, rating, content, anonymous);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Submit',
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
-                          ),
+                      const Divider(
+                        color: Colors.white,
+                        thickness: 1.5,
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 6, right: 6, top: 4),
+                        child: DropdownButtonFormField(
+                            items: [
+                              'Columbus',
+                              'Chicago',
+                              'New York',
+                              'Denver',
+                              'Washington DC',
+                              'San Francisco',
+                              'Orlando',
+                              'Phoenix',
+                              'Boston',
+                              'Los Angeles'
+                            ]
+                                .map((String value) => DropdownMenuItem<String>(
+                                      child: Text(value),
+                                      value: value,
+                                    ))
+                                .toList(),
+                            onChanged: (String? value) {
+                              if (mounted) {
+                                setState(() {
+                                  location = value!;
+                                });
+                              }
+                            },
+                            hint: Text('Location*'),
+                            decoration:
+                                InputDecoration(focusColor: Colors.black)),
+                      ),
+                      const Divider(
+                        color: Colors.white,
+                        thickness: .5,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4, right: 4),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(), labelText: 'Bar*'),
+                          onChanged: (value) => {
+                            if (mounted)
+                              {
+                                setState(() => {bar = value})
+                              }
+                          },
                         ),
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.red),
-                            shape: MaterialStateProperty.all<OutlinedBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(color: Colors.red)))),
+                      ),
+                      const Divider(
+                        color: Colors.white,
+                        thickness: 0.5,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4, right: 4),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Neighborhood'),
+                          onChanged: (value) => {
+                            if (mounted)
+                              {
+                                setState(() => {neighborhood = value})
+                              }
+                          },
+                        ),
+                      ),
+                      const Divider(
+                        color: Colors.white,
+                        thickness: 0.5,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 6, right: 6),
+                        child: DropdownButtonFormField(
+                          items: [
+                            '1',
+                            '2',
+                            '3',
+                            '4',
+                            '5',
+                            '6',
+                            '7',
+                            '8',
+                            '9',
+                            '10'
+                          ]
+                              .map((String value) => DropdownMenuItem<String>(
+                                    child: Text(value),
+                                    value: value,
+                                  ))
+                              .toList(),
+                          onChanged: (String? value) {
+                            if (mounted) {
+                              setState(() {
+                                rating = int.parse(value!);
+                              });
+                            }
+                          },
+                          hint: Text('Rating*'),
+                        ),
+                      ),
+                      const Divider(
+                        color: Colors.white,
+                        thickness: 0.75,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4, right: 4),
+                        child: TextField(
+                          maxLines: 4,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText:
+                                  'What\'s good?* (character limit: 128)'),
+                          onChanged: (value) => {
+                            if (mounted)
+                              {
+                                setState(() => {content = value})
+                              }
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: CheckboxListTile(
+                            value: anonymous,
+                            title: Text('Make post anonymous?',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w500)),
+                            onChanged: (bool? value) {
+                              if (mounted) {
+                                setState(() {
+                                  anonymous = value!;
+                                });
+                              }
+                            },
+                            secondary: Icon(Icons.security, size: 30)),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 6),
+                          child: pictureButton()),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: const Divider(
+                          color: Colors.white,
+                          thickness: .5,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Row(
+                          children: <Widget>[
+                            ElevatedButton(
+                              onPressed: () {
+                                goBack();
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                ),
+                              ),
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.red),
+                                  shape:
+                                      MaterialStateProperty.all<OutlinedBorder>(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(18.0),
+                                              side: BorderSide(
+                                                  color: Colors.red)))),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                submitPost(location, bar, neighborhood, rating,
+                                    content, anonymous);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Submit',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                ),
+                              ),
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.red),
+                                  shape:
+                                      MaterialStateProperty.all<OutlinedBorder>(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(18.0),
+                                              side: BorderSide(
+                                                  color: Colors.red)))),
+                            ),
+                          ],
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        ),
+                      ),
+                      const Divider(
+                        color: Colors.white,
+                        thickness: 1,
                       ),
                     ],
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                   ),
                 ),
-                const Divider(
-                  color: Colors.white,
-                  thickness: 1,
-                ),
-                ],
               ),
-            )
-            ),
             ),
           ),
         ],

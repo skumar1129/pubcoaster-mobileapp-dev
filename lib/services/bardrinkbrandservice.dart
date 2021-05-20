@@ -34,13 +34,15 @@ List<NameBar> parseNameBar(dataItems) {
   return response;
 }
 
-NameBrand parseNameBrand(dataItem) {
-  var response = NameBrand.fromJson(dataItem);
+List<NameBrand> parseNameBrand(dataItems) {
+  var response =
+      dataItems.map<NameBrand>((json) => NameBrand.fromJson(json)).toList();
   return response;
 }
 
-NameDrink parseNameDrink(dataItem) {
-  var response = NameDrink.fromJson(dataItem);
+List<NameDrink> parseNameDrink(dataItems) {
+  var response =
+      dataItems.map<NameDrink>((json) => NameDrink.fromJson(json)).toList();
   return response;
 }
 
@@ -53,7 +55,7 @@ class BarDrinkBrandService {
     var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     if (page != null && page > 1) {
-      var params = {
+      params = {
         'user': user,
         'offset': page.toString(),
       };
@@ -70,6 +72,7 @@ class BarDrinkBrandService {
       print(e);
     }
     var responseBody = json.decode(response.body);
+    print(responseBody[0]);
     return compute(parseBars, responseBody);
   }
 

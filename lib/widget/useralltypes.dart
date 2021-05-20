@@ -234,6 +234,10 @@ class _UserAllTypesState extends State<UserAllTypes> {
     if (info.neighborhood == '') {
       return Column(
         children: [
+          Divider(
+            color: Colors.white,
+            thickness: 0.25,
+          ),
           Text(
             '${capitalize(info.barName)}',
             style: TextStyle(
@@ -252,11 +256,19 @@ class _UserAllTypesState extends State<UserAllTypes> {
               fontSize: 20,
             ),
           ),
+          Divider(
+            color: Colors.white,
+            thickness: 0.25,
+          ),
         ],
       );
     } else {
       return Column(
         children: [
+          Divider(
+            color: Colors.white,
+            thickness: 0.25,
+          ),
           Text(
             '${capitalize(info.barName)}',
             style: TextStyle(
@@ -275,6 +287,10 @@ class _UserAllTypesState extends State<UserAllTypes> {
               fontSize: 20,
             ),
           ),
+          Divider(
+            color: Colors.white,
+            thickness: 0.25,
+          ),
         ],
       );
     }
@@ -282,37 +298,18 @@ class _UserAllTypesState extends State<UserAllTypes> {
 
   Widget _drinkInfo() {
     Drinks drinkInfo = widget.info as Drinks;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return Column(
       children: [
-        _likeIcon(widget.info),
-        Text(
-          '${capitalize(drinkInfo.drinkName)}',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Merriweather-Bold',
-            fontSize: 20,
-          ),
+        Divider(
+          color: Colors.white,
+          thickness: 0.25,
         ),
-        Icon(
-          Icons.local_drink,
-          color: Colors.red,
-        )
-      ],
-    );
-  }
-
-  Widget _brandInfo() {
-    Brands brandInfo = widget.info as Brands;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        _likeIcon(widget.info),
-        Column(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            _likeIcon(widget.info),
             Text(
-              'Name: ${capitalize(brandInfo.brandName)}',
+              '${capitalize(drinkInfo.drinkName)}',
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -320,21 +317,64 @@ class _UserAllTypesState extends State<UserAllTypes> {
                 fontSize: 20,
               ),
             ),
-            Text(
-              'Type: ${capitalize(brandInfo.type)}',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Merriweather-Bold',
-                fontSize: 20,
-              ),
+            Icon(
+              Icons.local_drink,
+              color: Colors.red,
             )
           ],
         ),
-        Icon(
-          Icons.business,
-          color: Colors.red,
-        )
+        Divider(
+          color: Colors.white,
+          thickness: 0.25,
+        ),
+      ],
+    );
+  }
+
+  Widget _brandInfo() {
+    Brands brandInfo = widget.info as Brands;
+    return Column(
+      children: [
+        Divider(
+          color: Colors.white,
+          thickness: 0.25,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _likeIcon(widget.info),
+            Column(
+              children: [
+                Text(
+                  'Name: ${capitalize(brandInfo.brandName)}',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Merriweather-Bold',
+                    fontSize: 20,
+                  ),
+                ),
+                Text(
+                  'Type: ${capitalize(brandInfo.type)}',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Merriweather-Bold',
+                    fontSize: 20,
+                  ),
+                )
+              ],
+            ),
+            Icon(
+              Icons.business,
+              color: Colors.red,
+            )
+          ],
+        ),
+        Divider(
+          color: Colors.white,
+          thickness: 0.25,
+        ),
       ],
     );
   }

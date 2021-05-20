@@ -47,6 +47,10 @@ class UserLikedTypeWidget extends StatelessWidget {
     if (info.neighborhood == '') {
       return Column(
         children: [
+          Divider(
+            color: Colors.white,
+            thickness: 0.25,
+          ),
           Text(
             '${capitalize(info.barName)}',
             style: TextStyle(
@@ -65,11 +69,19 @@ class UserLikedTypeWidget extends StatelessWidget {
               fontSize: 20,
             ),
           ),
+          Divider(
+            color: Colors.white,
+            thickness: 0.25,
+          ),
         ],
       );
     } else {
       return Column(
         children: [
+          Divider(
+            color: Colors.white,
+            thickness: 0.25,
+          ),
           Text(
             '${capitalize(info.barName)}',
             style: TextStyle(
@@ -87,6 +99,10 @@ class UserLikedTypeWidget extends StatelessWidget {
               fontFamily: 'Merriweather-Bold',
               fontSize: 20,
             ),
+          ),
+          Divider(
+            color: Colors.white,
+            thickness: 0.25,
           ),
         ],
       );
@@ -114,6 +130,10 @@ class UserLikedTypeWidget extends StatelessWidget {
       children: [
         Column(
           children: [
+            Divider(
+              color: Colors.white,
+              thickness: 0.25,
+            ),
             Text(
               'Name: ${capitalize(brandInfo.brandName)}',
               style: TextStyle(
@@ -131,7 +151,11 @@ class UserLikedTypeWidget extends StatelessWidget {
                 fontFamily: 'Merriweather-Bold',
                 fontSize: 20,
               ),
-            )
+            ),
+            Divider(
+              color: Colors.white,
+              thickness: 0.25,
+            ),
           ],
         ),
         Icon(
