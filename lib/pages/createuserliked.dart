@@ -34,8 +34,39 @@ class _CreateUserLikedState extends State<CreateUserLiked> {
       };
       succeed = await userService.createUserBar(body);
       if (succeed) {
-      } else {}
-    } else {}
+        final snackBar = SnackBar(
+            content: Text('Successfully created bar!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.green);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Navigator.pushReplacementNamed(context, MyUserLikedType.route,
+            arguments: UserLiked(type: widget.type, user: widget.user));
+      } else {
+        final snackBar = SnackBar(
+            content: Text('Error: could not create bar. Check connection',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } else {
+      final snackBar = SnackBar(
+          content: Text('Make sure to fill out need information',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   createUserBrand() async {
@@ -48,8 +79,39 @@ class _CreateUserLikedState extends State<CreateUserLiked> {
       };
       succeed = await userService.createUserBrand(body);
       if (succeed) {
-      } else {}
-    } else {}
+        final snackBar = SnackBar(
+            content: Text('Successfully created brand!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.green);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Navigator.pushReplacementNamed(context, MyUserLikedType.route,
+            arguments: UserLiked(type: widget.type, user: widget.user));
+      } else {
+        final snackBar = SnackBar(
+            content: Text('Error: could not create brand. Check connection',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } else {
+      final snackBar = SnackBar(
+          content: Text('Make sure to fill out need information',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   createUserDrink() async {
@@ -61,8 +123,39 @@ class _CreateUserLikedState extends State<CreateUserLiked> {
       };
       succeed = await userService.createUserDrink(body);
       if (succeed) {
-      } else {}
-    } else {}
+        final snackBar = SnackBar(
+            content: Text('Successfully created brand!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.green);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Navigator.pushReplacementNamed(context, MyUserLikedType.route,
+            arguments: UserLiked(type: widget.type, user: widget.user));
+      } else {
+        final snackBar = SnackBar(
+            content: Text('Error: could not create brand. Check connection',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20)),
+            backgroundColor: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } else {
+      final snackBar = SnackBar(
+          content: Text('Make sure to fill out need information',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   Widget _createDrink() {
@@ -191,7 +284,7 @@ class _CreateUserLikedState extends State<CreateUserLiked> {
                 onChanged: (value) => {
                   if (mounted)
                     {
-                      setState(() => {drinkName = value})
+                      setState(() => {brandName = value})
                     }
                 },
               ),
@@ -315,17 +408,34 @@ class _CreateUserLikedState extends State<CreateUserLiked> {
               thickness: 1.5,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 4, right: 4),
-              child: TextField(
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: 'Location*'),
-                onChanged: (value) => {
-                  if (mounted)
-                    {
-                      setState(() => {location = value})
+              padding: const EdgeInsets.only(left: 6, right: 6, top: 4),
+              child: DropdownButtonFormField(
+                  items: [
+                    'Columbus',
+                    'Chicago',
+                    'New York',
+                    'Denver',
+                    'Washington DC',
+                    'San Francisco',
+                    'Orlando',
+                    'Phoenix',
+                    'Boston',
+                    'Los Angeles'
+                  ]
+                      .map((String value) => DropdownMenuItem<String>(
+                            child: Text(value),
+                            value: value,
+                          ))
+                      .toList(),
+                  onChanged: (String? value) {
+                    if (mounted) {
+                      setState(() {
+                        location = value!;
+                      });
                     }
-                },
-              ),
+                  },
+                  hint: Text('Location*'),
+                  decoration: InputDecoration(focusColor: Colors.black)),
             ),
             const Divider(
               color: Colors.white,

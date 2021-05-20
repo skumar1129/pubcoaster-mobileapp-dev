@@ -250,7 +250,7 @@ class _AllUserTypesState extends State<AllUserTypes> {
                           icon: Icon(Icons.search),
                           color: Colors.black,
                           onPressed: () {
-                            // searchBar();
+                            searchBar();
                           },
                         ),
                       ),

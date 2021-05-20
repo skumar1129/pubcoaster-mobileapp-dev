@@ -6,9 +6,6 @@ import 'dart:async';
 import 'package:NewApp/models/bars.dart';
 import 'package:NewApp/models/brands.dart';
 import 'package:NewApp/models/drinks.dart';
-import 'package:NewApp/models/namebars.dart';
-import 'package:NewApp/models/namebrand.dart';
-import 'package:NewApp/models/namedrink.dart';
 import 'package:flutter/foundation.dart';
 
 List<Bars> parseBars(dataItems) {
@@ -28,21 +25,20 @@ List<Drinks> parseDrinks(dataItems) {
   return response;
 }
 
-List<NameBar> parseNameBar(dataItems) {
-  var response =
-      dataItems.map<NameBar>((json) => NameBar.fromJson(json)).toList();
+List<Bars> parseNameBar(dataItems) {
+  var response = dataItems.map<Bars>((json) => Bars.fromJson(json)).toList();
   return response;
 }
 
-List<NameBrand> parseNameBrand(dataItems) {
+List<Brands> parseNameBrand(dataItems) {
   var response =
-      dataItems.map<NameBrand>((json) => NameBrand.fromJson(json)).toList();
+      dataItems.map<Brands>((json) => Brands.fromJson(json)).toList();
   return response;
 }
 
-List<NameDrink> parseNameDrink(dataItems) {
+List<Drinks> parseNameDrink(dataItems) {
   var response =
-      dataItems.map<NameDrink>((json) => NameDrink.fromJson(json)).toList();
+      dataItems.map<Drinks>((json) => Drinks.fromJson(json)).toList();
   return response;
 }
 
@@ -72,7 +68,6 @@ class BarDrinkBrandService {
       print(e);
     }
     var responseBody = json.decode(response.body);
-    print(responseBody[0]);
     return compute(parseBars, responseBody);
   }
 

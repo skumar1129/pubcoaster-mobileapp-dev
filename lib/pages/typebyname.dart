@@ -1,4 +1,3 @@
-import 'package:NewApp/pages/allusertypes.dart';
 import 'package:flutter/material.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/navbarhome.dart';
@@ -23,11 +22,70 @@ class _TypeByNameState extends State<TypeByName> {
   final typeService = new BarDrinkBrandService();
   int offset = 1;
   int itemsLength = 5;
+  String? search;
 
-  getBarByName(String name, String user) async {
+  searchBar() {
+    if (search != null) {
+      Navigator.pushReplacementNamed(context, TypeByName.route,
+          arguments:
+              UserLiked(type: widget.type, user: widget.user, search: search));
+    } else {
+      final snackBar = SnackBar(
+          content: Text('Fill out the field please',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  searchBrand() {
+    if (search != null) {
+      Navigator.pushReplacementNamed(context, TypeByName.route,
+          arguments:
+              UserLiked(type: widget.type, user: widget.user, search: search));
+    } else {
+      final snackBar = SnackBar(
+          content: Text('Fill out the field please',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  searchDrink() {
+    if (search != null) {
+      Navigator.pushReplacementNamed(context, TypeByName.route,
+          arguments:
+              UserLiked(type: widget.type, user: widget.user, search: search));
+    } else {
+      final snackBar = SnackBar(
+          content: Text('Fill out the field please',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  getBarByName(String name, String user, [int? page]) async {
     var response;
     try {
-      response = await typeService.getBarByName(name, user);
+      if (page != null) {
+        response = await typeService.getBarByName(name, user);
+      } else {
+        response = await typeService.getBarByName(name, user, page);
+      }
     } catch (e) {
       print(e);
       final snackBar = SnackBar(
@@ -94,46 +152,38 @@ class _TypeByNameState extends State<TypeByName> {
             return Expanded(
               child: Column(
                 children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * .1),
                   Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.search),
-                            color: Colors.red,
-                            tooltip: 'Back to search',
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                  context, AllUserTypes.route,
-                                  arguments: UserLiked(
-                                      type: widget.type, user: widget.user));
-                            },
-                          ),
-                          Expanded(
-                            child: Text(
-                              'No ${capitalize(widget.type)}s were found for ${widget.search}',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  decoration: TextDecoration.underline),
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.add_comment),
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                  context, CreateUserLiked.route,
-                                  arguments: UserLiked(
-                                      type: widget.type, user: widget.user));
-                            },
-                            color: Colors.red,
-                            tooltip: 'Add new liked ${widget.type}',
-                          ),
-                        ],
-                      )),
+                    padding: const EdgeInsets.all(15),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: new BorderSide(color: Colors.black)),
+                        labelText: 'Search ${widget.type}s',
+                        labelStyle: TextStyle(color: Colors.black),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.search),
+                          color: Colors.black,
+                          onPressed: () {
+                            searchBar();
+                          },
+                        ),
+                      ),
+                      onChanged: (value) => {
+                        if (mounted)
+                          {
+                            setState(() => {search = value})
+                          }
+                      },
+                    ),
+                  ),
+                  Text(
+                    'No ${capitalize(widget.type)}s were found for ${widget.search}',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                        decoration: TextDecoration.underline),
+                  ),
                   Expanded(
                       child: Image(
                           image: AssetImage('assets/img/city_page.jpg'),
@@ -158,7 +208,78 @@ class _TypeByNameState extends State<TypeByName> {
                 ],
               ),
             );
-          } else {}
+          } else {
+            return Expanded(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: new BorderSide(color: Colors.black)),
+                        labelText: 'Search ${widget.type}s',
+                        labelStyle: TextStyle(color: Colors.black),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.search),
+                          color: Colors.black,
+                          onPressed: () {
+                            searchBar();
+                          },
+                        ),
+                      ),
+                      onChanged: (value) => {
+                        if (mounted)
+                          {
+                            setState(() => {search = value})
+                          }
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: Scrollbar(
+                      child: RefreshIndicator(
+                        child: ListView.builder(
+                            physics: AlwaysScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: items.length + 1,
+                            itemBuilder: (context, index) {
+                              if (index == items.length &&
+                                  items.length < itemsLength) {
+                                return Container();
+                              } else if (index == items.length &&
+                                  items.length >= itemsLength) {
+                                itemsLength += 5;
+                                offset++;
+                                var newBars = getBarByName(
+                                    widget.search, widget.user, offset);
+                                newBars.then((item) {
+                                  if (item != null) {
+                                    if (mounted) {
+                                      setState(() {
+                                        items.addAll(item);
+                                      });
+                                    }
+                                  }
+                                });
+                                return IntrinsicWidth(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              return UserAllTypes(
+                                  widget.type, items[index], widget.user);
+                            }),
+                        onRefresh: () {
+                          return getBarByName(widget.search, widget.user);
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
         } else if (snapshot.hasError) {
           return Expanded(
             child: Column(
@@ -198,46 +319,38 @@ class _TypeByNameState extends State<TypeByName> {
             return Expanded(
               child: Column(
                 children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * .1),
                   Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.search),
-                            color: Colors.red,
-                            tooltip: 'Back to search',
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                  context, AllUserTypes.route,
-                                  arguments: UserLiked(
-                                      type: widget.type, user: widget.user));
-                            },
-                          ),
-                          Expanded(
-                            child: Text(
-                              'No ${capitalize(widget.type)}s were found for ${widget.search}',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  decoration: TextDecoration.underline),
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.add_comment),
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                  context, CreateUserLiked.route,
-                                  arguments: UserLiked(
-                                      type: widget.type, user: widget.user));
-                            },
-                            color: Colors.red,
-                            tooltip: 'Add new liked ${widget.type}',
-                          ),
-                        ],
-                      )),
+                    padding: const EdgeInsets.all(15),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: new BorderSide(color: Colors.black)),
+                        labelText: 'Search ${widget.type}s',
+                        labelStyle: TextStyle(color: Colors.black),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.search),
+                          color: Colors.black,
+                          onPressed: () {
+                            searchDrink();
+                          },
+                        ),
+                      ),
+                      onChanged: (value) => {
+                        if (mounted)
+                          {
+                            setState(() => {search = value})
+                          }
+                      },
+                    ),
+                  ),
+                  Text(
+                    'No ${capitalize(widget.type)}s were found for ${widget.search}',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                        decoration: TextDecoration.underline),
+                  ),
                   Expanded(
                       child: Image(
                           image: AssetImage('assets/img/city_page.jpg'),
@@ -262,7 +375,56 @@ class _TypeByNameState extends State<TypeByName> {
                 ],
               ),
             );
-          } else {}
+          } else {
+            return Expanded(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: new BorderSide(color: Colors.black)),
+                        labelText: 'Search ${widget.type}s',
+                        labelStyle: TextStyle(color: Colors.black),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.search),
+                          color: Colors.black,
+                          onPressed: () {
+                            searchDrink();
+                          },
+                        ),
+                      ),
+                      onChanged: (value) => {
+                        if (mounted)
+                          {
+                            setState(() => {search = value})
+                          }
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: Scrollbar(
+                      child: RefreshIndicator(
+                        child: ListView.builder(
+                            physics: AlwaysScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: item.length,
+                            itemBuilder: (context, index) {
+                              return UserAllTypes(
+                                  widget.type, item[index], widget.user);
+                            }),
+                        onRefresh: () {
+                          return getDrinkByName(widget.search, widget.user);
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
         } else if (snapshot.hasError) {
           return Expanded(
             child: Column(
@@ -303,46 +465,38 @@ class _TypeByNameState extends State<TypeByName> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * .1),
                   Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.search),
-                            color: Colors.red,
-                            tooltip: 'Back to search',
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                  context, AllUserTypes.route,
-                                  arguments: UserLiked(
-                                      type: widget.type, user: widget.user));
-                            },
-                          ),
-                          Expanded(
-                            child: Text(
-                              'No ${capitalize(widget.type)}s were found for ${widget.search}',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  decoration: TextDecoration.underline),
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.add_comment),
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                  context, CreateUserLiked.route,
-                                  arguments: UserLiked(
-                                      type: widget.type, user: widget.user));
-                            },
-                            color: Colors.red,
-                            tooltip: 'Add new liked ${widget.type}',
-                          ),
-                        ],
-                      )),
+                    padding: const EdgeInsets.all(15),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: new BorderSide(color: Colors.black)),
+                        labelText: 'Search ${widget.type}s',
+                        labelStyle: TextStyle(color: Colors.black),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.search),
+                          color: Colors.black,
+                          onPressed: () {
+                            searchBrand();
+                          },
+                        ),
+                      ),
+                      onChanged: (value) => {
+                        if (mounted)
+                          {
+                            setState(() => {search = value})
+                          }
+                      },
+                    ),
+                  ),
+                  Text(
+                    'No ${capitalize(widget.type)}s were found for ${widget.search}',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                        decoration: TextDecoration.underline),
+                  ),
                   Expanded(
                       child: Image(
                           image: AssetImage('assets/img/city_page.jpg'),
@@ -367,7 +521,57 @@ class _TypeByNameState extends State<TypeByName> {
                 ],
               ),
             );
-          } else {}
+          } else {
+            return Expanded(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: new BorderSide(color: Colors.black)),
+                        labelText: 'Search ${widget.type}s',
+                        labelStyle: TextStyle(color: Colors.black),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.search),
+                          color: Colors.black,
+                          onPressed: () {
+                            searchBrand();
+                          },
+                        ),
+                      ),
+                      onChanged: (value) => {
+                        if (mounted)
+                          {
+                            setState(() => {search = value})
+                          }
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: Scrollbar(
+                      child: RefreshIndicator(
+                        child: ListView.builder(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: item.length,
+                          itemBuilder: (context, index) {
+                            return UserAllTypes(
+                                widget.type, item[index], widget.user);
+                          },
+                        ),
+                        onRefresh: () {
+                          return getBrandByName(widget.search, widget.user);
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
         } else if (snapshot.hasError) {
           return Expanded(
             child: Column(

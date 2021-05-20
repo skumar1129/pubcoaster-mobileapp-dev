@@ -2,7 +2,7 @@ class Bars {
   final String barName;
   final String? type;
   final String? address;
-  final String neighborhood;
+  final String? neighborhood;
   final String uuid;
   final String location;
   bool liked;
@@ -11,7 +11,7 @@ class Bars {
     required this.barName,
     this.type,
     this.address,
-    required this.neighborhood,
+    this.neighborhood,
     required this.uuid,
     required this.location,
     required this.liked,

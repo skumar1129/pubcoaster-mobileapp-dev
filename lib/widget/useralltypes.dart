@@ -231,7 +231,7 @@ class _UserAllTypesState extends State<UserAllTypes> {
   }
 
   Widget _barDisplay(Bars info) {
-    if (info.neighborhood == '') {
+    if (info.neighborhood == '' || info.neighborhood == null) {
       return Column(
         children: [
           Divider(
@@ -279,7 +279,7 @@ class _UserAllTypesState extends State<UserAllTypes> {
             ),
           ),
           Text(
-            '${capitalize(info.neighborhood)}, ${info.location}',
+            '${capitalize(info.neighborhood!)}, ${info.location}',
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
