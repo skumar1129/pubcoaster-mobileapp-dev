@@ -122,13 +122,8 @@ class _MyPostsState extends State<MyPosts> {
                           shrinkWrap: true,
                           itemCount: items.length + 1,
                           itemBuilder: (context, index) {
-                            if (index == items.length &&
-                                items.length < itemsLength) {
-                              return Container();
-                            } else if (index == items.length &&
-                                items.length >= itemsLength) {
+                            if (index == items.length && index < totalPosts!) {
                               offset++;
-                              itemsLength += 3;
                               var newPosts = getMyPosts(offset);
                               newPosts.then((posts) {
                                 if (posts != null) {
@@ -142,6 +137,8 @@ class _MyPostsState extends State<MyPosts> {
                               return IntrinsicWidth(
                                 child: CircularProgressIndicator(),
                               );
+                            } else if (index == totalPosts) {
+                              return Container();
                             }
                             return MyPostCard(
                                 items[index].bar,
@@ -202,7 +199,6 @@ class _MyPostsState extends State<MyPosts> {
   }
 
   int offset = 1;
-  int itemsLength = 3;
   int? totalPosts;
   @override
   Widget build(BuildContext context) {

@@ -83,7 +83,7 @@ class UserMyLikedType extends StatelessWidget {
           children: [
             IconButton(
               icon: Icon(
-                Icons.remove_sharp,
+                Icons.delete,
                 color: Colors.red,
               ),
               onPressed: () {
@@ -186,7 +186,7 @@ class UserMyLikedType extends StatelessWidget {
       children: [
         IconButton(
           icon: Icon(
-            Icons.remove_sharp,
+            Icons.delete,
             color: Colors.red,
           ),
           onPressed: () {
@@ -215,7 +215,7 @@ class UserMyLikedType extends StatelessWidget {
           children: [
             IconButton(
               icon: Icon(
-                Icons.remove_sharp,
+                Icons.delete,
                 color: Colors.red,
               ),
               onPressed: () {
