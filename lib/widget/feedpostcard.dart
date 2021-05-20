@@ -177,7 +177,6 @@ class FeedPostCard extends StatelessWidget {
         color: Colors.black,
         child: Column(
           children: [
-            // ListTile(
             Row(
               children: [
                 Padding(
