@@ -388,11 +388,8 @@ class _SinglePostCardState extends State<SinglePostCard> {
           itemCount: widget.comments.length,
           itemBuilder: (BuildContext context, int index) {
             var newDate = HttpDate.parse(widget.comments[index]['createdAt']);
-            // TODO: Look into better way to get real time
-            var date = newDate.add(Duration(hours: 4));
             if (editCommentVar == false ||
                 editCommentUuid != widget.comments[index]['uuid']) {
-              //print('uuid: ' + widget.comments[index]['uuid']);
               return Padding(
                 padding: const EdgeInsets.only(left: 4),
                 child: Row(
@@ -417,7 +414,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                             Padding(
                                 padding: EdgeInsets.only(right: 4),
                                 child: Text(
-                                  "   ${Jiffy(date).fromNow()}",
+                                  "   ${Jiffy(newDate).fromNow()}",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 13,
@@ -448,7 +445,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                         return Padding(
                             padding: EdgeInsets.only(right: 4),
                             child: Text(
-                              "   ${Jiffy(date).fromNow()}",
+                              "   ${Jiffy(newDate).fromNow()}",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 13,
@@ -523,8 +520,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
   @override
   Widget build(BuildContext context) {
     var newDate = HttpDate.parse(widget.timestamp);
-    // TODO: Look into better way to get real time
-    var date = newDate.add(Duration(hours: 4));
+    var _controller = TextEditingController();
     return Card(
       color: Colors.black,
       child: Column(
@@ -594,7 +590,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                 Padding(
                   padding: EdgeInsets.only(left: 6),
                   child: Text(
-                    Jiffy(date).fromNow(),
+                    Jiffy(newDate).fromNow(),
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Merriweather-Italic',
@@ -623,6 +619,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                 child: Container(
                   width: MediaQuery.of(context).size.width * .82,
                   child: TextField(
+                      controller: _controller,
                       style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         labelText: 'Create Comment',
@@ -645,6 +642,7 @@ class _SinglePostCardState extends State<SinglePostCard> {
                   tooltip: 'Send comment',
                   onPressed: () {
                     sendComment();
+                    _controller.clear();
                   })
             ],
           ),

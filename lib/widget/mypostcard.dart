@@ -246,8 +246,6 @@ class _MyPostCardState extends State<MyPostCard> {
   @override
   Widget build(BuildContext context) {
     var newDate = HttpDate.parse(widget.timestamp);
-    // TODO: Look into better way to get real time
-    var date = newDate.add(Duration(hours: 4));
     if (!editMode) {
       return GestureDetector(
         child: Card(
@@ -316,7 +314,7 @@ class _MyPostCardState extends State<MyPostCard> {
                     Padding(
                       padding: EdgeInsets.only(left: 8),
                       child: Text(
-                        Jiffy(date).fromNow(),
+                        Jiffy(newDate).fromNow(),
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Merriweather-Italic',

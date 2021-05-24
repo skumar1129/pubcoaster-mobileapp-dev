@@ -76,88 +76,85 @@ class _CreatePostState extends State<CreatePost> {
             builder: (BuildContext content) {
               //getImage()
               return AlertDialog(
-                title: Text('Choose an upload method',
+                  title: Text(
+                    'Choose an upload method',
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.black)),
-                backgroundColor: Colors.white,
-                actions: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: FloatingActionButton(
-                      child: Icon(Icons.file_upload),
-                      onPressed: () => getImage(true),
-                      tooltip: 'Upload from storage',
-                      backgroundColor: Colors.red,
-                    ),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 23),
+                    textAlign: TextAlign.center,
                   ),
-                  SizedBox(width: 150),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: FloatingActionButton(
-                      child: Icon(Icons.camera),
-                      tooltip: 'Upload from camera',
-                      onPressed: () => getImage(false),
-                      backgroundColor: Colors.red,
-                    ),
-                  )
-                ],
-              );
+                  backgroundColor: Colors.white,
+                  content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FloatingActionButton(
+                          child: Icon(Icons.file_upload),
+                          onPressed: () => getImage(true),
+                          tooltip: 'Upload from storage',
+                          backgroundColor: Colors.red,
+                        ),
+                        FloatingActionButton(
+                          child: Icon(Icons.camera),
+                          tooltip: 'Upload from camera',
+                          onPressed: () => getImage(false),
+                          backgroundColor: Colors.red,
+                        )
+                      ]));
             }),
         tooltip: 'Picture (Optional)',
         child: Icon(Icons.add_a_photo),
         backgroundColor: Colors.red,
       );
     } else {
-      return Column(children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 6),
-          child: Text('File Successfully Picked!',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 20)),
-        ),
-        FloatingActionButton(
-          onPressed: () => showDialog(
-              context: context,
-              builder: (BuildContext content) {
-                //getImage()
-                return AlertDialog(
-                  title: Text('Choose an upload method',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          decoration: TextDecoration.underline,
-                          fontSize: 30)),
-                  backgroundColor: Colors.white,
-                  actions: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10, bottom: 8),
-                      child: FloatingActionButton(
-                        child: Icon(Icons.file_upload),
-                        onPressed: () => getImage(true),
-                        tooltip: 'Upload from storage',
-                        backgroundColor: Colors.red,
+      return Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Text('File Successfully Picked!',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 20)),
+          ),
+          FloatingActionButton(
+            onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext content) {
+                  //getImage()
+                  return AlertDialog(
+                      title: Text(
+                        'Choose an upload method',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 23),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                    SizedBox(width: 150),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10, bottom: 8),
-                      child: FloatingActionButton(
-                        child: Icon(Icons.camera),
-                        tooltip: 'Upload from camera',
-                        onPressed: () => getImage(false),
-                        backgroundColor: Colors.red,
-                      ),
-                    )
-                  ],
-                );
-              }),
-          tooltip: 'Picture (Optional)',
-          child: Icon(Icons.add_a_photo),
-          backgroundColor: Colors.red,
-        )
-      ]);
+                      backgroundColor: Colors.white,
+                      content: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            FloatingActionButton(
+                              child: Icon(Icons.file_upload),
+                              onPressed: () => getImage(true),
+                              tooltip: 'Upload from storage',
+                              backgroundColor: Colors.red,
+                            ),
+                            FloatingActionButton(
+                              child: Icon(Icons.camera),
+                              tooltip: 'Upload from camera',
+                              onPressed: () => getImage(false),
+                              backgroundColor: Colors.red,
+                            )
+                          ]));
+                }),
+            tooltip: 'Picture (Optional)',
+            child: Icon(Icons.add_a_photo),
+            backgroundColor: Colors.red,
+          ),
+        ],
+      );
     }
   }
 
