@@ -25,9 +25,6 @@ class _BottomNavState extends State<BottomNav> {
         }
         break;
       case 3:
-        {}
-        break;
-      case 4:
         {
           await FirebaseAuth.instance.signOut();
           Navigator.pushReplacementNamed(context, '/signin');
@@ -47,8 +44,6 @@ class _BottomNavState extends State<BottomNav> {
           BottomNavigationBarItem(icon: Icon(Icons.comment), label: 'My Posts'),
           BottomNavigationBarItem(
               icon: Icon(Icons.add_circle), label: 'Add Post'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_box), label: 'Profile'),
           BottomNavigationBarItem(
               icon: Icon(Icons.chevron_right), label: 'Log Out'),
         ],
