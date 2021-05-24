@@ -1,53 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:NewApp/services/postservice.dart';
-import 'package:NewApp/widget/navbarhome.dart';
+import 'package:strings/strings.dart';
 import 'package:NewApp/widget/bottomnav.dart';
-import 'package:NewApp/widget/mypostcard.dart';
+import 'package:NewApp/widget/navbarlocation.dart';
+import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/services/userservice.dart';
-import 'package:NewApp/widget/myuserprofile.dart';
+import 'package:NewApp/widget/userprofile.dart';
+import 'package:NewApp/widget/feedpostcard.dart';
+import 'package:NewApp/widget/userfilter.dart';
 
-class MyPosts extends StatefulWidget {
+class UserNbhood extends StatefulWidget {
+  UserNbhood(this.usernbhood);
+  final String usernbhood;
+  static String route = '/usernbhood';
   @override
-  _MyPostsState createState() => _MyPostsState();
+  _UserNbhoodState createState() => _UserNbhoodState();
 }
 
-class _MyPostsState extends State<MyPosts> {
+class _UserNbhoodState extends State<UserNbhood> {
+  String user = '';
+  String nbhood = '';
   Future<dynamic>? posts;
-  Future<dynamic>? userInfo;
   final postService = new PostService();
+  Future<dynamic>? userInfo;
   final userService = new UserService();
 
-  getUserInfo() async {
-    var response;
-    try {
-      response = await userService.getMyUser();
-      return response;
-    } catch (e) {
-      print(e);
-      final snackBar = SnackBar(
-          content: Text(
-              'Error: could not retrieve user info. Check network connection.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.italic,
-                  fontSize: 20)),
-          backgroundColor: Colors.red);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-  }
-
-  getMyPosts([int? offset]) async {
+  getUserNbhoodPosts(String user, String nbhood, [int? offset]) async {
     var response;
     if (offset != null) {
       try {
-        response = await postService.getMyPosts(offset);
+        response = await postService.getUserNbhoodPosts(user, nbhood, offset);
         totalPosts = response[0];
       } catch (e) {
         print(e);
         final snackBar = SnackBar(
             content: Text(
-                'Error: could not retrieve posts. Check network connection.',
+                'Error: could retrieve posts. Check network connection.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -58,7 +45,7 @@ class _MyPostsState extends State<MyPosts> {
       }
     } else {
       try {
-        response = await postService.getMyPosts();
+        response = await postService.getUserNbhoodPosts(user, nbhood);
         totalPosts = response[0];
       } catch (e) {
         print(e);
@@ -77,7 +64,27 @@ class _MyPostsState extends State<MyPosts> {
     return response[1];
   }
 
-  Widget myPosts() {
+  getUserInfo(String user) async {
+    try {
+      var response;
+      response = await userService.getUser(user);
+      return response;
+    } catch (e) {
+      final snackBar = SnackBar(
+          content: Text(
+              'Error: could not retrieve user info. Check network connection.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      print(e);
+    }
+  }
+
+  Widget userPosts() {
     Iterable<Future<dynamic>> futures = [posts!, userInfo!];
     return FutureBuilder(
         future: Future.wait(futures),
@@ -89,16 +96,18 @@ class _MyPostsState extends State<MyPosts> {
               return Expanded(
                 child: Column(
                   children: [
-                    MyUserProfile(userInfo, totalPosts),
                     SizedBox(height: MediaQuery.of(context).size.height * .1),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: Text('You have not made a post yet',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              decoration: TextDecoration.underline)),
+                    UserProfile(userInfo, totalPosts),
+                    Text(
+                      '$user has no posts in ${capitalize(nbhood)}',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                          fontFamily: 'Oxygen-Bold'),
+                    ),
+                    Divider(
+                      color: Colors.white,
                     ),
                     Expanded(
                         child: Image(
@@ -112,7 +121,15 @@ class _MyPostsState extends State<MyPosts> {
               return Expanded(
                   child: Column(
                 children: [
-                  MyUserProfile(userInfo, totalPosts),
+                  UserProfile(userInfo, totalPosts),
+                  Text(
+                    '$user\'s posts in ${capitalize(nbhood)}',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                        fontFamily: 'Oxygen-Bold'),
+                  ),
                   Expanded(
                     child: Scrollbar(
                         child: RefreshIndicator(
@@ -124,7 +141,8 @@ class _MyPostsState extends State<MyPosts> {
                           itemBuilder: (context, index) {
                             if (index == items.length && index < totalPosts!) {
                               offset++;
-                              var newPosts = getMyPosts(offset);
+                              var newPosts =
+                                  getUserNbhoodPosts(user, nbhood, offset);
                               newPosts.then((posts) {
                                 if (posts != null) {
                                   if (mounted) {
@@ -140,7 +158,7 @@ class _MyPostsState extends State<MyPosts> {
                             } else if (index == totalPosts) {
                               return Container();
                             }
-                            return MyPostCard(
+                            return FeedPostCard(
                                 items[index].bar,
                                 items[index].location,
                                 items[index].createdBy,
@@ -156,7 +174,7 @@ class _MyPostsState extends State<MyPosts> {
                                 items[index].uuid);
                           }),
                       onRefresh: () {
-                        return getMyPosts();
+                        return getUserNbhoodPosts(user, nbhood);
                       },
                     )),
                   )
@@ -170,8 +188,7 @@ class _MyPostsState extends State<MyPosts> {
                   SizedBox(height: MediaQuery.of(context).size.height * .1),
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
-                    child: Text(
-                        'There was an error getting the posts and user information',
+                    child: Text('There was an error getting the posts',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -194,17 +211,24 @@ class _MyPostsState extends State<MyPosts> {
   @override
   void initState() {
     super.initState();
-    posts = getMyPosts();
-    userInfo = getUserInfo();
+    user = widget.usernbhood.split('-')[0];
+    nbhood = widget.usernbhood.split('-')[1];
+    posts = getUserNbhoodPosts(user, nbhood);
+    userInfo = getUserInfo(user);
   }
 
   int offset = 1;
   int? totalPosts;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: UserFilter(user),
       body: Column(
-        children: [NavBar(), myPosts()],
+        children: [
+          NavBarLoc(),
+          userPosts(),
+        ],
       ),
       bottomNavigationBar: BottomNav(),
     );
