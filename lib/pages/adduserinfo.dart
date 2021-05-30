@@ -136,6 +136,19 @@ class _AddUserInfoState extends State<AddUserInfo> {
     }
   }
 
+  //TODO: center this
+  showLoadingDialog() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext content) {
+        //getImage()
+        return AlertDialog(
+          backgroundColor: Colors.transparent,
+          content: Center(child: SizedBox(height: MediaQuery.of(context).size.height * .2, width: MediaQuery.of(context).size.height * .2, child: CircularProgressIndicator(backgroundColor: Colors.black, strokeWidth: 10,))));
+    });
+  }
+
   submitUser() async {
     String email = FirebaseAuth.instance.currentUser!.email!;
     if (username == null ||
@@ -144,6 +157,7 @@ class _AddUserInfoState extends State<AddUserInfo> {
         firstname == "" ||
         lastname == null ||
         lastname == "") {
+        Navigator.of(context).pop();
       final snackBar = SnackBar(
           content: Text(
               'Error with form: please make sure to fill out all the info before submitting.',
@@ -155,6 +169,10 @@ class _AddUserInfoState extends State<AddUserInfo> {
           backgroundColor: Colors.red);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
+      bool needToPop = true;
+      showLoadingDialog();
+      bool succeed = false;
+      //TODO: if one call fails, make sure the other isn't executed
       if (filePicked) {
         try {
           final firebase_storage.Reference storageRef = firebase_storage
@@ -173,8 +191,10 @@ class _AddUserInfoState extends State<AddUserInfo> {
                 'fullName': fullname,
                 'picLink': url
               };
-              bool succeed = await userService.createUser(body);
+              succeed = await userService.createUser(body);
               if (!succeed) {
+                Navigator.of(context).pop();
+                needToPop = false;
                 final snackBar = SnackBar(
                     content: Text(
                         'Error: could not create user. Check network connection.',
@@ -185,11 +205,16 @@ class _AddUserInfoState extends State<AddUserInfo> {
                             fontSize: 20)),
                     backgroundColor: Colors.red);
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                return;
               }
               try {
                 await FirebaseAuth.instance.currentUser!
                     .updateProfile(displayName: username, photoURL: url);
               } catch (e) {
+                if (needToPop) {
+                  needToPop = false;
+                  Navigator.of(context).pop();
+                }
                 print(e);
                 final snackBar = SnackBar(
                     content: Text(
@@ -205,6 +230,10 @@ class _AddUserInfoState extends State<AddUserInfo> {
             });
           });
         } on firebase_core.FirebaseException catch (e) {
+          if (needToPop) {
+            needToPop = false;
+            Navigator.of(context).pop();
+          }
           print(e);
           final snackBar = SnackBar(
               content: Text(
@@ -216,17 +245,24 @@ class _AddUserInfoState extends State<AddUserInfo> {
                       fontSize: 20)),
               backgroundColor: Colors.red);
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          return;
         }
-        final snackBar = SnackBar(
-            content: Text('Successfully updated profile!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 20)),
-            backgroundColor: Colors.green);
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        Navigator.pushReplacementNamed(context, '/home');
+        if (needToPop) {
+          needToPop = false;
+          Navigator.of(context).pop();
+        }
+        if (succeed) {
+          final snackBar = SnackBar(
+              content: Text('Successfully updated profile!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 20)),
+              backgroundColor: Colors.green);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          Navigator.pushReplacementNamed(context, '/home');
+        }
       } else {
         String fullname = '$firstname $lastname';
         var body = {
@@ -237,8 +273,10 @@ class _AddUserInfoState extends State<AddUserInfo> {
           'fullName': fullname,
           'picLink': ''
         };
-        bool succeed = await userService.createUser(body);
+        succeed = await userService.createUser(body);
         if (!succeed) {
+          Navigator.of(context).pop();
+          needToPop = false;
           final snackBar = SnackBar(
               content: Text(
                   'Error: could not create user. Check network connection.',
@@ -249,11 +287,16 @@ class _AddUserInfoState extends State<AddUserInfo> {
                       fontSize: 20)),
               backgroundColor: Colors.red);
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          return;
         }
         try {
           await FirebaseAuth.instance.currentUser!
               .updateProfile(displayName: username);
         } catch (e) {
+          if (needToPop) {
+            needToPop = false;
+            Navigator.of(context).pop();
+          }
           print(e);
           final snackBar = SnackBar(
               content: Text('Error updating profile! Check network connection.',
@@ -264,17 +307,24 @@ class _AddUserInfoState extends State<AddUserInfo> {
                       fontSize: 20)),
               backgroundColor: Colors.red);
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          return;
         }
-        final snackBar = SnackBar(
-            content: Text('Successfully updated profile!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 20)),
-            backgroundColor: Colors.green);
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        Navigator.pushReplacementNamed(context, '/home');
+        if (needToPop) {
+          needToPop = false;
+          Navigator.of(context).pop();
+        }
+        if (succeed) {
+          final snackBar = SnackBar(
+              content: Text('Successfully updated profile!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 20)),
+              backgroundColor: Colors.green);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          Navigator.pushReplacementNamed(context, '/home');
+        }
       }
     }
   }
