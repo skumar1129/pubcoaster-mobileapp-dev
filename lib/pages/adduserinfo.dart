@@ -136,7 +136,6 @@ class _AddUserInfoState extends State<AddUserInfo> {
     }
   }
 
-  //TODO: center this
   showLoadingDialog() {
     showDialog(
       barrierDismissible: false,
@@ -172,7 +171,6 @@ class _AddUserInfoState extends State<AddUserInfo> {
       bool needToPop = true;
       showLoadingDialog();
       bool succeed = false;
-      //TODO: if one call fails, make sure the other isn't executed
       if (filePicked) {
         try {
           final firebase_storage.Reference storageRef = firebase_storage
