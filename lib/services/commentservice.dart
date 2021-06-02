@@ -33,7 +33,7 @@ class CommentService {
 
     comment = jsonDecode(content.body);
 
-    if (content.statusCode == 500) {
+    if (content == null || content.statusCode == 500) {
       comment = null;
     }
 
@@ -64,7 +64,7 @@ class CommentService {
       succeed = false;
     }
 
-    if (content.statusCode == 500) {
+    if (content == null || content.statusCode == 500) {
       succeed = false;
     }
 
@@ -91,7 +91,7 @@ class CommentService {
       succeed = false;
     }
 
-    if (content.statusCode == 500) {
+    if (content == null || content.statusCode == 500) {
       succeed = false;
     }
 
