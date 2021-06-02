@@ -158,6 +158,18 @@ class _CreatePostState extends State<CreatePost> {
     }
   }
 
+  showLoadingDialog() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext content) {
+        //getImage()
+        return AlertDialog(
+          backgroundColor: Colors.transparent,
+          content: Center(child: SizedBox(height: MediaQuery.of(context).size.height * .2, width: MediaQuery.of(context).size.height * .2, child: CircularProgressIndicator(backgroundColor: Colors.black, strokeWidth: 10,))));
+    });
+  }
+
   submitPost(String? loc, String? bar, String? nbhood, int? rating,
       String? descrip, bool anon) async {
     String user = FirebaseAuth.instance.currentUser!.displayName!;
@@ -191,6 +203,7 @@ class _CreatePostState extends State<CreatePost> {
           backgroundColor: Colors.red);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
+      showLoadingDialog();
       if (filePicked) {
         try {
           final firebase_storage.Reference storageRef = firebase_storage
@@ -212,6 +225,7 @@ class _CreatePostState extends State<CreatePost> {
               };
               bool succeed = await postService.addPost(reqBody);
               if (succeed) {
+                Navigator.of(context).pop();
                 final snackBar = SnackBar(
                     content: Text('Successfully created post!',
                         textAlign: TextAlign.center,
@@ -224,6 +238,7 @@ class _CreatePostState extends State<CreatePost> {
                 Navigator.pushReplacementNamed(context, LocationPosts.route,
                     arguments: location);
               } else {
+                Navigator.of(context).pop();
                 final snackBar = SnackBar(
                     content: Text(
                         'Error: could not create post. Check connection',
@@ -239,6 +254,7 @@ class _CreatePostState extends State<CreatePost> {
           });
         } on firebase_core.FirebaseException catch (e) {
           print(e);
+          Navigator.of(context).pop();
           final snackBar = SnackBar(
               content: Text(
                   'Unable to upload file. Please check your network connection.',
@@ -263,6 +279,7 @@ class _CreatePostState extends State<CreatePost> {
         };
         bool succeed = await postService.addPost(reqBody);
         if (succeed) {
+          Navigator.of(context).pop();
           final snackBar = SnackBar(
               content: Text('Successfully created post!',
                   textAlign: TextAlign.center,
@@ -275,6 +292,7 @@ class _CreatePostState extends State<CreatePost> {
           Navigator.pushReplacementNamed(context, LocationPosts.route,
               arguments: location);
         } else {
+          Navigator.of(context).pop();
           final snackBar = SnackBar(
               content: Text('Error: could not create post. Check connection',
                   textAlign: TextAlign.center,
