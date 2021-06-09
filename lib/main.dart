@@ -26,6 +26,7 @@ import 'package:NewApp/pages/myuserlikedtype.dart';
 import 'package:NewApp/pages/createuserliked.dart';
 import 'package:NewApp/pages/allusertypes.dart';
 import 'package:NewApp/pages/typebyname.dart';
+import 'package:NewApp/pages/feedpostpage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -126,6 +127,8 @@ class MyApp extends StatelessWidget {
                       UserBar(settings.arguments as String),
                   UserNbhood.route: (context) =>
                       UserNbhood(settings.arguments as String),
+                  FeedPostPage.route: (context) =>
+                      FeedPostPage(settings.arguments as String),
                 };
                 WidgetBuilder builder = routes[settings.name]!;
                 return MaterialPageRoute(
