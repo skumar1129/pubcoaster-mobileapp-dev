@@ -158,7 +158,7 @@ class FollowerService {
     return compute(parseFollower, json.decode(response.body));
   }
 
-  Future<List<FeedPost>> getFeedPosts(String user, [int? page]) async {
+  Future<List<dynamic>> getFeedPosts(String user, [int? page]) async {
     var endpoint = Uri.http('${Config.followerApiUrl}', '/followingposts');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
@@ -177,6 +177,10 @@ class FollowerService {
     } catch (e) {
       print(e);
     }
-    return compute(parseFeedPosts, json.decode(response.body));
+    var responseBody = json.decode(response.body);
+    return [
+      responseBody['totalCount'],
+      compute(parseFeedPosts, responseBody['posts'])
+    ];
   }
 }

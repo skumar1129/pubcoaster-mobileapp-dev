@@ -21,6 +21,7 @@ class _FeedPostPageState extends State<FeedPostPage> {
     if (offset != null) {
       try {
         response = await followerService.getFeedPosts(widget.user, offset);
+        totalPosts = response[0];
       } catch (e) {
         print(e);
         final snackBar = SnackBar(
@@ -37,6 +38,7 @@ class _FeedPostPageState extends State<FeedPostPage> {
     } else {
       try {
         response = await followerService.getFeedPosts(widget.user);
+        totalPosts = response[0];
       } catch (e) {
         print(e);
         final snackBar = SnackBar(
@@ -51,7 +53,7 @@ class _FeedPostPageState extends State<FeedPostPage> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }
-    return response;
+    return response[1];
   }
 
   Widget _displayPosts() {
@@ -98,11 +100,8 @@ class _FeedPostPageState extends State<FeedPostPage> {
       shrinkWrap: true,
       itemCount: items.length + 1,
       itemBuilder: (context, index) {
-        if (index == items.length && items.length < itemsLength) {
-          return Container();
-        } else if (index == items.length && items.length >= itemsLength) {
+        if (index == items.length && index < totalPosts!) {
           offset++;
-          itemsLength += 3;
           var newPosts = getFeedPosts(offset);
           newPosts.then((posts) {
             if (posts != null) {
@@ -116,6 +115,8 @@ class _FeedPostPageState extends State<FeedPostPage> {
           return IntrinsicWidth(
             child: CircularProgressIndicator(),
           );
+        } else if (index == totalPosts) {
+          return Container();
         }
         return FeedPostCard(
             items[index].bar,
@@ -203,7 +204,7 @@ class _FeedPostPageState extends State<FeedPostPage> {
   }
 
   int offset = 1;
-  int itemsLength = 3;
+  int? totalPosts;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
