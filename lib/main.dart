@@ -140,14 +140,6 @@ class MyApp extends StatelessWidget {
                       LocNbhoodPosts(settings.arguments as String),
                   LocUserPosts.route: (context) =>
                       LocUserPosts(settings.arguments as String),
-                  // UserPosts.route: (context) =>
-                  //     UserPosts(settings.arguments as String),
-                  // UserLocation.route: (context) =>
-                  //     UserLocation(settings.arguments as String),
-                  // UserBar.route: (context) =>
-                  //     UserBar(settings.arguments as String),
-                  // UserNbhood.route: (context) =>
-                  //     UserNbhood(settings.arguments as String),
                   FeedPostPage.route: (context) =>
                       FeedPostPage(settings.arguments as String),
                 };
