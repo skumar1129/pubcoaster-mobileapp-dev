@@ -68,25 +68,31 @@ class _AddUserInfoState extends State<AddUserInfo> {
             builder: (BuildContext content) {
               //getImage()
               return AlertDialog(
-                title: Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 23), textAlign: TextAlign.center,),
-                backgroundColor: Colors.white,
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    FloatingActionButton(child: Icon(Icons.file_upload),
-                      onPressed: () => getImage(true),
-                      tooltip: 'Upload from storage',
-                      backgroundColor: Colors.red,
-                    ),
-                    FloatingActionButton(
-                      child: Icon(Icons.camera),
-                      tooltip: 'Upload from camera',
-                      onPressed: () => getImage(false),
-                      backgroundColor: Colors.red,
-                    )
-                  ]
-                )
-              );
+                  title: Text(
+                    'Choose an upload method',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 23),
+                    textAlign: TextAlign.center,
+                  ),
+                  backgroundColor: Colors.white,
+                  content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FloatingActionButton(
+                          child: Icon(Icons.file_upload),
+                          onPressed: () => getImage(true),
+                          tooltip: 'Upload from storage',
+                          backgroundColor: Colors.red,
+                        ),
+                        FloatingActionButton(
+                          child: Icon(Icons.camera),
+                          tooltip: 'Upload from camera',
+                          onPressed: () => getImage(false),
+                          backgroundColor: Colors.red,
+                        )
+                      ]));
             }),
         tooltip: 'Picture (Optional)',
         child: Icon(Icons.add_a_photo),
@@ -108,25 +114,31 @@ class _AddUserInfoState extends State<AddUserInfo> {
               builder: (BuildContext content) {
                 //getImage()
                 return AlertDialog(
-                  title: Text('Choose an upload method', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 23), textAlign: TextAlign.center,),
-                  backgroundColor: Colors.white,
-                  content: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FloatingActionButton(child: Icon(Icons.file_upload),
-                        onPressed: () => getImage(true),
-                        tooltip: 'Upload from storage',
-                        backgroundColor: Colors.red,
-                      ),
-                      FloatingActionButton(
-                        child: Icon(Icons.camera),
-                        tooltip: 'Upload from camera',
-                        onPressed: () => getImage(false),
-                        backgroundColor: Colors.red,
-                      )
-                    ]
-                  )
-                );
+                    title: Text(
+                      'Choose an upload method',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 23),
+                      textAlign: TextAlign.center,
+                    ),
+                    backgroundColor: Colors.white,
+                    content: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          FloatingActionButton(
+                            child: Icon(Icons.file_upload),
+                            onPressed: () => getImage(true),
+                            tooltip: 'Upload from storage',
+                            backgroundColor: Colors.red,
+                          ),
+                          FloatingActionButton(
+                            child: Icon(Icons.camera),
+                            tooltip: 'Upload from camera',
+                            onPressed: () => getImage(false),
+                            backgroundColor: Colors.red,
+                          )
+                        ]));
               }),
           tooltip: 'Picture (Optional)',
           child: Icon(Icons.add_a_photo),
@@ -185,22 +197,33 @@ class _AddUserInfoState extends State<AddUserInfo> {
                             fontSize: 20)),
                     backgroundColor: Colors.red);
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              }
-              try {
-                await FirebaseAuth.instance.currentUser!
-                    .updateProfile(displayName: username, photoURL: url);
-              } catch (e) {
-                print(e);
-                final snackBar = SnackBar(
-                    content: Text(
-                        'Error updating profile! Check network connection.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 20)),
-                    backgroundColor: Colors.red);
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              } else {
+                try {
+                  await FirebaseAuth.instance.currentUser!
+                      .updateProfile(displayName: username, photoURL: url);
+                  final snackBar = SnackBar(
+                      content: Text('Successfully updated profile!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              fontSize: 20)),
+                      backgroundColor: Colors.green);
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  Navigator.pushReplacementNamed(context, '/home');
+                } catch (e) {
+                  print(e);
+                  final snackBar = SnackBar(
+                      content: Text(
+                          'Error updating profile! Check network connection.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              fontSize: 20)),
+                      backgroundColor: Colors.red);
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
               }
             });
           });
@@ -217,16 +240,6 @@ class _AddUserInfoState extends State<AddUserInfo> {
               backgroundColor: Colors.red);
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
-        final snackBar = SnackBar(
-            content: Text('Successfully updated profile!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 20)),
-            backgroundColor: Colors.green);
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        Navigator.pushReplacementNamed(context, '/home');
       } else {
         String fullname = '$firstname $lastname';
         var body = {
@@ -249,32 +262,34 @@ class _AddUserInfoState extends State<AddUserInfo> {
                       fontSize: 20)),
               backgroundColor: Colors.red);
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        } else {
+          try {
+            await FirebaseAuth.instance.currentUser!
+                .updateProfile(displayName: username);
+            final snackBar = SnackBar(
+                content: Text('Successfully updated profile!',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        fontSize: 20)),
+                backgroundColor: Colors.green);
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            Navigator.pushReplacementNamed(context, '/home');
+          } catch (e) {
+            print(e);
+            final snackBar = SnackBar(
+                content: Text(
+                    'Error updating profile! Check network connection.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        fontSize: 20)),
+                backgroundColor: Colors.red);
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
         }
-        try {
-          await FirebaseAuth.instance.currentUser!
-              .updateProfile(displayName: username);
-        } catch (e) {
-          print(e);
-          final snackBar = SnackBar(
-              content: Text('Error updating profile! Check network connection.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 20)),
-              backgroundColor: Colors.red);
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        }
-        final snackBar = SnackBar(
-            content: Text('Successfully updated profile!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 20)),
-            backgroundColor: Colors.green);
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        Navigator.pushReplacementNamed(context, '/home');
       }
     }
   }

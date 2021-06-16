@@ -9,6 +9,8 @@ class ProfUser {
   final int numBars;
   final int numDrinks;
   final int numBrands;
+  final int numFollowers;
+  final int numFollowing;
 
   ProfUser(
       {required this.username,
@@ -19,6 +21,8 @@ class ProfUser {
       required this.numBars,
       required this.numBrands,
       required this.numDrinks,
+      required this.numFollowers,
+      required this.numFollowing,
       this.bio,
       this.picLink});
 
@@ -33,6 +37,8 @@ class ProfUser {
         bio: json['bio'],
         numBars: json['numBars'],
         numBrands: json['numBrands'],
-        numDrinks: json['numDrinks']);
+        numDrinks: json['numDrinks'],
+        numFollowers: json['numFollowers'],
+        numFollowing: json['numFollowing']);
   }
 }

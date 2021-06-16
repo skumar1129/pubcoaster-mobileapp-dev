@@ -28,17 +28,63 @@ class _UserProfileState extends State<UserProfile> {
 
   Widget _avatar() {
     if (widget.userInfo.picLink != null) {
-      return CircleAvatar(
-        backgroundImage: NetworkImage(widget.userInfo.picLink),
-        radius: MediaQuery.of(context).size.width * .2,
+      return Column(
+        children: [
+          CircleAvatar(
+            backgroundImage: NetworkImage(widget.userInfo.picLink),
+            radius: MediaQuery.of(context).size.width * .1,
+          ),
+          _numFollowers(),
+          _numFollowing()
+        ],
       );
     } else {
-      return CircleAvatar(
-        radius: MediaQuery.of(context).size.width * .2,
-        child: Icon(Icons.no_photography),
-        backgroundColor: Colors.red,
+      return Column(
+        children: [
+          CircleAvatar(
+            radius: MediaQuery.of(context).size.width * .1,
+            child: Icon(Icons.no_photography),
+            backgroundColor: Colors.red,
+          ),
+          _numFollowers(),
+          _numFollowing()
+        ],
       );
     }
+  }
+
+  Widget _numFollowers() {
+    return TextButton(
+        onPressed: () {},
+        child: Column(
+          children: [
+            Text(
+              '${widget.userInfo.numFollowers}',
+              style: TextStyle(color: Colors.black),
+            ),
+            Text(
+              'Followers',
+              style: TextStyle(color: Colors.black),
+            )
+          ],
+        ));
+  }
+
+  Widget _numFollowing() {
+    return TextButton(
+        onPressed: () {},
+        child: Column(
+          children: [
+            Text(
+              '${widget.userInfo.numFollowing}',
+              style: TextStyle(color: Colors.black),
+            ),
+            Text(
+              'Following',
+              style: TextStyle(color: Colors.black),
+            )
+          ],
+        ));
   }
 
   Widget _barsLiked() {
@@ -261,6 +307,7 @@ class _UserProfileState extends State<UserProfile> {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _avatar(),
             _infoOnUser(),

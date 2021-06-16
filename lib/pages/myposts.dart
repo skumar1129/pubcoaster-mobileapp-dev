@@ -91,20 +91,17 @@ class _MyPostsState extends State<MyPosts> {
                   children: [
                     MyUserProfile(userInfo, totalPosts),
                     SizedBox(height: MediaQuery.of(context).size.height * .1),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: Text('You have not made a post yet',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              decoration: TextDecoration.underline)),
+                    Text(
+                      'You have not made a post yet',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: MediaQuery.of(context).size.height * .035,
+                        decoration: TextDecoration.underline,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    Expanded(
-                        child: Image(
-                            image: AssetImage('assets/img/city_page.jpg'),
-                            height: MediaQuery.of(context).size.height * .4)),
-                    SizedBox(height: MediaQuery.of(context).size.height * .14)
+                    SizedBox(height: MediaQuery.of(context).size.height * .1)
                   ],
                 ),
               );

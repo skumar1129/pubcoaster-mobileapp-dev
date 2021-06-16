@@ -320,33 +320,45 @@ class _MyUserProfileState extends State<MyUserProfile> {
 
   Widget _avatar() {
     if (widget.userInfo.picLink != null) {
-      return GestureDetector(
-        child: CircleAvatar(
-          backgroundImage: NetworkImage(widget.userInfo.picLink),
-          radius: MediaQuery.of(context).size.width * .2,
-        ),
-        onTap: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext content) {
-                return _pictureDialog();
-              });
-        },
+      return Column(
+        children: [
+          GestureDetector(
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(widget.userInfo.picLink),
+              radius: MediaQuery.of(context).size.width * .1,
+            ),
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext content) {
+                    return _pictureDialog();
+                  });
+            },
+          ),
+          _numFollowers(),
+          _numFollowing()
+        ],
       );
     } else {
-      return GestureDetector(
-        child: CircleAvatar(
-          radius: MediaQuery.of(context).size.width * .2,
-          child: Icon(Icons.add_a_photo),
-          backgroundColor: Colors.red,
-        ),
-        onTap: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext content) {
-                return _pictureDialog();
-              });
-        },
+      return Column(
+        children: [
+          GestureDetector(
+            child: CircleAvatar(
+              radius: MediaQuery.of(context).size.width * .1,
+              child: Icon(Icons.add_a_photo),
+              backgroundColor: Colors.red,
+            ),
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext content) {
+                    return _pictureDialog();
+                  });
+            },
+          ),
+          _numFollowers(),
+          _numFollowing()
+        ],
       );
     }
   }
@@ -367,7 +379,10 @@ class _MyUserProfileState extends State<MyUserProfile> {
                       return _postDialog();
                     });
               }),
-          Text('${widget.numPosts} post created'),
+          Text(
+            '${widget.numPosts} post created',
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       );
     } else {
@@ -385,7 +400,10 @@ class _MyUserProfileState extends State<MyUserProfile> {
                       return _postDialog();
                     });
               }),
-          Text('${widget.numPosts} posts created'),
+          Text(
+            '${widget.numPosts} posts created',
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       );
     }
@@ -405,7 +423,10 @@ class _MyUserProfileState extends State<MyUserProfile> {
                     arguments:
                         UserLiked(type: 'bar', user: widget.userInfo.username));
               }),
-          Text('${widget.userInfo.numBars} bar liked')
+          Text(
+            '${widget.userInfo.numBars} bar liked',
+            overflow: TextOverflow.ellipsis,
+          )
         ],
       );
     } else {
@@ -421,7 +442,10 @@ class _MyUserProfileState extends State<MyUserProfile> {
                     arguments:
                         UserLiked(type: 'bar', user: widget.userInfo.username));
               }),
-          Text('${widget.userInfo.numBars} bars liked')
+          Text(
+            '${widget.userInfo.numBars} bars liked',
+            overflow: TextOverflow.ellipsis,
+          )
         ],
       );
     }
@@ -441,7 +465,10 @@ class _MyUserProfileState extends State<MyUserProfile> {
                     arguments: UserLiked(
                         type: 'brand', user: widget.userInfo.username));
               }),
-          Text('${widget.userInfo.numBrands} brand liked'),
+          Text(
+            '${widget.userInfo.numBrands} brand liked',
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       );
     } else {
@@ -457,7 +484,10 @@ class _MyUserProfileState extends State<MyUserProfile> {
                     arguments: UserLiked(
                         type: 'brand', user: widget.userInfo.username));
               }),
-          Text('${widget.userInfo.numBrands} brands liked'),
+          Text(
+            '${widget.userInfo.numBrands} brands liked',
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       );
     }
@@ -477,7 +507,10 @@ class _MyUserProfileState extends State<MyUserProfile> {
                     arguments: UserLiked(
                         type: 'drink', user: widget.userInfo.username));
               }),
-          Text('${widget.userInfo.numDrinks} drink liked')
+          Text(
+            '${widget.userInfo.numDrinks} drink liked',
+            overflow: TextOverflow.ellipsis,
+          )
         ],
       );
     } else {
@@ -493,10 +526,47 @@ class _MyUserProfileState extends State<MyUserProfile> {
                     arguments: UserLiked(
                         type: 'drink', user: widget.userInfo.username));
               }),
-          Text('${widget.userInfo.numDrinks} drinks liked')
+          Text(
+            '${widget.userInfo.numDrinks} drinks liked',
+            overflow: TextOverflow.ellipsis,
+          )
         ],
       );
     }
+  }
+
+  Widget _numFollowers() {
+    return TextButton(
+        onPressed: () {},
+        child: Column(
+          children: [
+            Text(
+              '${widget.userInfo.numFollowers}',
+              style: TextStyle(color: Colors.black),
+            ),
+            Text(
+              'Followers',
+              style: TextStyle(color: Colors.black),
+            )
+          ],
+        ));
+  }
+
+  Widget _numFollowing() {
+    return TextButton(
+        onPressed: () {},
+        child: Column(
+          children: [
+            Text(
+              '${widget.userInfo.numFollowing}',
+              style: TextStyle(color: Colors.black),
+            ),
+            Text(
+              'Following',
+              style: TextStyle(color: Colors.black),
+            )
+          ],
+        ));
   }
 
   Widget _infoOnUser() {
@@ -522,13 +592,21 @@ class _MyUserProfileState extends State<MyUserProfile> {
         Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [_postsCreated(), VerticalDivider(), _barsLiked()],
+            children: [
+              _postsCreated(),
+              VerticalDivider(),
+              _barsLiked(),
+            ],
           ),
         ),
         Container(
             child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [_brandsLiked(), VerticalDivider(), _drinksLiked()],
+          children: [
+            _brandsLiked(),
+            VerticalDivider(),
+            _drinksLiked(),
+          ],
         ))
       ],
     );
@@ -741,6 +819,7 @@ class _MyUserProfileState extends State<MyUserProfile> {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _avatar(),
             _infoOnUser(),

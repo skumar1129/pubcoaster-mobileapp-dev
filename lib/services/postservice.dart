@@ -211,7 +211,7 @@ class PostService {
     return compute(parseFeedPosts, json.decode(response.body));
   }
 
-  Future<List<FeedPost>> getLocUserPosts(String location, String user,
+  Future<List<dynamic>> getLocUserPosts(String location, String user,
       [int? page]) async {
     String path = '/post/locuser/$location/$user';
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
@@ -231,8 +231,11 @@ class PostService {
     } catch (e) {
       print(e);
     }
-
-    return compute(parseFeedPosts, json.decode(response.body));
+    var responseBody = json.decode(response.body);
+    return [
+      responseBody['totalCount'],
+      compute(parseFeedPosts, responseBody['posts'])
+    ];
   }
 
   Future<List<dynamic>> getMyPosts([int? page]) async {
