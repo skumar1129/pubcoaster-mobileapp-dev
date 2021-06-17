@@ -27,6 +27,7 @@ import 'package:NewApp/pages/createuserliked.dart';
 import 'package:NewApp/pages/allusertypes.dart';
 import 'package:NewApp/pages/typebyname.dart';
 import 'package:NewApp/pages/feedpostpage.dart';
+import 'package:NewApp/models/userpagesargs.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -109,6 +110,26 @@ class MyApp extends StatelessWidget {
                   return MaterialPageRoute(builder: (context) {
                     return TypeByName(args.type, args.user, args.search!);
                   });
+                } else if (settings.name == UserPosts.route) {
+                  final UserPages args = settings.arguments as UserPages;
+                  return MaterialPageRoute(builder: (context) {
+                    return UserPosts(args.user, args.myUser);
+                  });
+                } else if (settings.name == UserLocation.route) {
+                  final UserPages args = settings.arguments as UserPages;
+                  return MaterialPageRoute(builder: (context) {
+                    return UserLocation(args.user, args.myUser);
+                  });
+                } else if (settings.name == UserBar.route) {
+                  final UserPages args = settings.arguments as UserPages;
+                  return MaterialPageRoute(builder: (context) {
+                    return UserBar(args.user, args.myUser);
+                  });
+                } else if (settings.name == UserNbhood.route) {
+                  final UserPages args = settings.arguments as UserPages;
+                  return MaterialPageRoute(builder: (context) {
+                    return UserNbhood(args.user, args.myUser);
+                  });
                 }
                 var routes = <String, WidgetBuilder>{
                   LocationPosts.route: (context) =>
@@ -119,14 +140,6 @@ class MyApp extends StatelessWidget {
                       LocNbhoodPosts(settings.arguments as String),
                   LocUserPosts.route: (context) =>
                       LocUserPosts(settings.arguments as String),
-                  UserPosts.route: (context) =>
-                      UserPosts(settings.arguments as String),
-                  UserLocation.route: (context) =>
-                      UserLocation(settings.arguments as String),
-                  UserBar.route: (context) =>
-                      UserBar(settings.arguments as String),
-                  UserNbhood.route: (context) =>
-                      UserNbhood(settings.arguments as String),
                   FeedPostPage.route: (context) =>
                       FeedPostPage(settings.arguments as String),
                 };

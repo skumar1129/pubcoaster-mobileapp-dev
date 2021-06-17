@@ -9,8 +9,9 @@ import 'package:NewApp/widget/feedpostcard.dart';
 import 'package:NewApp/widget/userfilter.dart';
 
 class UserNbhood extends StatefulWidget {
-  UserNbhood(this.usernbhood);
+  UserNbhood(this.usernbhood, this.myUser);
   final String usernbhood;
+  final String myUser;
   static String route = '/usernbhood';
   @override
   _UserNbhoodState createState() => _UserNbhoodState();
@@ -67,7 +68,7 @@ class _UserNbhoodState extends State<UserNbhood> {
   getUserInfo(String user) async {
     try {
       var response;
-      response = await userService.getUser(user);
+      response = await userService.getUser(user, widget.myUser);
       return response;
     } catch (e) {
       final snackBar = SnackBar(
@@ -97,7 +98,7 @@ class _UserNbhoodState extends State<UserNbhood> {
                 child: Column(
                   children: [
                     SizedBox(height: MediaQuery.of(context).size.height * .1),
-                    UserProfile(userInfo, totalPosts),
+                    UserProfile(userInfo, widget.myUser, totalPosts),
                     Text(
                       '$user has no posts in ${capitalize(nbhood)}',
                       style: TextStyle(
@@ -121,7 +122,7 @@ class _UserNbhoodState extends State<UserNbhood> {
               return Expanded(
                   child: Column(
                 children: [
-                  UserProfile(userInfo, totalPosts),
+                  UserProfile(userInfo, widget.myUser, totalPosts),
                   Text(
                     '$user\'s posts in ${capitalize(nbhood)}',
                     style: TextStyle(

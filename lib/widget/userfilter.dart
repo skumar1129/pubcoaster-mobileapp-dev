@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:NewApp/pages/userlocation.dart';
 import 'package:NewApp/pages/userbar.dart';
 import 'package:NewApp/pages/usernbhood.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:NewApp/models/userpagesargs.dart';
 
 class UserFilter extends StatefulWidget {
   UserFilter(this.user);
@@ -14,20 +16,21 @@ class _UserFilterState extends State<UserFilter> {
   String bar = '';
   String location = '';
   String nbhood = '';
+  String? myUser = FirebaseAuth.instance.currentUser?.displayName;
 
   goToUserLocationPage(String input) {
     Navigator.pushReplacementNamed(context, UserLocation.route,
-        arguments: '${widget.user}-$input');
+        arguments: UserPages(user: '${widget.user}-$input', myUser: myUser!));
   }
 
   goToUserBarPage(String input) {
     Navigator.pushReplacementNamed(context, UserBar.route,
-        arguments: '${widget.user}-$input');
+        arguments: UserPages(user: '${widget.user}-$input', myUser: myUser!));
   }
 
   goToUserNbhoodPage(String input) {
     Navigator.pushReplacementNamed(context, UserNbhood.route,
-        arguments: '${widget.user}-$input');
+        arguments: UserPages(user: '${widget.user}-$input', myUser: myUser!));
   }
 
   @override

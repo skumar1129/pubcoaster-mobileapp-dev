@@ -1,16 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:NewApp/models/userlikedargs.dart';
 import 'package:NewApp/pages/userlikedtype.dart';
+import 'package:NewApp/services/followerservice.dart';
 
 class UserProfile extends StatefulWidget {
-  UserProfile(this.userInfo, this.numPosts);
+  UserProfile(this.userInfo, this.myUser, this.numPosts);
   final userInfo;
-  final numPosts;
+  final String? myUser;
+  final int? numPosts;
   @override
   _UserProfileState createState() => _UserProfileState();
 }
 
 class _UserProfileState extends State<UserProfile> {
+  final followerService = new FollowerService();
+  bool? follow;
+  int? numFollowers;
+
+  createFollow() async {
+    try {
+      bool succeed = await followerService.createFollowing(
+          widget.myUser!, widget.userInfo.username);
+      if (succeed) {
+        if (mounted) {
+          setState(() {
+            follow = true;
+            numFollowers = numFollowers! + 1;
+          });
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  deleteFollow() async {
+    try {
+      bool succeed = await followerService.deleteFollowing(
+          widget.myUser!, widget.userInfo.username);
+      if (succeed) {
+        if (mounted) {
+          setState(() {
+            follow = false;
+            numFollowers = numFollowers! - 1;
+          });
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Widget _postDialog() {
     return AlertDialog(
       title: Text(
@@ -59,7 +99,7 @@ class _UserProfileState extends State<UserProfile> {
         child: Column(
           children: [
             Text(
-              '${widget.userInfo.numFollowers}',
+              '$numFollowers',
               style: TextStyle(color: Colors.black),
             ),
             Text(
@@ -195,9 +235,42 @@ class _UserProfileState extends State<UserProfile> {
     }
   }
 
+  Widget _followButton() {
+    if (follow == null) {
+      return Container();
+    } else if (follow!) {
+      return ElevatedButton(
+        onPressed: () {
+          deleteFollow();
+        },
+        child: Text('Unfollow'),
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+            shape: MaterialStateProperty.all<OutlinedBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: BorderSide(color: Colors.red)))),
+      );
+    } else {
+      return ElevatedButton(
+        onPressed: () {
+          createFollow();
+        },
+        child: Text('Follow'),
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+            shape: MaterialStateProperty.all<OutlinedBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: BorderSide(color: Colors.red)))),
+      );
+    }
+  }
+
   Widget _infoOnUser() {
     return Column(
       children: [
+        _followButton(),
         Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -299,6 +372,13 @@ class _UserProfileState extends State<UserProfile> {
         ],
       );
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    follow = widget.userInfo.following;
+    numFollowers = widget.userInfo.numFollowers;
   }
 
   @override

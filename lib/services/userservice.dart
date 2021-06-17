@@ -125,13 +125,14 @@ class UserService {
     return succeed;
   }
 
-  Future<ProfUser> getUser(username) async {
-    String path = '/user/$username';
+  Future<ProfUser> getUser(username, myUser) async {
+    String path = '/searchuser/$username';
     var endpoint = Uri.http('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $token'
+      'Authorization': 'Bearer $token',
+      'user': myUser
     };
     var response;
     try {
