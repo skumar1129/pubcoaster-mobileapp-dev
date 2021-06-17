@@ -8,8 +8,9 @@ import 'package:NewApp/widget/userprofile.dart';
 import 'package:NewApp/widget/userfilter.dart';
 
 class UserPosts extends StatefulWidget {
-  UserPosts(this.user);
+  UserPosts(this.user, this.myUser);
   final String user;
+  final String myUser;
   static const route = '/userposts';
 
   @override
@@ -66,7 +67,7 @@ class _UserPostsState extends State<UserPosts> {
   getUserInfo(String user) async {
     try {
       var response;
-      response = await userService.getUser(user);
+      response = await userService.getUser(user, widget.myUser);
       return response;
     } catch (e) {
       final snackBar = SnackBar(
@@ -95,7 +96,7 @@ class _UserPostsState extends State<UserPosts> {
               return Expanded(
                 child: Column(
                   children: [
-                    UserProfile(userInfo, totalPosts),
+                    UserProfile(userInfo, widget.myUser, totalPosts),
                     SizedBox(height: MediaQuery.of(context).size.height * .1),
                     Text(
                       'This user has not made a post yet',
@@ -113,7 +114,7 @@ class _UserPostsState extends State<UserPosts> {
               return Expanded(
                   child: Column(
                 children: [
-                  UserProfile(userInfo, totalPosts),
+                  UserProfile(userInfo, widget.myUser, totalPosts),
                   Expanded(
                     child: Scrollbar(
                         child: RefreshIndicator(

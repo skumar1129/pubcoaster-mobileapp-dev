@@ -9,8 +9,9 @@ import 'package:NewApp/widget/feedpostcard.dart';
 import 'package:NewApp/widget/userfilter.dart';
 
 class UserBar extends StatefulWidget {
-  UserBar(this.userbar);
+  UserBar(this.userbar, this.myUser);
   final String userbar;
+  final String myUser;
   static String route = '/userbar';
   @override
   _UserBarState createState() => _UserBarState();
@@ -67,7 +68,7 @@ class _UserBarState extends State<UserBar> {
   getUserInfo(String user) async {
     try {
       var response;
-      response = await userService.getUser(user);
+      response = await userService.getUser(user, widget.myUser);
       return response;
     } catch (e) {
       final snackBar = SnackBar(
@@ -97,7 +98,7 @@ class _UserBarState extends State<UserBar> {
                 child: Column(
                   children: [
                     SizedBox(height: MediaQuery.of(context).size.height * .1),
-                    UserProfile(userInfo, totalPosts),
+                    UserProfile(userInfo, widget.myUser, totalPosts),
                     Text(
                       '$user has no posts at ${capitalize(bar)}',
                       style: TextStyle(
@@ -121,7 +122,7 @@ class _UserBarState extends State<UserBar> {
               return Expanded(
                   child: Column(
                 children: [
-                  UserProfile(userInfo, totalPosts),
+                  UserProfile(userInfo, widget.myUser, totalPosts),
                   Text(
                     '$user\'s posts at ${capitalize(bar)}',
                     style: TextStyle(
