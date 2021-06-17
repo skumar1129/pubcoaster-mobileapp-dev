@@ -116,13 +116,15 @@ class FollowerService {
     return compute(parseFollower, json.decode(response.body));
   }
 
-  Future<List<Follower>> getUserFollowers(String user, [int? page]) async {
+  Future<List<Follower>> getUserFollowers(String user, String myUser,
+      [int? page]) async {
     String path = 'userfollowers/$user';
     var endpoint = Uri.http('${Config.followerApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $token'
+      'Authorization': 'Bearer $token',
+      'user': myUser
     };
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
@@ -137,13 +139,15 @@ class FollowerService {
     return compute(parseFollower, json.decode(response.body));
   }
 
-  Future<List<Follower>> getUserFollowing(String user, [int? page]) async {
+  Future<List<Follower>> getUserFollowing(String user, String myUser,
+      [int? page]) async {
     String path = 'userfollowing/$user';
     var endpoint = Uri.http('${Config.followerApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $token'
+      'Authorization': 'Bearer $token',
+      'user': myUser
     };
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};

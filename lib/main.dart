@@ -27,6 +27,10 @@ import 'package:NewApp/pages/createuserliked.dart';
 import 'package:NewApp/pages/allusertypes.dart';
 import 'package:NewApp/pages/typebyname.dart';
 import 'package:NewApp/pages/feedpostpage.dart';
+import 'package:NewApp/pages/myfollower.dart';
+import 'package:NewApp/pages/myfollowing.dart';
+import 'package:NewApp/pages/userfollower.dart';
+import 'package:NewApp/pages/userfollowing.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
