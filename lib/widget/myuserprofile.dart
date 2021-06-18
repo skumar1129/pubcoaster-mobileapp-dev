@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:NewApp/services/userservice.dart';
 import 'package:NewApp/pages/myuserlikedtype.dart';
 import 'package:NewApp/models/userlikedargs.dart';
+import 'package:NewApp/pages/myfollower.dart';
+import 'package:NewApp/pages/myfollowing.dart';
 
 class MyUserProfile extends StatefulWidget {
   MyUserProfile(this.userInfo, this.numPosts);
@@ -537,7 +539,13 @@ class _MyUserProfileState extends State<MyUserProfile> {
 
   Widget _numFollowers() {
     return TextButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushReplacementNamed(
+            context,
+            MyFollower.route,
+            arguments: widget.userInfo.username,
+          );
+        },
         child: Column(
           children: [
             Text(
@@ -554,7 +562,13 @@ class _MyUserProfileState extends State<MyUserProfile> {
 
   Widget _numFollowing() {
     return TextButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushReplacementNamed(
+            context,
+            MyFollowing.route,
+            arguments: widget.userInfo.username,
+          );
+        },
         child: Column(
           children: [
             Text(
