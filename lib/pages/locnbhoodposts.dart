@@ -84,18 +84,30 @@ class _LocNbhoodPostsState extends State<LocNbhoodPosts> {
                   var items = snapshot.data as List<dynamic>;
                   if (items.length == 0) {
                     return Expanded(
-                       child: Column(
-                         children: [
-                           SizedBox(height: MediaQuery.of(context).size.height * .1),
-                           Padding(
-                             padding: const EdgeInsets.only(top: 12),
-                             child: Text('No posts for ${capitalize(nbhood)} in $location yet', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, decoration: TextDecoration.underline)),
-                           ),
-                           Expanded(child: Image(image: AssetImage('assets/img/city_page.jpg'), height: MediaQuery.of(context).size.height * .4)),
-                           SizedBox(height: MediaQuery.of(context).size.height * .14)
-                         ],
-                       ),
-                     ); 
+                      child: Column(
+                        children: [
+                          SizedBox(
+                              height: MediaQuery.of(context).size.height * .1),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 12),
+                            child: Text(
+                                'No posts for ${capitalize(nbhood)} in $location yet',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 30,
+                                    decoration: TextDecoration.underline)),
+                          ),
+                          Expanded(
+                              child: Image(
+                                  image: AssetImage('assets/img/city_page.jpg'),
+                                  height:
+                                      MediaQuery.of(context).size.height * .4)),
+                          SizedBox(
+                              height: MediaQuery.of(context).size.height * .14)
+                        ],
+                      ),
+                    );
                   } else {
                     return Expanded(
                         child: Column(
@@ -105,10 +117,10 @@ class _LocNbhoodPostsState extends State<LocNbhoodPosts> {
                           child: Text(
                             '${capitalize(nbhood)} in $location',
                             style: TextStyle(
-                                  fontSize: 35,
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline,
-                                  fontFamily: 'Oxygen-Bold'),
+                                fontSize: 35,
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline,
+                                fontFamily: 'Oxygen-Bold'),
                           ),
                         ),
                         Expanded(
@@ -167,18 +179,55 @@ class _LocNbhoodPostsState extends State<LocNbhoodPosts> {
                   }
                 } else if (snapshot.hasError) {
                   return Expanded(
-                       child: Column(
-                         children: [
-                           SizedBox(height: MediaQuery.of(context).size.height * .1),
-                           Padding(
-                             padding: const EdgeInsets.only(top: 12),
-                             child: Text('There was an error getting the posts', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, decoration: TextDecoration.underline)),
-                           ),
-                           Expanded(child: Image(image: AssetImage('assets/img/city_page.jpg'), height: MediaQuery.of(context).size.height * .4)),
-                           SizedBox(height: MediaQuery.of(context).size.height * .14)
-                         ],
-                       ),
-                     ); 
+                    child: Column(
+                      children: [
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * .1),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: Text('There was an error getting the posts',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  decoration: TextDecoration.underline)),
+                        ),
+                        Expanded(
+                            child: Image(
+                                image: AssetImage('assets/img/city_page.jpg'),
+                                height:
+                                    MediaQuery.of(context).size.height * .4)),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * .14)
+                      ],
+                    ),
+                  );
+                } else if (snapshot.data == null && snapshot.error == null) {
+                  return Expanded(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * .1),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: Text(
+                              'The database does not seem to be turned on, try again when it is',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  decoration: TextDecoration.underline)),
+                        ),
+                        Expanded(
+                            child: Image(
+                                image: AssetImage('assets/img/city_page.jpg'),
+                                height:
+                                    MediaQuery.of(context).size.height * .4)),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * .14)
+                      ],
+                    ),
+                  );
                 }
                 return Center(child: CircularProgressIndicator());
               })

@@ -197,17 +197,6 @@ class _AllUserTypesState extends State<AllUserTypes> {
                                   decoration: TextDecoration.underline),
                             ),
                           ),
-                          IconButton(
-                            icon: Icon(Icons.add_comment),
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                  context, CreateUserLiked.route,
-                                  arguments: UserLiked(
-                                      type: widget.type, user: widget.user));
-                            },
-                            color: Colors.red,
-                            tooltip: 'Add new liked ${widget.type}',
-                          ),
                         ],
                       )),
                   Expanded(
@@ -368,25 +357,16 @@ class _AllUserTypesState extends State<AllUserTypes> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text(
-                            'No ${capitalize(widget.type)}s have been created yet',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30,
-                                decoration: TextDecoration.underline),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.add_comment),
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                  context, CreateUserLiked.route,
-                                  arguments: UserLiked(
-                                      type: widget.type, user: widget.user));
-                            },
-                            color: Colors.red,
-                            tooltip: 'Add new liked ${widget.type}',
-                          ),
+                          Expanded(
+                            child: Text(
+                              'No ${capitalize(widget.type)}s have been created yet',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  decoration: TextDecoration.underline),
+                            ),
+                          )
                         ],
                       )),
                   Expanded(
@@ -543,31 +523,24 @@ class _AllUserTypesState extends State<AllUserTypes> {
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * .1),
                   Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child: Text(
                             'No ${capitalize(widget.type)}s have been created yet',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30,
-                                decoration: TextDecoration.underline),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30,
+                              decoration: TextDecoration.underline,
+                            ),
                           ),
-                          IconButton(
-                            icon: Icon(Icons.add_comment),
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                  context, CreateUserLiked.route,
-                                  arguments: UserLiked(
-                                      type: widget.type, user: widget.user));
-                            },
-                            color: Colors.red,
-                            tooltip: 'Add new liked ${widget.type}',
-                          ),
-                        ],
-                      )),
+                        ),
+                      ],
+                    ),
+                  ),
                   Expanded(
                       child: Image(
                           image: AssetImage('assets/img/city_page.jpg'),

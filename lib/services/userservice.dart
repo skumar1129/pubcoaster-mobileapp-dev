@@ -125,7 +125,7 @@ class UserService {
     return succeed;
   }
 
-  Future<ProfUser> getUser(username, myUser) async {
+  Future<ProfUser?> getUser(username, myUser) async {
     String path = '/searchuser/$username';
     var endpoint = Uri.http('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
@@ -140,7 +140,11 @@ class UserService {
     } catch (e) {
       print(e);
     }
-    return compute(parseUser, json.decode(response.body));
+    var responseBody = json.decode(response.body);
+    if (responseBody['message'] == 'No user exists by that username') {
+      return null;
+    }
+    return compute(parseUser, responseBody);
   }
 
   Future<ProfUser> getMyUser() async {

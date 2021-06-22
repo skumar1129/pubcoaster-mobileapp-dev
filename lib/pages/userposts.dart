@@ -90,9 +90,30 @@ class _UserPostsState extends State<UserPosts> {
         future: Future.wait(futures),
         builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
           if (snapshot.hasData) {
-            var userInfo = snapshot.data![1];
             var items = snapshot.data![0];
-            if (items.length == 0) {
+            if (snapshot.data![1] == null) {
+              return Expanded(
+                child: Column(
+                  children: [
+                    SizedBox(height: MediaQuery.of(context).size.height * .1),
+                    Text(
+                      'This user does not exist',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: MediaQuery.of(context).size.height * .035,
+                          decoration: TextDecoration.underline),
+                    ),
+                    Expanded(
+                        child: Image(
+                            image: AssetImage('assets/img/city_page.jpg'),
+                            height: MediaQuery.of(context).size.height * .4)),
+                    SizedBox(height: MediaQuery.of(context).size.height * .1),
+                  ],
+                ),
+              );
+            } else if (items.length == 0) {
+              var userInfo = snapshot.data![1];
               return Expanded(
                 child: Column(
                   children: [
@@ -111,37 +132,62 @@ class _UserPostsState extends State<UserPosts> {
                 ),
               );
             } else {
+              var userInfo = snapshot.data![1];
               return Expanded(
-                  child: Column(
-                children: [
-                  UserProfile(userInfo, widget.myUser, totalPosts),
-                  Expanded(
-                    child: Scrollbar(
-                        child: RefreshIndicator(
-                      child: ListView.builder(
-                          physics: AlwaysScrollableScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: items.length + 1,
-                          itemBuilder: (context, index) {
-                            if (index == items.length && index < totalPosts!) {
-                              offset++;
-                              var newPosts = getUserPosts(widget.user, offset);
-                              newPosts.then((posts) {
-                                if (posts != null) {
-                                  if (mounted) {
-                                    setState(() {
-                                      items.addAll(posts);
-                                    });
-                                  }
+                child:
+                    // Column(
+                    //   children: [
+                    //     UserProfile(userInfo, widget.myUser, totalPosts),
+                    //     Expanded(
+
+                    Scrollbar(
+                  child: RefreshIndicator(
+                    child: ListView.builder(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: items.length + 1,
+                        itemBuilder: (context, index) {
+                          if (index == items.length && index < totalPosts!) {
+                            offset++;
+                            var newPosts = getUserPosts(widget.user, offset);
+                            newPosts.then((posts) {
+                              if (posts != null) {
+                                if (mounted) {
+                                  setState(() {
+                                    items.addAll(posts);
+                                  });
                                 }
-                              });
-                              return IntrinsicWidth(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else if (index == totalPosts) {
-                              return Container();
-                            }
+                              }
+                            });
+                            return IntrinsicWidth(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else if (index == totalPosts) {
+                            return Container();
+                          }
+                          if (index == 0) {
+                            return Column(
+                              children: [
+                                UserProfile(
+                                    userInfo, widget.myUser, totalPosts),
+                                FeedPostCard(
+                                    items[index].bar,
+                                    items[index].location,
+                                    items[index].createdBy,
+                                    items[index].description,
+                                    items[index].rating,
+                                    items[index].createdAt,
+                                    items[index].neighborhood,
+                                    items[index].numComments,
+                                    items[index].numLikes,
+                                    items[index].anonymous,
+                                    items[index].editedAt,
+                                    items[index].picLink,
+                                    items[index].uuid)
+                              ],
+                            );
+                          } else {
                             return FeedPostCard(
                                 items[index].bar,
                                 items[index].location,
@@ -156,14 +202,17 @@ class _UserPostsState extends State<UserPosts> {
                                 items[index].editedAt,
                                 items[index].picLink,
                                 items[index].uuid);
-                          }),
-                      onRefresh: () {
-                        return getUserPosts(widget.user);
-                      },
-                    )),
-                  )
-                ],
-              ));
+                          }
+                        }),
+                    onRefresh: () {
+                      return getUserPosts(widget.user);
+                    },
+                  ),
+                ),
+                //     )
+                //   ],
+                // ),
+              );
             }
           } else if (snapshot.hasError) {
             return Expanded(
@@ -172,7 +221,8 @@ class _UserPostsState extends State<UserPosts> {
                   SizedBox(height: MediaQuery.of(context).size.height * .1),
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
-                    child: Text('There was an error getting the posts',
+                    child: Text(
+                        'There was an error getting the posts or the database is turned off',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,

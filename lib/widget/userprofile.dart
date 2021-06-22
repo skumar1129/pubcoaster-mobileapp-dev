@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:NewApp/models/userlikedargs.dart';
 import 'package:NewApp/pages/userlikedtype.dart';
 import 'package:NewApp/services/followerservice.dart';
+import 'package:NewApp/pages/userfollower.dart';
+import 'package:NewApp/pages/userfollowing.dart';
+import 'package:NewApp/models/userpagesargs.dart';
 
 class UserProfile extends StatefulWidget {
   UserProfile(this.userInfo, this.myUser, this.numPosts);
@@ -95,7 +98,14 @@ class _UserProfileState extends State<UserProfile> {
 
   Widget _numFollowers() {
     return TextButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushReplacementNamed(
+            context,
+            UserFollower.route,
+            arguments: UserPages(
+                user: widget.userInfo.username, myUser: widget.myUser!),
+          );
+        },
         child: Column(
           children: [
             Text(
@@ -112,7 +122,14 @@ class _UserProfileState extends State<UserProfile> {
 
   Widget _numFollowing() {
     return TextButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushReplacementNamed(
+            context,
+            UserFollowing.route,
+            arguments: UserPages(
+                user: widget.userInfo.username, myUser: widget.myUser!),
+          );
+        },
         child: Column(
           children: [
             Text(
