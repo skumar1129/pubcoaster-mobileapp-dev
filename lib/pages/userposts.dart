@@ -194,7 +194,8 @@ class _UserPostsState extends State<UserPosts> {
                   SizedBox(height: MediaQuery.of(context).size.height * .1),
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
-                    child: Text('There was an error getting the posts',
+                    child: Text(
+                        'There was an error getting the posts or the database is turned off',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,

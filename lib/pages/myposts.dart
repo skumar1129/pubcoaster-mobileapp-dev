@@ -161,6 +161,7 @@ class _MyPostsState extends State<MyPosts> {
               ));
             }
           } else if (snapshot.hasError) {
+            print(snapshot.error);
             return Expanded(
               child: Column(
                 children: [
@@ -168,7 +169,7 @@ class _MyPostsState extends State<MyPosts> {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Text(
-                        'There was an error getting the posts and user information',
+                        'There was an error getting the posts and user information or the database is turned off',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,

@@ -97,7 +97,6 @@ class _UserBarState extends State<UserBar> {
               return Expanded(
                 child: Column(
                   children: [
-                    SizedBox(height: MediaQuery.of(context).size.height * .1),
                     UserProfile(userInfo, widget.myUser, totalPosts),
                     Text(
                       '$user has no posts at ${capitalize(bar)}',
@@ -189,6 +188,29 @@ class _UserBarState extends State<UserBar> {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Text('There was an error getting the posts',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30,
+                            decoration: TextDecoration.underline)),
+                  ),
+                  Expanded(
+                      child: Image(
+                          image: AssetImage('assets/img/city_page.jpg'),
+                          height: MediaQuery.of(context).size.height * .4)),
+                  SizedBox(height: MediaQuery.of(context).size.height * .14)
+                ],
+              ),
+            );
+          } else if (snapshot.data == null && snapshot.error == null) {
+            return Expanded(
+              child: Column(
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * .1),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: Text(
+                        'The database does not seem to be turned on, try again when it is',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
