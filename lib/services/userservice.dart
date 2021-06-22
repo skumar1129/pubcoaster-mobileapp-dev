@@ -60,7 +60,7 @@ class UserService {
       succeed = false;
     }
 
-    if (content.statusCode == 500) {
+    if (content == null || content.statusCode == 500) {
       succeed = false;
     }
 
@@ -85,7 +85,7 @@ class UserService {
       succeed = false;
     }
 
-    if (content.statusCode == 500) {
+    if (content == null || content.statusCode == 500) {
       succeed = false;
     }
 
@@ -118,7 +118,7 @@ class UserService {
       succeed = false;
     }
 
-    if (content.statusCode == 500) {
+    if (content == null || content.statusCode == 500) {
       succeed = false;
     }
 
@@ -260,7 +260,7 @@ class UserService {
       succeed = false;
     }
 
-    if (content.statusCode == 500) {
+    if (content == null || content.statusCode == 500) {
       succeed = false;
     }
 
@@ -291,7 +291,7 @@ class UserService {
       succeed = false;
     }
 
-    if (content.statusCode == 500) {
+    if (content == null || content.statusCode == 500) {
       succeed = false;
     }
 
@@ -318,7 +318,7 @@ class UserService {
       succeed = false;
     }
 
-    if (content.statusCode == 500) {
+    if (content == null || content.statusCode == 500) {
       succeed = false;
     }
 
@@ -346,7 +346,7 @@ class UserService {
       succeed = false;
     }
 
-    if (content.statusCode == 500) {
+    if (content == null || content.statusCode == 500) {
       succeed = false;
     }
 
@@ -373,7 +373,7 @@ class UserService {
       succeed = false;
     }
 
-    if (content.statusCode == 500) {
+    if (content == null || content.statusCode == 500) {
       succeed = false;
     }
 
@@ -400,7 +400,7 @@ class UserService {
       succeed = false;
     }
 
-    if (content.statusCode == 500) {
+    if (content == null || content.statusCode == 500) {
       succeed = false;
     }
 
