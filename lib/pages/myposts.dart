@@ -107,58 +107,76 @@ class _MyPostsState extends State<MyPosts> {
               );
             } else {
               return Expanded(
-                  child: Column(
-                children: [
-                  MyUserProfile(userInfo, totalPosts),
-                  Expanded(
-                    child: Scrollbar(
-                        child: RefreshIndicator(
-                      child: ListView.builder(
-                          physics: AlwaysScrollableScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: items.length + 1,
-                          itemBuilder: (context, index) {
-                            if (index == items.length && index < totalPosts!) {
-                              offset++;
-                              var newPosts = getMyPosts(offset);
-                              newPosts.then((posts) {
-                                if (posts != null) {
-                                  if (mounted) {
-                                    setState(() {
-                                      items.addAll(posts);
-                                    });
-                                  }
-                                }
-                              });
-                              return IntrinsicWidth(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else if (index == totalPosts) {
-                              return Container();
+                child: Scrollbar(
+                  child: RefreshIndicator(
+                    child: ListView.builder(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: items.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == items.length && index < totalPosts!) {
+                          offset++;
+                          var newPosts = getMyPosts(offset);
+                          newPosts.then((posts) {
+                            if (posts != null) {
+                              if (mounted) {
+                                setState(() {
+                                  items.addAll(posts);
+                                });
+                              }
                             }
-                            return MyPostCard(
-                                items[index].bar,
-                                items[index].location,
-                                items[index].createdBy,
-                                items[index].description,
-                                items[index].rating,
-                                items[index].createdAt,
-                                items[index].neighborhood,
-                                items[index].numComments,
-                                items[index].numLikes,
-                                items[index].anonymous,
-                                items[index].editedAt,
-                                items[index].picLink,
-                                items[index].uuid);
-                          }),
-                      onRefresh: () {
-                        return getMyPosts();
+                          });
+                          return IntrinsicWidth(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (index == totalPosts) {
+                          return Container();
+                        }
+                        if (index == 0) {
+                          return Column(
+                            children: [
+                              MyUserProfile(userInfo, totalPosts),
+                              MyPostCard(
+                                  items[index].bar,
+                                  items[index].location,
+                                  items[index].createdBy,
+                                  items[index].description,
+                                  items[index].rating,
+                                  items[index].createdAt,
+                                  items[index].neighborhood,
+                                  items[index].numComments,
+                                  items[index].numLikes,
+                                  items[index].anonymous,
+                                  items[index].editedAt,
+                                  items[index].picLink,
+                                  items[index].uuid)
+                            ],
+                          );
+                        } else {
+                          return MyPostCard(
+                              items[index].bar,
+                              items[index].location,
+                              items[index].createdBy,
+                              items[index].description,
+                              items[index].rating,
+                              items[index].createdAt,
+                              items[index].neighborhood,
+                              items[index].numComments,
+                              items[index].numLikes,
+                              items[index].anonymous,
+                              items[index].editedAt,
+                              items[index].picLink,
+                              items[index].uuid);
+                        }
                       },
-                    )),
-                  )
-                ],
-              ));
+                    ),
+                    onRefresh: () {
+                      return getMyPosts();
+                    },
+                  ),
+                ),
+              );
             }
           } else if (snapshot.hasError) {
             print(snapshot.error);

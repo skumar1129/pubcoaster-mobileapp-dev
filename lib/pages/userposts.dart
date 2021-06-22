@@ -134,36 +134,60 @@ class _UserPostsState extends State<UserPosts> {
             } else {
               var userInfo = snapshot.data![1];
               return Expanded(
-                  child: Column(
-                children: [
-                  UserProfile(userInfo, widget.myUser, totalPosts),
-                  Expanded(
-                    child: Scrollbar(
-                        child: RefreshIndicator(
-                      child: ListView.builder(
-                          physics: AlwaysScrollableScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: items.length + 1,
-                          itemBuilder: (context, index) {
-                            if (index == items.length && index < totalPosts!) {
-                              offset++;
-                              var newPosts = getUserPosts(widget.user, offset);
-                              newPosts.then((posts) {
-                                if (posts != null) {
-                                  if (mounted) {
-                                    setState(() {
-                                      items.addAll(posts);
-                                    });
-                                  }
+                child:
+                    // Column(
+                    //   children: [
+                    //     UserProfile(userInfo, widget.myUser, totalPosts),
+                    //     Expanded(
+
+                    Scrollbar(
+                  child: RefreshIndicator(
+                    child: ListView.builder(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: items.length + 1,
+                        itemBuilder: (context, index) {
+                          if (index == items.length && index < totalPosts!) {
+                            offset++;
+                            var newPosts = getUserPosts(widget.user, offset);
+                            newPosts.then((posts) {
+                              if (posts != null) {
+                                if (mounted) {
+                                  setState(() {
+                                    items.addAll(posts);
+                                  });
                                 }
-                              });
-                              return IntrinsicWidth(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else if (index == totalPosts) {
-                              return Container();
-                            }
+                              }
+                            });
+                            return IntrinsicWidth(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else if (index == totalPosts) {
+                            return Container();
+                          }
+                          if (index == 0) {
+                            return Column(
+                              children: [
+                                UserProfile(
+                                    userInfo, widget.myUser, totalPosts),
+                                FeedPostCard(
+                                    items[index].bar,
+                                    items[index].location,
+                                    items[index].createdBy,
+                                    items[index].description,
+                                    items[index].rating,
+                                    items[index].createdAt,
+                                    items[index].neighborhood,
+                                    items[index].numComments,
+                                    items[index].numLikes,
+                                    items[index].anonymous,
+                                    items[index].editedAt,
+                                    items[index].picLink,
+                                    items[index].uuid)
+                              ],
+                            );
+                          } else {
                             return FeedPostCard(
                                 items[index].bar,
                                 items[index].location,
@@ -178,14 +202,17 @@ class _UserPostsState extends State<UserPosts> {
                                 items[index].editedAt,
                                 items[index].picLink,
                                 items[index].uuid);
-                          }),
-                      onRefresh: () {
-                        return getUserPosts(widget.user);
-                      },
-                    )),
-                  )
-                ],
-              ));
+                          }
+                        }),
+                    onRefresh: () {
+                      return getUserPosts(widget.user);
+                    },
+                  ),
+                ),
+                //     )
+                //   ],
+                // ),
+              );
             }
           } else if (snapshot.hasError) {
             return Expanded(

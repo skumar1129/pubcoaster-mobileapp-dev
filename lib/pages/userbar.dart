@@ -119,44 +119,62 @@ class _UserBarState extends State<UserBar> {
               );
             } else {
               return Expanded(
-                  child: Column(
-                children: [
-                  UserProfile(userInfo, widget.myUser, totalPosts),
-                  Text(
-                    '$user\'s posts at ${capitalize(bar)}',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                        fontFamily: 'Oxygen-Bold'),
-                  ),
-                  Expanded(
-                    child: Scrollbar(
-                        child: RefreshIndicator(
-                      child: ListView.builder(
-                          physics: AlwaysScrollableScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: items.length + 1,
-                          itemBuilder: (context, index) {
-                            if (index == items.length && index < totalPosts!) {
-                              offset++;
-                              var newPosts = getUserBarPosts(user, bar, offset);
-                              newPosts.then((posts) {
-                                if (posts != null) {
-                                  if (mounted) {
-                                    setState(() {
-                                      items.addAll(posts);
-                                    });
-                                  }
+                child: Scrollbar(
+                  child: RefreshIndicator(
+                    child: ListView.builder(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: items.length + 1,
+                        itemBuilder: (context, index) {
+                          if (index == items.length && index < totalPosts!) {
+                            offset++;
+                            var newPosts = getUserBarPosts(user, bar, offset);
+                            newPosts.then((posts) {
+                              if (posts != null) {
+                                if (mounted) {
+                                  setState(() {
+                                    items.addAll(posts);
+                                  });
                                 }
-                              });
-                              return IntrinsicWidth(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else if (index == totalPosts) {
-                              return Container();
-                            }
+                              }
+                            });
+                            return IntrinsicWidth(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else if (index == totalPosts) {
+                            return Container();
+                          }
+                          if (index == 0) {
+                            return Column(
+                              children: [
+                                UserProfile(
+                                    userInfo, widget.myUser, totalPosts),
+                                Text(
+                                  '$user\'s posts at ${capitalize(bar)}',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.underline,
+                                      fontFamily: 'Oxygen-Bold'),
+                                ),
+                                FeedPostCard(
+                                    items[index].bar,
+                                    items[index].location,
+                                    items[index].createdBy,
+                                    items[index].description,
+                                    items[index].rating,
+                                    items[index].createdAt,
+                                    items[index].neighborhood,
+                                    items[index].numComments,
+                                    items[index].numLikes,
+                                    items[index].anonymous,
+                                    items[index].editedAt,
+                                    items[index].picLink,
+                                    items[index].uuid)
+                              ],
+                            );
+                          } else {
                             return FeedPostCard(
                                 items[index].bar,
                                 items[index].location,
@@ -171,14 +189,14 @@ class _UserBarState extends State<UserBar> {
                                 items[index].editedAt,
                                 items[index].picLink,
                                 items[index].uuid);
-                          }),
-                      onRefresh: () {
-                        return getUserBarPosts(user, bar);
-                      },
-                    )),
-                  )
-                ],
-              ));
+                          }
+                        }),
+                    onRefresh: () {
+                      return getUserBarPosts(user, bar);
+                    },
+                  ),
+                ),
+              );
             }
           } else if (snapshot.hasError) {
             return Expanded(
