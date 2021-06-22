@@ -90,9 +90,30 @@ class _UserPostsState extends State<UserPosts> {
         future: Future.wait(futures),
         builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
           if (snapshot.hasData) {
-            var userInfo = snapshot.data![1];
             var items = snapshot.data![0];
-            if (items.length == 0) {
+            if (snapshot.data![1] == null) {
+              return Expanded(
+                child: Column(
+                  children: [
+                    SizedBox(height: MediaQuery.of(context).size.height * .1),
+                    Text(
+                      'This user does not exist',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: MediaQuery.of(context).size.height * .035,
+                          decoration: TextDecoration.underline),
+                    ),
+                    Expanded(
+                        child: Image(
+                            image: AssetImage('assets/img/city_page.jpg'),
+                            height: MediaQuery.of(context).size.height * .4)),
+                    SizedBox(height: MediaQuery.of(context).size.height * .1),
+                  ],
+                ),
+              );
+            } else if (items.length == 0) {
+              var userInfo = snapshot.data![1];
               return Expanded(
                 child: Column(
                   children: [
@@ -111,6 +132,7 @@ class _UserPostsState extends State<UserPosts> {
                 ),
               );
             } else {
+              var userInfo = snapshot.data![1];
               return Expanded(
                   child: Column(
                 children: [
