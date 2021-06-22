@@ -21,9 +21,11 @@ class _UserAllTypesState extends State<UserAllTypes> {
     var body = {'username': widget.user, 'uuid': widget.info.uuid};
     bool succeed = await userService.deleteUserBar(body);
     if (succeed) {
-      setState(() {
-        barInfo.liked = false;
-      });
+      if (mounted) {
+        setState(() {
+          barInfo.liked = false;
+        });
+      }
     } else {
       final snackBar = SnackBar(
           content: Text('Error with deleting bar. Check network connection.',

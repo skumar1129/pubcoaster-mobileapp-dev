@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:NewApp/pages/userposts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:NewApp/models/userpagesargs.dart';
 
 class TextBox extends StatefulWidget {
   @override
@@ -8,10 +10,12 @@ class TextBox extends StatefulWidget {
 
 class _TextBoxState extends State<TextBox> {
   searchUser(String search) {
-    Navigator.pushNamed(context, UserPosts.route, arguments: search);
+    Navigator.pushNamed(context, UserPosts.route,
+        arguments: UserPages(user: user, myUser: myUser!));
   }
 
   String user = '';
+  String? myUser = FirebaseAuth.instance.currentUser!.displayName;
 
   @override
   Widget build(BuildContext context) {

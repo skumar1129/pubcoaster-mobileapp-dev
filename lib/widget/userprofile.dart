@@ -1,16 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:NewApp/models/userlikedargs.dart';
 import 'package:NewApp/pages/userlikedtype.dart';
+import 'package:NewApp/services/followerservice.dart';
+import 'package:NewApp/pages/userfollower.dart';
+import 'package:NewApp/pages/userfollowing.dart';
+import 'package:NewApp/models/userpagesargs.dart';
 
 class UserProfile extends StatefulWidget {
-  UserProfile(this.userInfo, this.numPosts);
+  UserProfile(this.userInfo, this.myUser, this.numPosts);
   final userInfo;
-  final numPosts;
+  final String? myUser;
+  final int? numPosts;
   @override
   _UserProfileState createState() => _UserProfileState();
 }
 
 class _UserProfileState extends State<UserProfile> {
+  final followerService = new FollowerService();
+  bool? follow;
+  int? numFollowers;
+
+  createFollow() async {
+    try {
+      bool succeed = await followerService.createFollowing(
+          widget.myUser!, widget.userInfo.username);
+      if (succeed) {
+        if (mounted) {
+          setState(() {
+            follow = true;
+            numFollowers = numFollowers! + 1;
+          });
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  deleteFollow() async {
+    try {
+      bool succeed = await followerService.deleteFollowing(
+          widget.myUser!, widget.userInfo.username);
+      if (succeed) {
+        if (mounted) {
+          setState(() {
+            follow = false;
+            numFollowers = numFollowers! - 1;
+          });
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Widget _postDialog() {
     return AlertDialog(
       title: Text(
@@ -28,17 +71,77 @@ class _UserProfileState extends State<UserProfile> {
 
   Widget _avatar() {
     if (widget.userInfo.picLink != null) {
-      return CircleAvatar(
-        backgroundImage: NetworkImage(widget.userInfo.picLink),
-        radius: MediaQuery.of(context).size.width * .2,
+      return Column(
+        children: [
+          CircleAvatar(
+            backgroundImage: NetworkImage(widget.userInfo.picLink),
+            radius: MediaQuery.of(context).size.width * .1,
+          ),
+          _numFollowers(),
+          _numFollowing()
+        ],
       );
     } else {
-      return CircleAvatar(
-        radius: MediaQuery.of(context).size.width * .2,
-        child: Icon(Icons.no_photography),
-        backgroundColor: Colors.red,
+      return Column(
+        children: [
+          CircleAvatar(
+            radius: MediaQuery.of(context).size.width * .1,
+            child: Icon(Icons.no_photography),
+            backgroundColor: Colors.red,
+          ),
+          _numFollowers(),
+          _numFollowing()
+        ],
       );
     }
+  }
+
+  Widget _numFollowers() {
+    return TextButton(
+        onPressed: () {
+          Navigator.pushReplacementNamed(
+            context,
+            UserFollower.route,
+            arguments: UserPages(
+                user: widget.userInfo.username, myUser: widget.myUser!),
+          );
+        },
+        child: Column(
+          children: [
+            Text(
+              '$numFollowers',
+              style: TextStyle(color: Colors.black),
+            ),
+            Text(
+              'Followers',
+              style: TextStyle(color: Colors.black),
+            )
+          ],
+        ));
+  }
+
+  Widget _numFollowing() {
+    return TextButton(
+        onPressed: () {
+          Navigator.pushReplacementNamed(
+            context,
+            UserFollowing.route,
+            arguments: UserPages(
+                user: widget.userInfo.username, myUser: widget.myUser!),
+          );
+        },
+        child: Column(
+          children: [
+            Text(
+              '${widget.userInfo.numFollowing}',
+              style: TextStyle(color: Colors.black),
+            ),
+            Text(
+              'Following',
+              style: TextStyle(color: Colors.black),
+            )
+          ],
+        ));
   }
 
   Widget _barsLiked() {
@@ -149,9 +252,42 @@ class _UserProfileState extends State<UserProfile> {
     }
   }
 
+  Widget _followButton() {
+    if (follow == null) {
+      return Container();
+    } else if (follow!) {
+      return ElevatedButton(
+        onPressed: () {
+          deleteFollow();
+        },
+        child: Text('Unfollow'),
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+            shape: MaterialStateProperty.all<OutlinedBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: BorderSide(color: Colors.red)))),
+      );
+    } else {
+      return ElevatedButton(
+        onPressed: () {
+          createFollow();
+        },
+        child: Text('Follow'),
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+            shape: MaterialStateProperty.all<OutlinedBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: BorderSide(color: Colors.red)))),
+      );
+    }
+  }
+
   Widget _infoOnUser() {
     return Column(
       children: [
+        _followButton(),
         Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -256,11 +392,19 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    follow = widget.userInfo.following;
+    numFollowers = widget.userInfo.numFollowers;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _avatar(),
             _infoOnUser(),

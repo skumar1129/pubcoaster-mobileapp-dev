@@ -9,30 +9,41 @@ class ProfUser {
   final int numBars;
   final int numDrinks;
   final int numBrands;
+  final int numFollowers;
+  final int numFollowing;
+  final bool? following;
 
-  ProfUser(
-      {required this.username,
-      required this.email,
-      required this.firstName,
-      required this.lastName,
-      required this.fullName,
-      required this.numBars,
-      required this.numBrands,
-      required this.numDrinks,
-      this.bio,
-      this.picLink});
+  ProfUser({
+    required this.username,
+    required this.email,
+    required this.firstName,
+    required this.lastName,
+    required this.fullName,
+    required this.numBars,
+    required this.numBrands,
+    required this.numDrinks,
+    required this.numFollowers,
+    required this.numFollowing,
+    this.bio,
+    this.picLink,
+    this.following,
+  });
 
   factory ProfUser.fromJson(Map<String, dynamic> json) {
     return ProfUser(
-        username: json['username'],
-        email: json['email'],
-        firstName: json['firstName'],
-        lastName: json['lastName'],
-        fullName: json['fullName'],
-        picLink: json['picLink'],
-        bio: json['bio'],
-        numBars: json['numBars'],
-        numBrands: json['numBrands'],
-        numDrinks: json['numDrinks']);
+      username: json['username'],
+      email: json['email'],
+      firstName: json['firstName'],
+      lastName: json['lastName'],
+      fullName: json['fullName'],
+      picLink: json['picLink'],
+      bio: json['bio'],
+      numBars: json['numBars'],
+      numBrands: json['numBrands'],
+      numDrinks: json['numDrinks'],
+      numFollowers: json['numFollowers'],
+      numFollowing: json['numFollowing'],
+      following: json['following'],
+    );
   }
 }

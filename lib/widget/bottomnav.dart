@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:NewApp/pages/feedpostpage.dart';
 
 class BottomNav extends StatefulWidget {
   @override
@@ -45,7 +46,13 @@ class _BottomNavState extends State<BottomNav> {
     switch (index) {
       case 0:
         {
-          Navigator.pushReplacementNamed(context, '/home');
+          String? user = FirebaseAuth.instance.currentUser?.displayName;
+          if (user != null) {
+            Navigator.pushReplacementNamed(context, FeedPostPage.route,
+                arguments: user);
+          } else {
+            Navigator.pushReplacementNamed(context, '/signin');
+          }
         }
         break;
       case 1:

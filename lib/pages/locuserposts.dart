@@ -25,6 +25,7 @@ class _LocUserPostsState extends State<LocUserPosts> {
     if (offset != null) {
       try {
         response = await postService.getLocUserPosts(location, user, offset);
+        totalPosts = response[0];
       } catch (e) {
         print(e);
         final snackBar = SnackBar(
@@ -41,6 +42,7 @@ class _LocUserPostsState extends State<LocUserPosts> {
     } else {
       try {
         response = await postService.getLocUserPosts(location, user);
+        totalPosts = response[0];
       } catch (e) {
         print(e);
         final snackBar = SnackBar(
@@ -55,7 +57,7 @@ class _LocUserPostsState extends State<LocUserPosts> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }
-    return response;
+    return response[1];
   }
 
   @override
@@ -67,6 +69,7 @@ class _LocUserPostsState extends State<LocUserPosts> {
   }
 
   int offset = 1;
+  int? totalPosts;
 
   @override
   Widget build(BuildContext context) {
@@ -81,19 +84,30 @@ class _LocUserPostsState extends State<LocUserPosts> {
                 if (snapshot.hasData) {
                   var items = snapshot.data as List<dynamic>;
                   if (items.length == 0) {
-                     return Expanded(
-                       child: Column(
-                         children: [
-                           SizedBox(height: MediaQuery.of(context).size.height * .1),
-                           Padding(
-                             padding: const EdgeInsets.only(top: 12),
-                             child: Text('No posts for $user in $location yet', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, decoration: TextDecoration.underline)),
-                           ),
-                           Expanded(child: Image(image: AssetImage('assets/img/city_page.jpg'), height: MediaQuery.of(context).size.height * .4)),
-                           SizedBox(height: MediaQuery.of(context).size.height * .14)
-                         ],
-                       ),
-                     ); 
+                    return Expanded(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                              height: MediaQuery.of(context).size.height * .1),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 12),
+                            child: Text('No posts for $user in $location yet',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 30,
+                                    decoration: TextDecoration.underline)),
+                          ),
+                          Expanded(
+                              child: Image(
+                                  image: AssetImage('assets/img/city_page.jpg'),
+                                  height:
+                                      MediaQuery.of(context).size.height * .4)),
+                          SizedBox(
+                              height: MediaQuery.of(context).size.height * .14)
+                        ],
+                      ),
+                    );
                   } else {
                     return Expanded(
                         child: Column(
@@ -103,10 +117,10 @@ class _LocUserPostsState extends State<LocUserPosts> {
                           child: Text(
                             '$user in $location',
                             style: TextStyle(
-                                  fontSize: 35,
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline,
-                                  fontFamily: 'Oxygen-Bold'),
+                                fontSize: 35,
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline,
+                                fontFamily: 'Oxygen-Bold'),
                           ),
                         ),
                         Expanded(
@@ -118,7 +132,8 @@ class _LocUserPostsState extends State<LocUserPosts> {
                                 shrinkWrap: true,
                                 itemCount: items.length + 1,
                                 itemBuilder: (context, index) {
-                                  if (index == items.length) {
+                                  if (index == items.length &&
+                                      index < totalPosts!) {
                                     offset++;
                                     var newPosts =
                                         getLocUserPosts(location, user, offset);
@@ -134,6 +149,8 @@ class _LocUserPostsState extends State<LocUserPosts> {
                                     return IntrinsicWidth(
                                       child: CircularProgressIndicator(),
                                     );
+                                  } else if (index == totalPosts) {
+                                    return Container();
                                   }
                                   return FeedPostCard(
                                       items[index].bar,
@@ -159,19 +176,56 @@ class _LocUserPostsState extends State<LocUserPosts> {
                     ));
                   }
                 } else if (snapshot.hasError) {
-                   return Expanded(
-                       child: Column(
-                         children: [
-                           SizedBox(height: MediaQuery.of(context).size.height * .1),
-                           Padding(
-                             padding: const EdgeInsets.only(top: 12),
-                             child: Text('There was an error getting the posts', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, decoration: TextDecoration.underline)),
-                           ),
-                           Expanded(child: Image(image: AssetImage('assets/img/city_page.jpg'), height: MediaQuery.of(context).size.height * .4)),
-                           SizedBox(height: MediaQuery.of(context).size.height * .14)
-                         ],
-                       ),
-                     ); 
+                  return Expanded(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * .1),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: Text('There was an error getting the posts',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  decoration: TextDecoration.underline)),
+                        ),
+                        Expanded(
+                            child: Image(
+                                image: AssetImage('assets/img/city_page.jpg'),
+                                height:
+                                    MediaQuery.of(context).size.height * .4)),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * .14)
+                      ],
+                    ),
+                  );
+                } else if (snapshot.data == null && snapshot.error == null) {
+                  return Expanded(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * .1),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: Text(
+                              'The database does not seem to be turned on, try again when it is',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  decoration: TextDecoration.underline)),
+                        ),
+                        Expanded(
+                            child: Image(
+                                image: AssetImage('assets/img/city_page.jpg'),
+                                height:
+                                    MediaQuery.of(context).size.height * .4)),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * .14)
+                      ],
+                    ),
+                  );
                 }
                 return Center(child: CircularProgressIndicator());
               })

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:NewApp/pages/userlocation.dart';
 import 'package:NewApp/pages/userbar.dart';
 import 'package:NewApp/pages/usernbhood.dart';
+import 'package:NewApp/pages/userposts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:NewApp/models/userpagesargs.dart';
 
 class UserFilter extends StatefulWidget {
   UserFilter(this.user);
@@ -14,20 +17,27 @@ class _UserFilterState extends State<UserFilter> {
   String bar = '';
   String location = '';
   String nbhood = '';
+  String newUser = '';
+  String? myUser = FirebaseAuth.instance.currentUser?.displayName;
 
   goToUserLocationPage(String input) {
     Navigator.pushReplacementNamed(context, UserLocation.route,
-        arguments: '${widget.user}-$input');
+        arguments: UserPages(user: '${widget.user}-$input', myUser: myUser!));
   }
 
   goToUserBarPage(String input) {
     Navigator.pushReplacementNamed(context, UserBar.route,
-        arguments: '${widget.user}-$input');
+        arguments: UserPages(user: '${widget.user}-$input', myUser: myUser!));
   }
 
   goToUserNbhoodPage(String input) {
     Navigator.pushReplacementNamed(context, UserNbhood.route,
-        arguments: '${widget.user}-$input');
+        arguments: UserPages(user: '${widget.user}-$input', myUser: myUser!));
+  }
+
+  goToUserPage(String input) {
+    Navigator.pushReplacementNamed(context, UserPosts.route,
+        arguments: UserPages(user: newUser, myUser: myUser!));
   }
 
   @override
@@ -120,6 +130,31 @@ class _UserFilterState extends State<UserFilter> {
                 if (mounted)
                   {
                     setState(() => {nbhood = value})
+                  }
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 2, bottom: 12, right: 2),
+            child: TextField(
+              textAlign: TextAlign.left,
+              decoration: InputDecoration(
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: Colors.grey, width: 1.0),
+                  ),
+                  hintText: 'Search For Different User',
+                  hintStyle: TextStyle(color: Colors.black, fontSize: 17),
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      goToUserPage(newUser);
+                    },
+                  )),
+              onChanged: (value) => {
+                if (mounted)
+                  {
+                    setState(() => {newUser = value})
                   }
               },
             ),

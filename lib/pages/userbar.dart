@@ -9,8 +9,9 @@ import 'package:NewApp/widget/feedpostcard.dart';
 import 'package:NewApp/widget/userfilter.dart';
 
 class UserBar extends StatefulWidget {
-  UserBar(this.userbar);
+  UserBar(this.userbar, this.myUser);
   final String userbar;
+  final String myUser;
   static String route = '/userbar';
   @override
   _UserBarState createState() => _UserBarState();
@@ -67,7 +68,7 @@ class _UserBarState extends State<UserBar> {
   getUserInfo(String user) async {
     try {
       var response;
-      response = await userService.getUser(user);
+      response = await userService.getUser(user, widget.myUser);
       return response;
     } catch (e) {
       final snackBar = SnackBar(
@@ -96,8 +97,7 @@ class _UserBarState extends State<UserBar> {
               return Expanded(
                 child: Column(
                   children: [
-                    SizedBox(height: MediaQuery.of(context).size.height * .1),
-                    UserProfile(userInfo, totalPosts),
+                    UserProfile(userInfo, widget.myUser, totalPosts),
                     Text(
                       '$user has no posts at ${capitalize(bar)}',
                       style: TextStyle(
@@ -119,44 +119,62 @@ class _UserBarState extends State<UserBar> {
               );
             } else {
               return Expanded(
-                  child: Column(
-                children: [
-                  UserProfile(userInfo, totalPosts),
-                  Text(
-                    '$user\'s posts at ${capitalize(bar)}',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                        fontFamily: 'Oxygen-Bold'),
-                  ),
-                  Expanded(
-                    child: Scrollbar(
-                        child: RefreshIndicator(
-                      child: ListView.builder(
-                          physics: AlwaysScrollableScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: items.length + 1,
-                          itemBuilder: (context, index) {
-                            if (index == items.length && index < totalPosts!) {
-                              offset++;
-                              var newPosts = getUserBarPosts(user, bar, offset);
-                              newPosts.then((posts) {
-                                if (posts != null) {
-                                  if (mounted) {
-                                    setState(() {
-                                      items.addAll(posts);
-                                    });
-                                  }
+                child: Scrollbar(
+                  child: RefreshIndicator(
+                    child: ListView.builder(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: items.length + 1,
+                        itemBuilder: (context, index) {
+                          if (index == items.length && index < totalPosts!) {
+                            offset++;
+                            var newPosts = getUserBarPosts(user, bar, offset);
+                            newPosts.then((posts) {
+                              if (posts != null) {
+                                if (mounted) {
+                                  setState(() {
+                                    items.addAll(posts);
+                                  });
                                 }
-                              });
-                              return IntrinsicWidth(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else if (index == totalPosts) {
-                              return Container();
-                            }
+                              }
+                            });
+                            return IntrinsicWidth(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else if (index == totalPosts) {
+                            return Container();
+                          }
+                          if (index == 0) {
+                            return Column(
+                              children: [
+                                UserProfile(
+                                    userInfo, widget.myUser, totalPosts),
+                                Text(
+                                  '$user\'s posts at ${capitalize(bar)}',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.underline,
+                                      fontFamily: 'Oxygen-Bold'),
+                                ),
+                                FeedPostCard(
+                                    items[index].bar,
+                                    items[index].location,
+                                    items[index].createdBy,
+                                    items[index].description,
+                                    items[index].rating,
+                                    items[index].createdAt,
+                                    items[index].neighborhood,
+                                    items[index].numComments,
+                                    items[index].numLikes,
+                                    items[index].anonymous,
+                                    items[index].editedAt,
+                                    items[index].picLink,
+                                    items[index].uuid)
+                              ],
+                            );
+                          } else {
                             return FeedPostCard(
                                 items[index].bar,
                                 items[index].location,
@@ -171,14 +189,14 @@ class _UserBarState extends State<UserBar> {
                                 items[index].editedAt,
                                 items[index].picLink,
                                 items[index].uuid);
-                          }),
-                      onRefresh: () {
-                        return getUserBarPosts(user, bar);
-                      },
-                    )),
-                  )
-                ],
-              ));
+                          }
+                        }),
+                    onRefresh: () {
+                      return getUserBarPosts(user, bar);
+                    },
+                  ),
+                ),
+              );
             }
           } else if (snapshot.hasError) {
             return Expanded(
@@ -188,6 +206,29 @@ class _UserBarState extends State<UserBar> {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Text('There was an error getting the posts',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30,
+                            decoration: TextDecoration.underline)),
+                  ),
+                  Expanded(
+                      child: Image(
+                          image: AssetImage('assets/img/city_page.jpg'),
+                          height: MediaQuery.of(context).size.height * .4)),
+                  SizedBox(height: MediaQuery.of(context).size.height * .14)
+                ],
+              ),
+            );
+          } else if (snapshot.data == null && snapshot.error == null) {
+            return Expanded(
+              child: Column(
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * .1),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: Text(
+                        'The database does not seem to be turned on, try again when it is',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
