@@ -86,7 +86,7 @@ class _UserFollowerState extends State<UserFollower> {
         Padding(
           padding: const EdgeInsets.only(top: 8),
           child: Text(
-            '${widget.user}\'s followers',
+            '${widget.user}\'s Followers',
             style: TextStyle(
                 fontSize: 35,
                 fontWeight: FontWeight.bold,

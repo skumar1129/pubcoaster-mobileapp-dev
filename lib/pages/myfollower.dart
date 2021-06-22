@@ -107,7 +107,7 @@ class _MyFollowerState extends State<MyFollower> {
         Padding(
           padding: const EdgeInsets.only(top: 8),
           child: Text(
-            'Your followers',
+            'Followers',
             style: TextStyle(
                 fontSize: 35,
                 fontWeight: FontWeight.bold,
