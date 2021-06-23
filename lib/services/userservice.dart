@@ -35,7 +35,7 @@ List<UserDrink> parseUserDrink(dataItems) {
 class UserService {
   Future<bool> createUser(body) async {
     String path = '/user';
-    var endpoint = Uri.http('${Config.userApiUrl}', path);
+    var endpoint = Uri.https('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ class UserService {
 
   Future<bool> deleteUser(username) async {
     String path = '/user/$username';
-    var endpoint = Uri.http('${Config.userApiUrl}', path);
+    var endpoint = Uri.https('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ class UserService {
 
   Future<bool> updateUser(body, username) async {
     String path = '/user/$username';
-    var endpoint = Uri.http('${Config.userApiUrl}', path);
+    var endpoint = Uri.https('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ class UserService {
 
   Future<ProfUser?> getUser(username, myUser) async {
     String path = '/searchuser/$username';
-    var endpoint = Uri.http('${Config.userApiUrl}', path);
+    var endpoint = Uri.https('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ class UserService {
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     String user = FirebaseAuth.instance.currentUser!.displayName!;
     String path = '/user/$user';
-    var endpoint = Uri.http('${Config.userApiUrl}', path);
+    var endpoint = Uri.https('${Config.userApiUrl}', path);
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'
@@ -165,14 +165,13 @@ class UserService {
     return compute(parseUser, json.decode(response.body));
   }
 
-  Future<dynamic> getUserBar(useranme, [page]) async {
+  Future<dynamic> getUserBar(username, [page]) async {
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
-    String user = FirebaseAuth.instance.currentUser!.displayName!;
-    String path = '/bar/$user';
-    var endpoint = Uri.http('${Config.userApiUrl}', path);
+    String path = '/bar/$username';
+    var endpoint = Uri.https('${Config.userApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.http('${Config.userApiUrl}', path, params);
+      endpoint = Uri.https('${Config.userApiUrl}', path, params);
     }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -190,12 +189,11 @@ class UserService {
 
   Future<dynamic> getUserBrand(username, [page]) async {
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
-    String user = FirebaseAuth.instance.currentUser!.displayName!;
-    String path = '/brand/$user';
-    var endpoint = Uri.http('${Config.userApiUrl}', path);
+    String path = '/brand/$username';
+    var endpoint = Uri.https('${Config.userApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.http('${Config.userApiUrl}', path, params);
+      endpoint = Uri.https('${Config.userApiUrl}', path, params);
     }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -214,12 +212,11 @@ class UserService {
 
   Future<dynamic> getUserDrink(username, [page]) async {
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
-    String user = FirebaseAuth.instance.currentUser!.displayName!;
-    String path = '/drink/$user';
-    var endpoint = Uri.http('${Config.userApiUrl}', path);
+    String path = '/drink/$username';
+    var endpoint = Uri.https('${Config.userApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.http('${Config.userApiUrl}', path, params);
+      endpoint = Uri.https('${Config.userApiUrl}', path, params);
     }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -237,7 +234,7 @@ class UserService {
 
   Future<bool> createUserBar(body) async {
     String path = '/user/bar';
-    var endpoint = Uri.http('${Config.userApiUrl}', path);
+    var endpoint = Uri.https('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -269,7 +266,7 @@ class UserService {
 
   Future<bool> createUserBrand(body) async {
     String path = '/user/brand';
-    var endpoint = Uri.http('${Config.userApiUrl}', path);
+    var endpoint = Uri.https('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -300,7 +297,7 @@ class UserService {
 
   Future<bool> createUserDrink(body) async {
     String path = '/user/drink';
-    var endpoint = Uri.http('${Config.userApiUrl}', path);
+    var endpoint = Uri.https('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -327,7 +324,7 @@ class UserService {
 
   Future<bool> deleteUserBar(body) async {
     String path = '/user/bar';
-    var endpoint = Uri.http('${Config.userApiUrl}', path);
+    var endpoint = Uri.https('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -355,7 +352,7 @@ class UserService {
 
   Future<bool> deleteUserBrand(body) async {
     String path = '/user/brand';
-    var endpoint = Uri.http('${Config.userApiUrl}', path);
+    var endpoint = Uri.https('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -382,7 +379,7 @@ class UserService {
 
   Future<bool> deleteUserDrink(body) async {
     String path = '/user/drink';
-    var endpoint = Uri.http('${Config.userApiUrl}', path);
+    var endpoint = Uri.https('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
