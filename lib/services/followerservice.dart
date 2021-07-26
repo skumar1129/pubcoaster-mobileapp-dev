@@ -21,7 +21,7 @@ List<FeedPost> parseFeedPosts(dataItems) {
 
 class FollowerService {
   Future<bool> createFollowing(String follower, String following) async {
-    var endpoint = Uri.http('${Config.followerApiUrl}', '/follower');
+    var endpoint = Uri.https('${Config.followerApiUrl}', '/follower');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     var reqBody = {'follower': follower, 'following': following};
     Map<String, String> headers = {
@@ -48,7 +48,7 @@ class FollowerService {
   }
 
   Future<bool> deleteFollowing(String follower, String following) async {
-    var endpoint = Uri.http('${Config.followerApiUrl}', '/follower');
+    var endpoint = Uri.https('${Config.followerApiUrl}', '/follower');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     var reqBody = {'follower': follower, 'following': following};
     Map<String, String> headers = {
@@ -74,7 +74,7 @@ class FollowerService {
   }
 
   Future<List<Follower>> getFollowers(String user, [int? page]) async {
-    var endpoint = Uri.http('${Config.followerApiUrl}', '/allfollowers');
+    var endpoint = Uri.https('${Config.followerApiUrl}', '/allfollowers');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ class FollowerService {
     };
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.http('${Config.followerApiUrl}', '/allfollowers', params);
+      endpoint = Uri.https('${Config.followerApiUrl}', '/allfollowers', params);
     }
     var response;
     try {
@@ -96,7 +96,7 @@ class FollowerService {
   }
 
   Future<List<Follower>> getFollowing(String user, [int? page]) async {
-    var endpoint = Uri.http('${Config.followerApiUrl}', '/allfollowing');
+    var endpoint = Uri.https('${Config.followerApiUrl}', '/allfollowing');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ class FollowerService {
     };
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.http('${Config.followerApiUrl}', '/allfollowing', params);
+      endpoint = Uri.https('${Config.followerApiUrl}', '/allfollowing', params);
     }
     var response;
     try {
@@ -119,7 +119,7 @@ class FollowerService {
   Future<List<Follower>> getUserFollowers(String user, String myUser,
       [int? page]) async {
     String path = 'userfollowers/$user';
-    var endpoint = Uri.http('${Config.followerApiUrl}', path);
+    var endpoint = Uri.https('${Config.followerApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ class FollowerService {
     };
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.http('${Config.followerApiUrl}', path, params);
+      endpoint = Uri.https('${Config.followerApiUrl}', path, params);
     }
     var response;
     try {
@@ -142,7 +142,7 @@ class FollowerService {
   Future<List<Follower>> getUserFollowing(String user, String myUser,
       [int? page]) async {
     String path = 'userfollowing/$user';
-    var endpoint = Uri.http('${Config.followerApiUrl}', path);
+    var endpoint = Uri.https('${Config.followerApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ class FollowerService {
     };
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.http('${Config.followerApiUrl}', path, params);
+      endpoint = Uri.https('${Config.followerApiUrl}', path, params);
     }
     var response;
     try {
@@ -163,7 +163,7 @@ class FollowerService {
   }
 
   Future<List<dynamic>> getFeedPosts(String user, [int? page]) async {
-    var endpoint = Uri.http('${Config.followerApiUrl}', '/followingposts');
+    var endpoint = Uri.https('${Config.followerApiUrl}', '/followingposts');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -173,7 +173,7 @@ class FollowerService {
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
       endpoint =
-          Uri.http('${Config.followerApiUrl}', '/followingposts', params);
+          Uri.https('${Config.followerApiUrl}', '/followingposts', params);
     }
     var response;
     try {
