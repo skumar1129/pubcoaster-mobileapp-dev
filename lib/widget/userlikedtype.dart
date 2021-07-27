@@ -64,7 +64,7 @@ class UserLikedTypeWidget extends StatelessWidget {
             '${info.location}',
             style: TextStyle(
               color: Colors.black,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.normal,
               fontFamily: 'Merriweather-Bold',
               fontSize: 20,
             ),
@@ -95,7 +95,7 @@ class UserLikedTypeWidget extends StatelessWidget {
             '${capitalize(info.neighborhood)}, ${info.location}',
             style: TextStyle(
               color: Colors.black,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.normal,
               fontFamily: 'Merriweather-Bold',
               fontSize: 20,
             ),

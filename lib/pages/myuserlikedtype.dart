@@ -117,12 +117,13 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 30,
+                                  fontSize: 25,
                                   decoration: TextDecoration.underline),
                             ),
                           ),
                           IconButton(
                             icon: Icon(Icons.add_comment),
+                            iconSize: MediaQuery.of(context).size.height * .05,
                             onPressed: () {
                               Navigator.pushReplacementNamed(
                                   context, AllUserTypes.route,
@@ -154,13 +155,14 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                         Text(
                           'Your liked ${capitalize(widget.type)}s',
                           style: TextStyle(
-                              fontSize: 30,
+                              fontSize: 25,
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.underline,
                               fontFamily: 'Oxygen-Bold'),
                         ),
                         IconButton(
                           icon: Icon(Icons.add_comment),
+                          iconSize: MediaQuery.of(context).size.height * .05,
                           onPressed: () {
                             Navigator.pushReplacementNamed(
                                 context, AllUserTypes.route,
@@ -168,7 +170,7 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                                     type: widget.type, user: widget.user));
                           },
                           color: Colors.red,
-                          tooltip: 'Add new liked ${widget.type}',
+                          tooltip: 'ked ${widget.type}',
                         ),
                       ],
                     ),
@@ -267,13 +269,14 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 30,
+                                fontSize: 25,
                                 decoration: TextDecoration.underline,
                               ),
                             ),
                           ),
                           IconButton(
                             icon: Icon(Icons.add_comment),
+                            iconSize: MediaQuery.of(context).size.height * .05,
                             onPressed: () {
                               Navigator.pushReplacementNamed(
                                 context,
@@ -307,13 +310,14 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                         Text(
                           'Your liked ${capitalize(widget.type)}s',
                           style: TextStyle(
-                              fontSize: 30,
+                              fontSize: 25,
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.underline,
                               fontFamily: 'Oxygen-Bold'),
                         ),
                         IconButton(
                           icon: Icon(Icons.add_comment),
+                          iconSize: MediaQuery.of(context).size.height * .05,
                           onPressed: () {
                             Navigator.pushReplacementNamed(
                                 context, AllUserTypes.route,
@@ -420,12 +424,13 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 30,
+                                  fontSize: 25,
                                   decoration: TextDecoration.underline),
                             ),
                           ),
                           IconButton(
                             icon: Icon(Icons.add_comment),
+                            iconSize: MediaQuery.of(context).size.height * .05,
                             onPressed: () {
                               Navigator.pushReplacementNamed(
                                   context, AllUserTypes.route,
@@ -457,13 +462,14 @@ class _MyUserLikedTypeState extends State<MyUserLikedType> {
                         Text(
                           'Your liked ${capitalize(widget.type)}s',
                           style: TextStyle(
-                              fontSize: 30,
+                              fontSize: 25,
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.underline,
                               fontFamily: 'Oxygen-Bold'),
                         ),
                         IconButton(
                           icon: Icon(Icons.add_comment),
+                          iconSize: MediaQuery.of(context).size.height * .05,
                           onPressed: () {
                             Navigator.pushReplacementNamed(
                                 context, AllUserTypes.route,

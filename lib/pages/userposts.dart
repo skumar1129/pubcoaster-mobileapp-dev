@@ -134,13 +134,7 @@ class _UserPostsState extends State<UserPosts> {
             } else {
               var userInfo = snapshot.data![1];
               return Expanded(
-                child:
-                    // Column(
-                    //   children: [
-                    //     UserProfile(userInfo, widget.myUser, totalPosts),
-                    //     Expanded(
-
-                    Scrollbar(
+                child: Scrollbar(
                   child: RefreshIndicator(
                     child: ListView.builder(
                         physics: AlwaysScrollableScrollPhysics(),
@@ -209,9 +203,6 @@ class _UserPostsState extends State<UserPosts> {
                     },
                   ),
                 ),
-                //     )
-                //   ],
-                // ),
               );
             }
           } else if (snapshot.hasError) {
