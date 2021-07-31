@@ -115,7 +115,7 @@ class _FeedPostPageState extends State<FeedPostPage> {
           return IntrinsicWidth(
             child: CircularProgressIndicator(),
           );
-        } else if (index == totalPosts) {
+        } else if (index == totalPosts!) {
           return Container();
         }
         return FeedPostCard(

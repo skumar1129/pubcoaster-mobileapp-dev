@@ -221,7 +221,9 @@ class _UserLocationState extends State<UserLocation> {
                 ],
               ),
             );
-          } else if (snapshot.data == null && snapshot.error == null) {
+          } else if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.data == null &&
+              snapshot.error == null) {
             return Expanded(
               child: Column(
                 children: [
