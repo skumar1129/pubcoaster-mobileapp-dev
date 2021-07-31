@@ -99,7 +99,6 @@ class _MyPostsState extends State<MyPosts> {
                         fontSize: MediaQuery.of(context).size.height * .035,
                         decoration: TextDecoration.underline,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * .1)
                   ],
