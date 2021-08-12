@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:NewApp/widget/navbarhome.dart';
+import 'package:NewApp/widget/navdrawer.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/services/userservice.dart';
 import 'package:NewApp/pages/myuserlikedtype.dart';
@@ -545,6 +546,7 @@ class _CreateUserLikedState extends State<CreateUserLiked> {
           )
         ],
       ),
+      endDrawer: NavDrawer(),
       bottomNavigationBar: BottomNav(),
     );
   }

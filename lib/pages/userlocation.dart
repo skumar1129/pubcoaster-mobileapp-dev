@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/navbarlocation.dart';
+import 'package:NewApp/widget/navdrawer.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/services/userservice.dart';
 import 'package:NewApp/widget/userprofile.dart';
@@ -273,6 +274,7 @@ class _UserLocationState extends State<UserLocation> {
           userPosts(),
         ],
       ),
+      endDrawer: NavDrawer(),
       bottomNavigationBar: BottomNav(),
     );
   }
