@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/widget/navbarhome.dart';
+import 'package:NewApp/widget/navdrawer.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/mypostcard.dart';
 import 'package:NewApp/services/userservice.dart';
@@ -221,6 +222,7 @@ class _MyPostsState extends State<MyPosts> {
       body: Column(
         children: [NavBar(), myPosts()],
       ),
+      endDrawer: NavDrawer(),
       bottomNavigationBar: BottomNav(),
     );
   }

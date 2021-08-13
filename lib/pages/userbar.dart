@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:strings/strings.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/navbarlocation.dart';
+import 'package:NewApp/widget/navdrawer.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/services/userservice.dart';
 import 'package:NewApp/widget/userprofile.dart';
@@ -272,6 +273,7 @@ class _UserBarState extends State<UserBar> {
           userPosts(),
         ],
       ),
+      endDrawer: NavDrawer(),
       bottomNavigationBar: BottomNav(),
     );
   }

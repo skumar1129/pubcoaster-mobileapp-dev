@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/navbarhome.dart';
+import 'package:NewApp/widget/navdrawer.dart';
 import 'package:NewApp/services/bardrinkbrandservice.dart';
 import 'package:NewApp/widget/useralltypes.dart';
 import 'package:strings/strings.dart';
@@ -641,6 +642,7 @@ class _TypeByNameState extends State<TypeByName> {
           _typeName(),
         ],
       ),
+      endDrawer: NavDrawer(),
       bottomNavigationBar: BottomNav(),
     );
   }
