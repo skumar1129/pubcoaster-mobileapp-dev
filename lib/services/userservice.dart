@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:http/http.dart' as https;
+import 'package:http/http.dart' as http;
 import 'config.dart';
 import 'dart:async';
 import 'package:NewApp/models/user.dart';
@@ -35,7 +35,7 @@ List<UserDrink> parseUserDrink(dataItems) {
 class UserService {
   Future<bool> createUser(body) async {
     String path = '/user';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ class UserService {
     var content;
 
     try {
-      content = await https.post(endpoint,
+      content = await http.post(endpoint,
           headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
@@ -69,7 +69,7 @@ class UserService {
 
   Future<bool> deleteUser(username) async {
     String path = '/user/$username';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ class UserService {
     var content;
 
     try {
-      content = await https.delete(endpoint, headers: headers);
+      content = await http.delete(endpoint, headers: headers);
     } catch (e) {
       print(e);
       succeed = false;
@@ -94,7 +94,7 @@ class UserService {
 
   Future<bool> updateUser(body, username) async {
     String path = '/user/$username';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ class UserService {
     bool succeed = true;
     var content;
     try {
-      content = await https.patch(endpoint,
+      content = await http.patch(endpoint,
           headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
@@ -127,7 +127,7 @@ class UserService {
 
   Future<ProfUser?> getUser(username, myUser) async {
     String path = '/searchuser/$username';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -136,7 +136,7 @@ class UserService {
     };
     var response;
     try {
-      response = await https.get(endpoint, headers: headers);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -151,14 +151,14 @@ class UserService {
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     String user = FirebaseAuth.instance.currentUser!.displayName!;
     String path = '/user/$user';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'
     };
     var response;
     try {
-      response = await https.get(endpoint, headers: headers);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -168,10 +168,10 @@ class UserService {
   Future<dynamic> getUserBar(username, [page]) async {
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     String path = '/bar/$username';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.userApiUrl}', path, params);
+      endpoint = Uri.http('${Config.userApiUrl}', path, params);
     }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ class UserService {
     };
     var response;
     try {
-      response = await https.get(endpoint, headers: headers);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -190,10 +190,10 @@ class UserService {
   Future<dynamic> getUserBrand(username, [page]) async {
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     String path = '/brand/$username';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.userApiUrl}', path, params);
+      endpoint = Uri.http('${Config.userApiUrl}', path, params);
     }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -201,7 +201,7 @@ class UserService {
     };
     var response;
     try {
-      response = await https.get(endpoint, headers: headers);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -213,10 +213,10 @@ class UserService {
   Future<dynamic> getUserDrink(username, [page]) async {
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     String path = '/drink/$username';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.userApiUrl}', path, params);
+      endpoint = Uri.http('${Config.userApiUrl}', path, params);
     }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -224,7 +224,7 @@ class UserService {
     };
     var response;
     try {
-      response = await https.get(endpoint, headers: headers);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -234,7 +234,7 @@ class UserService {
 
   Future<bool> createUserBar(body) async {
     String path = '/user/bar';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -250,7 +250,7 @@ class UserService {
     var content;
 
     try {
-      content = await https.post(endpoint,
+      content = await http.post(endpoint,
           headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
@@ -266,7 +266,7 @@ class UserService {
 
   Future<bool> createUserBrand(body) async {
     String path = '/user/brand';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -281,7 +281,7 @@ class UserService {
     var content;
 
     try {
-      content = await https.post(endpoint,
+      content = await http.post(endpoint,
           headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
@@ -297,7 +297,7 @@ class UserService {
 
   Future<bool> createUserDrink(body) async {
     String path = '/user/drink';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -308,7 +308,7 @@ class UserService {
     var content;
 
     try {
-      content = await https.post(endpoint,
+      content = await http.post(endpoint,
           headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
@@ -324,7 +324,7 @@ class UserService {
 
   Future<bool> deleteUserBar(body) async {
     String path = '/user/bar';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -336,7 +336,7 @@ class UserService {
     var reqBody = {'username': body['username'], 'uuid': body['uuid']};
 
     try {
-      content = await https.delete(endpoint,
+      content = await http.delete(endpoint,
           headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
@@ -352,7 +352,7 @@ class UserService {
 
   Future<bool> deleteUserBrand(body) async {
     String path = '/user/brand';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -363,7 +363,7 @@ class UserService {
     var reqBody = {'username': body['username'], 'uuid': body['uuid']};
 
     try {
-      content = await https.delete(endpoint,
+      content = await http.delete(endpoint,
           headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);
@@ -379,7 +379,7 @@ class UserService {
 
   Future<bool> deleteUserDrink(body) async {
     String path = '/user/drink';
-    var endpoint = Uri.https('${Config.userApiUrl}', path);
+    var endpoint = Uri.http('${Config.userApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -390,7 +390,7 @@ class UserService {
 
     var reqBody = {'username': body['username'], 'uuid': body['uuid']};
     try {
-      content = await https.delete(endpoint,
+      content = await http.delete(endpoint,
           headers: headers, body: jsonEncode(reqBody));
     } catch (e) {
       print(e);

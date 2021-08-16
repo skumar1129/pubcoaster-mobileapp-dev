@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as https;
+import 'package:http/http.dart' as http;
 import 'config.dart';
 import 'package:NewApp/models/feedpost.dart';
 import 'package:NewApp/models/singlepost.dart';
@@ -27,7 +27,7 @@ List<MyPost> parseMyPosts(dataItems) {
 
 class PostService {
   Future<bool> addPost(item) async {
-    var endpoint = Uri.https('${Config.postApiUrl}', '/post');
+    var endpoint = Uri.http('${Config.postApiUrl}', '/post');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     var reqBody = {
       'username': item['username'],
@@ -48,7 +48,7 @@ class PostService {
     bool succeed;
     var content;
     try {
-      content = await https.post(endpoint,
+      content = await http.post(endpoint,
           headers: headers, body: jsonEncode(reqBody));
       succeed = true;
     } catch (e) {
@@ -64,7 +64,7 @@ class PostService {
   }
 
   Future<bool> updatePost(String uuid, item) async {
-    var endpoint = Uri.https('${Config.postApiUrl}', '/post/$uuid');
+    var endpoint = Uri.http('${Config.postApiUrl}', '/post/$uuid');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     var reqBody = {
       'picLink': '',
@@ -82,7 +82,7 @@ class PostService {
     var content;
 
     try {
-      content = await https.patch(endpoint,
+      content = await http.patch(endpoint,
           headers: headers, body: jsonEncode(reqBody));
       succeed = true;
     } catch (e) {
@@ -98,7 +98,7 @@ class PostService {
   }
 
   Future<bool> deletePost(String uuid) async {
-    var endpoint = Uri.https('${Config.postApiUrl}', '/post/$uuid');
+    var endpoint = Uri.http('${Config.postApiUrl}', '/post/$uuid');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     bool succeed;
     Map<String, String> headers = {
@@ -108,7 +108,7 @@ class PostService {
     var content;
 
     try {
-      content = await https.delete(endpoint, headers: headers);
+      content = await http.delete(endpoint, headers: headers);
       succeed = true;
     } catch (e) {
       print(e);
@@ -123,7 +123,7 @@ class PostService {
   }
 
   Future<SinglePost> getPost(String uuid) async {
-    var endpoint = Uri.https('${Config.postApiUrl}', '/post/$uuid');
+    var endpoint = Uri.http('${Config.postApiUrl}', '/post/$uuid');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ class PostService {
 
     var response;
     try {
-      response = await https.get(endpoint, headers: headers);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -148,14 +148,14 @@ class PostService {
       'Authorization': 'Bearer $token'
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
-      response = await https.get(endpoint, headers: headers);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -172,14 +172,14 @@ class PostService {
       'Authorization': 'Bearer $token'
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
-      response = await https.get(endpoint, headers: headers);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -196,14 +196,14 @@ class PostService {
       'Authorization': 'Bearer $token'
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
-      response = await https.get(endpoint, headers: headers);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -220,14 +220,14 @@ class PostService {
       'Authorization': 'Bearer $token'
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
-      response = await https.get(endpoint, headers: headers);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -248,14 +248,14 @@ class PostService {
       'username': user
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
-      response = await https.get(endpoint, headers: headers);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -274,14 +274,14 @@ class PostService {
       'Authorization': 'Bearer $token'
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
-      response = await https.get(endpoint, headers: headers);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -302,14 +302,14 @@ class PostService {
       'Authorization': 'Bearer $token'
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
-      response = await https.get(endpoint, headers: headers);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -330,14 +330,14 @@ class PostService {
       'Authorization': 'Bearer $token'
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
-      response = await https.get(endpoint, headers: headers);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
@@ -358,14 +358,14 @@ class PostService {
       'Authorization': 'Bearer $token'
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
-      response = await https.get(endpoint, headers: headers);
+      response = await http.get(endpoint, headers: headers);
     } catch (e) {
       print(e);
     }
