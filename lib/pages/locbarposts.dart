@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/navbarlocation.dart';
+import 'package:NewApp/widget/navdrawer.dart';
 import 'package:NewApp/widget/filterDrawer.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/widget/feedpostcard.dart';
@@ -201,7 +202,9 @@ class _LocBarPostsState extends State<LocBarPosts> {
                       ],
                     ),
                   );
-                } else if (snapshot.data == null && snapshot.error == null) {
+                } else if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.data == null &&
+                    snapshot.error == null) {
                   return Expanded(
                     child: Column(
                       children: [
@@ -232,6 +235,7 @@ class _LocBarPostsState extends State<LocBarPosts> {
               })
         ],
       ),
+      endDrawer: NavDrawer(),
       bottomNavigationBar: BottomNav(),
     );
   }

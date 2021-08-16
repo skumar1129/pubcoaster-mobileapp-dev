@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as https;
 import 'config.dart';
 import 'dart:async';
 
 class LikeService {
   Future<bool> addLike(item) async {
     String path = '/like/${item['uuid']}';
-    var endpoint = Uri.http('${Config.postApiUrl}', path);
+    var endpoint = Uri.https('${Config.postApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -19,7 +19,7 @@ class LikeService {
     var content;
 
     try {
-      content = await http.post(endpoint, headers: headers);
+      content = await https.post(endpoint, headers: headers);
     } catch (e) {
       print(e);
       succeed = false;
@@ -34,7 +34,7 @@ class LikeService {
 
   Future<bool> deleteLike(item) async {
     String path = '/like/${item['uuid']}';
-    var endpoint = Uri.http('${Config.postApiUrl}', path);
+    var endpoint = Uri.https('${Config.postApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ class LikeService {
     var content;
 
     try {
-      content = await http.delete(endpoint, headers: headers);
+      content = await https.delete(endpoint, headers: headers);
     } catch (e) {
       print(e);
       succeed = false;

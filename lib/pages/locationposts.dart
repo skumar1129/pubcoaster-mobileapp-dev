@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/widget/filterDrawer.dart';
 import 'package:NewApp/widget/navbarlocation.dart';
+import 'package:NewApp/widget/navdrawer.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/feedpostcard.dart';
 
@@ -73,8 +74,6 @@ class _LocationPostsState extends State<LocationPosts> {
           FutureBuilder(
               future: posts,
               builder: (context, snapshot) {
-                print(snapshot.data);
-                print(snapshot.error);
                 if (snapshot.hasData) {
                   var items = snapshot.data as List<dynamic>;
                   if (items.length == 0) {
@@ -196,7 +195,9 @@ class _LocationPostsState extends State<LocationPosts> {
                       ],
                     ),
                   );
-                } else if (snapshot.data == null && snapshot.error == null) {
+                } else if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.data == null &&
+                    snapshot.error == null) {
                   return Expanded(
                     child: Column(
                       children: [
@@ -227,6 +228,7 @@ class _LocationPostsState extends State<LocationPosts> {
               })
         ],
       ),
+      endDrawer: NavDrawer(),
       bottomNavigationBar: BottomNav(),
     );
   }

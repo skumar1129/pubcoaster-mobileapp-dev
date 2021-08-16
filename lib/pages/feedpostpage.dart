@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:NewApp/services/followerservice.dart';
 import 'package:NewApp/widget/navbarhome.dart';
+import 'package:NewApp/widget/navdrawer.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/feedpostcard.dart';
 
@@ -115,7 +116,7 @@ class _FeedPostPageState extends State<FeedPostPage> {
           return IntrinsicWidth(
             child: CircularProgressIndicator(),
           );
-        } else if (index == totalPosts) {
+        } else if (index == totalPosts!) {
           return Container();
         }
         return FeedPostCard(
@@ -214,6 +215,7 @@ class _FeedPostPageState extends State<FeedPostPage> {
           _displayPosts(),
         ],
       ),
+      endDrawer: NavDrawer(),
       bottomNavigationBar: BottomNav(),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:NewApp/widget/navbarhome.dart';
+import 'package:NewApp/widget/navdrawer.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 
 class Home extends StatelessWidget {
@@ -21,11 +22,10 @@ class Home extends StatelessWidget {
                   'Welcome to Pubcoasters!',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Hindsiliguri-Bold',
-                    decoration: TextDecoration.underline
-                  ),
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Hindsiliguri-Bold',
+                      decoration: TextDecoration.underline),
                 ),
               ),
               const Divider(thickness: .5, color: Colors.white),
@@ -54,15 +54,15 @@ class Home extends StatelessWidget {
               ),
               const Divider(thickness: 15, color: Colors.white),
               Image(
-                image: AssetImage('assets/img/home_page.jpg'),
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * .3
-              ),
+                  image: AssetImage('assets/img/home_page.jpg'),
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * .3),
               SizedBox(height: MediaQuery.of(context).size.height * .05)
             ],
           ),
         ),
       ]),
+      endDrawer: NavDrawer(),
       bottomNavigationBar: BottomNav(),
     );
   }
