@@ -5,6 +5,7 @@ import 'package:NewApp/widget/navbarlocation.dart';
 import 'package:NewApp/widget/navdrawer.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/feedpostcard.dart';
+import 'package:NewApp/pages/searchbusybar.dart';
 
 class LocationPosts extends StatefulWidget {
   LocationPosts(this.location);
@@ -56,6 +57,11 @@ class _LocationPostsState extends State<LocationPosts> {
     return response;
   }
 
+  goToSearchBusyBar() {
+    Navigator.pushReplacementNamed(context, SearchBusyBar.route,
+        arguments: widget.location);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -105,16 +111,32 @@ class _LocationPostsState extends State<LocationPosts> {
                     return Expanded(
                         child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Text(
-                            '${widget.location}',
-                            style: TextStyle(
-                                fontSize: 35,
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
-                                fontFamily: 'Oxygen-Bold'),
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: Text(
+                                '${widget.location}',
+                                style: TextStyle(
+                                    fontSize: 35,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline,
+                                    fontFamily: 'Oxygen-Bold'),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                goToSearchBusyBar();
+                              },
+                              icon: Icon(Icons.bar_chart_rounded),
+                              iconSize:
+                                  MediaQuery.of(context).size.height * .075,
+                              tooltip:
+                                  'See how busy bars in ${widget.location} are',
+                              color: Colors.red,
+                            )
+                          ],
                         ),
                         Expanded(
                           child: Scrollbar(
