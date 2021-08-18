@@ -543,7 +543,7 @@ class _CreatePostState extends State<CreatePost> {
                               });
                             }
                           },
-                          hint: Text('Rating*'),
+                          hint: Text('Experience Rating*'),
                         ),
                       ),
                       const Divider(
