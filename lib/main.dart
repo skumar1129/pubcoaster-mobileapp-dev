@@ -31,6 +31,7 @@ import 'package:NewApp/pages/myfollower.dart';
 import 'package:NewApp/pages/myfollowing.dart';
 import 'package:NewApp/pages/userfollower.dart';
 import 'package:NewApp/pages/userfollowing.dart';
+import 'package:NewApp/pages/searchbusybar.dart';
 import 'package:NewApp/models/userpagesargs.dart';
 
 void main() {
@@ -159,7 +160,9 @@ class MyApp extends StatelessWidget {
                   MyFollower.route: (context) =>
                       MyFollower(settings.arguments as String),
                   MyFollowing.route: (context) =>
-                      MyFollowing(settings.arguments as String)
+                      MyFollowing(settings.arguments as String),
+                  SearchBusyBar.route: (context) =>
+                      SearchBusyBar(settings.arguments as String),
                 };
                 WidgetBuilder builder = routes[settings.name]!;
                 return MaterialPageRoute(
