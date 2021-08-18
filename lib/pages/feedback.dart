@@ -91,9 +91,8 @@ class _FeedBackState extends State<FeedBack> {
               hint: Text('How Busy Did Google Say It Was?*'),
             ),
           ),
-          const Divider(
-            color: Colors.white,
-            thickness: 1.5,
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.075,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 6, right: 6),
@@ -114,9 +113,8 @@ class _FeedBackState extends State<FeedBack> {
               hint: Text('How Busy Did Google Say It Usually Is?'),
             ),
           ),
-          const Divider(
-            color: Colors.white,
-            thickness: 1.5,
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.075,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 6, right: 6),
@@ -143,9 +141,8 @@ class _FeedBackState extends State<FeedBack> {
               hint: Text('How Busy Would You Say It Is?*'),
             ),
           ),
-          const Divider(
-            color: Colors.white,
-            thickness: 1.5,
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.075,
           ),
           ElevatedButton(
             onPressed: () {
