@@ -25,6 +25,7 @@ class _CreatePostState extends State<CreatePost> {
   String? picLink;
   File? _image;
   String? locationType;
+  String? busyness;
   bool filePicked = false;
   final postService = new PostService();
 
@@ -467,6 +468,35 @@ class _CreatePostState extends State<CreatePost> {
                       const Divider(
                         color: Colors.white,
                         thickness: 0.5,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 6, right: 6),
+                        child: DropdownButtonFormField(
+                          items: [
+                            'Dead AF',
+                            'Some Crowd',
+                            'Lively Enough',
+                            'There Are Lines',
+                            'Can’t Move'
+                          ]
+                              .map((String value) => DropdownMenuItem<String>(
+                                    child: Text(value),
+                                    value: value,
+                                  ))
+                              .toList(),
+                          onChanged: (String? value) {
+                            if (mounted) {
+                              setState(() {
+                                busyness = value;
+                              });
+                            }
+                          },
+                          hint: Text('How Busy Would You Say It Is?*'),
+                        ),
+                      ),
+                      const Divider(
+                        color: Colors.white,
+                        thickness: 0.75,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 4, right: 4),

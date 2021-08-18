@@ -3,6 +3,8 @@ import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/navbarhome.dart';
 import 'package:NewApp/widget/navdrawer.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:NewApp/pages/feedback.dart';
+import 'package:NewApp/models/feedbackargs.dart';
 
 class SearchBusyBar extends StatefulWidget {
   final location;
@@ -47,12 +49,19 @@ class _SearchBusyBarState extends State<SearchBusyBar> {
       barName = barName!.replaceAll(' ', '-');
       _url += '?q=${widget.location}+$barName';
       await launch(_url);
+      Navigator.pushReplacementNamed(context, FeedBack.route,
+          arguments: FeedBackArgs(location: widget.location, bar: barName!));
     } else {
       String _url = 'https://google.com/search';
       barName = barName!.replaceAll(' ', '-');
       neighborhood = neighborhood!.replaceAll(' ', '-');
       _url += '?q=${widget.location}+$neighborhood+$barName';
       await launch(_url);
+      Navigator.pushReplacementNamed(context, FeedBack.route,
+          arguments: FeedBackArgs(
+              location: widget.location,
+              bar: barName!,
+              neighborhood: neighborhood!));
     }
   }
 

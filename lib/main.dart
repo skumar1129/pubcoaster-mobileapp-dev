@@ -32,6 +32,8 @@ import 'package:NewApp/pages/myfollowing.dart';
 import 'package:NewApp/pages/userfollower.dart';
 import 'package:NewApp/pages/userfollowing.dart';
 import 'package:NewApp/pages/searchbusybar.dart';
+import 'package:NewApp/pages/feedback.dart';
+import 'package:NewApp/models/feedbackargs.dart';
 import 'package:NewApp/models/userpagesargs.dart';
 
 void main() {
@@ -144,6 +146,12 @@ class MyApp extends StatelessWidget {
                   final UserPages args = settings.arguments as UserPages;
                   return MaterialPageRoute(builder: (context) {
                     return UserFollowing(args.user, args.myUser);
+                  });
+                } else if (settings.name == FeedBack.route) {
+                  return MaterialPageRoute(builder: (context) {
+                    final FeedBackArgs args =
+                        settings.arguments as FeedBackArgs;
+                    return FeedBack(args.location, args.bar, args.neighborhood);
                   });
                 }
                 var routes = <String, WidgetBuilder>{
