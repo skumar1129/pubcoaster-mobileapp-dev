@@ -6,20 +6,20 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:NewApp/pages/feedback.dart';
 import 'package:NewApp/models/feedbackargs.dart';
 
-class SearchBusyBar extends StatefulWidget {
-  final location;
-  SearchBusyBar(this.location);
-  static const route = '/searchbusybar';
+class SearchBusyBarFromFeed extends StatefulWidget {
+  static const route = '/searchbusybarfromfeed';
   @override
-  _SearchBusyBarState createState() => _SearchBusyBarState();
+  _SearchBusyBarFromFeedState createState() => _SearchBusyBarFromFeedState();
 }
 
-class _SearchBusyBarState extends State<SearchBusyBar> {
+class _SearchBusyBarFromFeedState extends State<SearchBusyBarFromFeed> {
   String? barName;
   String? neighborhood;
+  String? location;
+  String? locationType;
 
   searchBusyBarApi() {
-    if (barName == null) {
+    if (barName == null || location == null) {
       final snackBar = SnackBar(
           content: Text('Error: fill out the required fields',
               textAlign: TextAlign.center,
@@ -34,7 +34,7 @@ class _SearchBusyBarState extends State<SearchBusyBar> {
   }
 
   openGoogleUrl() async {
-    if (barName == null) {
+    if (barName == null || location == null) {
       final snackBar = SnackBar(
           content: Text('Error: fill out the required fields',
               textAlign: TextAlign.center,
@@ -47,21 +47,89 @@ class _SearchBusyBarState extends State<SearchBusyBar> {
     } else if (neighborhood == null) {
       String _url = 'https://google.com/search';
       barName = barName!.replaceAll(' ', '-');
-      _url += '?q=${widget.location}+$barName';
+      _url += '?q=$location+$barName';
       await launch(_url);
       Navigator.pushReplacementNamed(context, FeedBack.route,
-          arguments: FeedBackArgs(location: widget.location, bar: barName!));
+          arguments: FeedBackArgs(location: location!, bar: barName!));
     } else {
       String _url = 'https://google.com/search';
       barName = barName!.replaceAll(' ', '-');
       neighborhood = neighborhood!.replaceAll(' ', '-');
-      _url += '?q=${widget.location}+$neighborhood+$barName';
+      _url += '?q=$location+$neighborhood+$barName';
       await launch(_url);
       Navigator.pushReplacementNamed(context, FeedBack.route,
           arguments: FeedBackArgs(
-              location: widget.location,
-              bar: barName!,
-              neighborhood: neighborhood!));
+              location: location!, bar: barName!, neighborhood: neighborhood!));
+    }
+  }
+
+  Widget _locationDropdown() {
+    if (locationType == 'City') {
+      return Padding(
+        padding: const EdgeInsets.only(left: 6, right: 6, top: 4),
+        child: DropdownButtonFormField(
+            items: [
+              'Columbus',
+              'Chicago',
+              'New York',
+              'Denver',
+              'Washington DC',
+              'San Francisco',
+              'Orlando',
+              'Phoenix',
+              'Boston',
+              'Los Angeles'
+            ]
+                .map((String value) => DropdownMenuItem<String>(
+                      child: Text(value),
+                      value: value,
+                    ))
+                .toList(),
+            onChanged: (String? value) {
+              if (mounted) {
+                setState(() {
+                  location = value!;
+                });
+              }
+            },
+            hint: Text('City*'),
+            decoration: InputDecoration(focusColor: Colors.black)),
+      );
+    } else if (locationType == 'College') {
+      return Padding(
+        padding: const EdgeInsets.only(left: 6, right: 6, top: 4),
+        child: DropdownButtonFormField(
+            items: [
+              'Ohio State',
+              'University of Michigan',
+              'Michigan State',
+              'Penn State',
+              'University of Illinois',
+              'University of Wisconsin'
+            ]
+                .map((String value) => DropdownMenuItem<String>(
+                      child: Text(value),
+                      value: value,
+                    ))
+                .toList(),
+            onChanged: (String? value) {
+              if (mounted) {
+                setState(() {
+                  location = value!;
+                });
+              }
+            },
+            hint: Text('College*'),
+            decoration: InputDecoration(focusColor: Colors.black)),
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.only(left: 6, right: 6, top: 4),
+        child: DropdownButtonFormField(
+            items: [],
+            hint: Text('Location*'),
+            decoration: InputDecoration(focusColor: Colors.black)),
+      );
     }
   }
 
@@ -75,7 +143,7 @@ class _SearchBusyBarState extends State<SearchBusyBar> {
               padding: const EdgeInsets.only(top: 8, bottom: 0),
               child: Center(
                 child: Text(
-                  'Search how busy a bar in ${widget.location}',
+                  'Search how busy bars in different areas are',
                   style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
@@ -83,6 +151,35 @@ class _SearchBusyBarState extends State<SearchBusyBar> {
                 ),
               ),
             ),
+            const Divider(
+              color: Colors.white,
+              thickness: 1.5,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 6, right: 6, top: 4),
+              child: DropdownButtonFormField(
+                items: ['City', 'College']
+                    .map((String value) => DropdownMenuItem<String>(
+                          child: Text(value),
+                          value: value,
+                        ))
+                    .toList(),
+                onChanged: (String? value) {
+                  if (mounted) {
+                    setState(() {
+                      locationType = value!;
+                    });
+                  }
+                },
+                hint: Text('Location Type*'),
+                decoration: InputDecoration(focusColor: Colors.black),
+              ),
+            ),
+            const Divider(
+              color: Colors.white,
+              thickness: 1.5,
+            ),
+            _locationDropdown(),
             const Divider(
               color: Colors.white,
               thickness: 1.5,

@@ -32,6 +32,7 @@ import 'package:NewApp/pages/myfollowing.dart';
 import 'package:NewApp/pages/userfollower.dart';
 import 'package:NewApp/pages/userfollowing.dart';
 import 'package:NewApp/pages/searchbusybar.dart';
+import 'package:NewApp/pages/searchbusybarfromfeed.dart';
 import 'package:NewApp/pages/feedback.dart';
 import 'package:NewApp/models/feedbackargs.dart';
 import 'package:NewApp/models/userpagesargs.dart';
@@ -84,6 +85,8 @@ class MyApp extends StatelessWidget {
                 '/adduserinfo': (context) => AddUserInfo(),
                 '/home': (context) => Home(),
                 '/mypost': (context) => MyPosts(),
+                SearchBusyBarFromFeed.route: (context) =>
+                    SearchBusyBarFromFeed(),
               },
               onGenerateRoute: (RouteSettings settings) {
                 //single post scenario
