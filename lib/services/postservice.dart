@@ -37,7 +37,8 @@ class PostService {
       'rating': item['rating'],
       'neighborhood': item['nbhood'],
       'description': item['description'],
-      'picLink': item['picLink']
+      'picLink': item['picLink'],
+      'busyness': item['busyness'],
     };
 
     Map<String, String> headers = {
