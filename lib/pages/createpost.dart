@@ -189,7 +189,9 @@ class _CreatePostState extends State<CreatePost> {
         descrip == "" ||
         rating == null ||
         loc == null ||
-        loc == "") {
+        loc == "" ||
+        busyness == null ||
+        busyness == "") {
       final snackBar = SnackBar(
           content: Text(
               'Please fill out all required info before trying to create a post!!',
@@ -231,7 +233,8 @@ class _CreatePostState extends State<CreatePost> {
                 'rating': rating,
                 'location': loc,
                 'nbhood': nbhood,
-                'picLink': url
+                'picLink': url,
+                'busyness': busyness,
               };
               bool succeed = await postService.addPost(reqBody);
               if (succeed) {
@@ -285,6 +288,7 @@ class _CreatePostState extends State<CreatePost> {
           'rating': rating,
           'location': loc,
           'nbhood': nbhood,
+          'busyness': busyness,
           'picLink': ''
         };
         bool succeed = await postService.addPost(reqBody);

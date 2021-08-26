@@ -179,19 +179,21 @@ class _LocNbhoodPostsState extends State<LocNbhoodPosts> {
                                     );
                                   }
                                   return FeedPostCard(
-                                      items[index].bar,
-                                      items[index].location,
-                                      items[index].createdBy,
-                                      items[index].description,
-                                      items[index].rating,
-                                      items[index].createdAt,
-                                      items[index].neighborhood,
-                                      items[index].numComments,
-                                      items[index].numLikes,
-                                      items[index].anonymous,
-                                      items[index].editedAt,
-                                      items[index].picLink,
-                                      items[index].uuid);
+                                    items[index].bar,
+                                    items[index].location,
+                                    items[index].createdBy,
+                                    items[index].description,
+                                    items[index].rating,
+                                    items[index].createdAt,
+                                    items[index].neighborhood,
+                                    items[index].numComments,
+                                    items[index].numLikes,
+                                    items[index].anonymous,
+                                    items[index].editedAt,
+                                    items[index].picLink,
+                                    items[index].uuid,
+                                    items[index].busyness,
+                                  );
                                 }),
                             onRefresh: () {
                               return getLocNbhoodPosts(location, nbhood);
