@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/navbarhome.dart';
 import 'package:NewApp/widget/navdrawer.dart';
+import 'package:NewApp/services/busyservice.dart';
+import 'package:NewApp/pages/locationposts.dart';
 
 class FeedBack extends StatefulWidget {
   static const route = '/feedback';
@@ -17,9 +19,37 @@ class _FeedBackState extends State<FeedBack> {
   int? googleLive;
   int? googleAverage;
   String? userLive;
+  final busyService = BusyService();
+
+  apiCall(body) async {
+    bool succeed = await busyService.createBusyBar(body);
+    if (succeed) {
+      final snackBar = SnackBar(
+          content: Text('Successfully submitted',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.green);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.pushReplacementNamed(context, LocationPosts.route,
+          arguments: widget.location);
+    } else {
+      final snackBar = SnackBar(
+          content: Text('Error: failed to submit',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
 
   submitFeedBack() {
-    if (googleLive == null || userLive == null) {
+    if (userLive == null) {
       final snackBar = SnackBar(
           content: Text('Error: fill out the required fields',
               textAlign: TextAlign.center,
@@ -29,8 +59,17 @@ class _FeedBackState extends State<FeedBack> {
                   fontSize: 20)),
           backgroundColor: Colors.red);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    } else if (googleAverage == null) {
-    } else {}
+    } else {
+      var body = {
+        'google_live_busyness': googleLive,
+        'google_average_busyness': googleAverage,
+        'busyness': userLive,
+        'bar': widget.bar,
+        'location': widget.location,
+        'neighborhood': widget.neighborhood,
+      };
+      apiCall(body);
+    }
   }
 
   Widget _title() {
@@ -88,7 +127,7 @@ class _FeedBackState extends State<FeedBack> {
                   });
                 }
               },
-              hint: Text('How Busy Did Google Say It Was?*'),
+              hint: Text('How Busy Did Google Say It Was?'),
             ),
           ),
           SizedBox(

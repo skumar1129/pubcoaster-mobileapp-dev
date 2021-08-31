@@ -5,6 +5,7 @@ import 'package:NewApp/widget/navdrawer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:NewApp/pages/feedback.dart';
 import 'package:NewApp/models/feedbackargs.dart';
+import 'package:NewApp/services/busyservice.dart';
 
 class SearchBusyBarFromFeed extends StatefulWidget {
   static const route = '/searchbusybarfromfeed';
@@ -17,6 +18,47 @@ class _SearchBusyBarFromFeedState extends State<SearchBusyBarFromFeed> {
   String? neighborhood;
   String? location;
   String? locationType;
+  Future<dynamic>? liveInfo;
+  Future<dynamic>? averageInfo;
+  final busyService = BusyService();
+
+  grabLiveInfo(body) async {
+    var response;
+    try {
+      response = await busyService.getLiveBusyness(body);
+    } catch (e) {
+      print(e);
+      final snackBar = SnackBar(
+          content: Text('Error getting information. Check network connection.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    return response;
+  }
+
+  grabAverageInfo(body) async {
+    var response;
+    try {
+      response = await busyService.getAverageBusyness(body);
+    } catch (e) {
+      print(e);
+      final snackBar = SnackBar(
+          content: Text('Error getting information. Check network connection.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20)),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    return response;
+  }
 
   searchBusyBarApi() {
     if (barName == null || location == null) {
@@ -29,8 +71,114 @@ class _SearchBusyBarFromFeedState extends State<SearchBusyBarFromFeed> {
                   fontSize: 20)),
           backgroundColor: Colors.red);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    } else if (neighborhood == null) {
-    } else {}
+    } else {
+      var body = {
+        'location': location,
+        'bar': barName,
+        'neighborhood': neighborhood
+      };
+      liveInfo = grabAverageInfo(body);
+      averageInfo = grabLiveInfo(body);
+      Future.delayed(
+        Duration.zero,
+        () => {
+          showDialog(
+            context: context,
+            builder: (BuildContext content) {
+              return _liveBusy();
+            },
+          )
+        },
+      );
+    }
+  }
+
+  Widget _liveBusy() {
+    Iterable<Future<dynamic>> futures = [averageInfo!, liveInfo!];
+    return FutureBuilder(
+        future: Future.wait(futures),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var data = snapshot.data as List;
+            var liveTime = data[1];
+            var averageTime = data[0];
+            return AlertDialog(
+              title: Text(
+                'Busyness Level for $barName in $location',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 23),
+                textAlign: TextAlign.center,
+              ),
+              content: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    'Live Busyness Level: \n ${liveTime.busyness}',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 18),
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    'Average Busyness Level: \n ${averageTime.busyness}',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 18),
+                    textAlign: TextAlign.center,
+                  ),
+                  FloatingActionButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Icon(Icons.check),
+                    backgroundColor: Colors.red,
+                  ),
+                ],
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return AlertDialog(
+              title: Text(
+                'Error retrieving information: Check network connection',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 23),
+                textAlign: TextAlign.center,
+              ),
+              actions: [
+                FloatingActionButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Icon(Icons.check),
+                  backgroundColor: Colors.red,
+                ),
+              ],
+            );
+          } else if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.data == null &&
+              snapshot.error == null) {
+            return AlertDialog(
+              title: Text(
+                'Error retrieving information: Database may be off',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 23),
+                textAlign: TextAlign.center,
+              ),
+              actions: [
+                FloatingActionButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Icon(Icons.check),
+                  backgroundColor: Colors.red,
+                ),
+              ],
+            );
+          }
+          return Center(child: CircularProgressIndicator());
+        });
   }
 
   openGoogleUrl() async {
