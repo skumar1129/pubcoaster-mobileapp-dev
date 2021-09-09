@@ -125,6 +125,20 @@ class _FollowCardState extends State<FollowCard> {
           ),
         ),
       );
+    } else if (widget.user == widget.info.user) {
+      return ElevatedButton(
+        onPressed: null,
+        child: Text(''),
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+          shape: MaterialStateProperty.all<OutlinedBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+              side: BorderSide(color: Colors.white),
+            ),
+          ),
+        ),
+      );
     } else {
       return ElevatedButton(
         onPressed: () {

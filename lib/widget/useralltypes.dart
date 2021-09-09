@@ -225,7 +225,7 @@ class _UserAllTypesState extends State<UserAllTypes> {
         _likeIcon(widget.info),
         _barDisplay(barInfo),
         Icon(
-          Icons.business,
+          Icons.sports_bar,
           color: Colors.red,
         )
       ],
@@ -253,7 +253,7 @@ class _UserAllTypesState extends State<UserAllTypes> {
             '${info.location}',
             style: TextStyle(
               color: Colors.black,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.normal,
               fontFamily: 'Merriweather-Bold',
               fontSize: 20,
             ),
@@ -284,7 +284,7 @@ class _UserAllTypesState extends State<UserAllTypes> {
             '${capitalize(info.neighborhood!)}, ${info.location}',
             style: TextStyle(
               color: Colors.black,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.normal,
               fontFamily: 'Merriweather-Bold',
               fontSize: 20,
             ),
@@ -368,7 +368,7 @@ class _UserAllTypesState extends State<UserAllTypes> {
               ],
             ),
             Icon(
-              Icons.business,
+              Icons.sports_bar,
               color: Colors.red,
             )
           ],

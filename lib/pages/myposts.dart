@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/widget/navbarhome.dart';
+import 'package:NewApp/widget/navdrawer.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/mypostcard.dart';
 import 'package:NewApp/services/userservice.dart';
@@ -99,7 +100,6 @@ class _MyPostsState extends State<MyPosts> {
                         fontSize: MediaQuery.of(context).size.height * .035,
                         decoration: TextDecoration.underline,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * .1)
                   ],
@@ -138,36 +138,40 @@ class _MyPostsState extends State<MyPosts> {
                             children: [
                               MyUserProfile(userInfo, totalPosts),
                               MyPostCard(
-                                  items[index].bar,
-                                  items[index].location,
-                                  items[index].createdBy,
-                                  items[index].description,
-                                  items[index].rating,
-                                  items[index].createdAt,
-                                  items[index].neighborhood,
-                                  items[index].numComments,
-                                  items[index].numLikes,
-                                  items[index].anonymous,
-                                  items[index].editedAt,
-                                  items[index].picLink,
-                                  items[index].uuid)
+                                items[index].bar,
+                                items[index].location,
+                                items[index].createdBy,
+                                items[index].description,
+                                items[index].rating,
+                                items[index].createdAt,
+                                items[index].neighborhood,
+                                items[index].numComments,
+                                items[index].numLikes,
+                                items[index].anonymous,
+                                items[index].editedAt,
+                                items[index].picLink,
+                                items[index].uuid,
+                                items[index].busyness,
+                              )
                             ],
                           );
                         } else {
                           return MyPostCard(
-                              items[index].bar,
-                              items[index].location,
-                              items[index].createdBy,
-                              items[index].description,
-                              items[index].rating,
-                              items[index].createdAt,
-                              items[index].neighborhood,
-                              items[index].numComments,
-                              items[index].numLikes,
-                              items[index].anonymous,
-                              items[index].editedAt,
-                              items[index].picLink,
-                              items[index].uuid);
+                            items[index].bar,
+                            items[index].location,
+                            items[index].createdBy,
+                            items[index].description,
+                            items[index].rating,
+                            items[index].createdAt,
+                            items[index].neighborhood,
+                            items[index].numComments,
+                            items[index].numLikes,
+                            items[index].anonymous,
+                            items[index].editedAt,
+                            items[index].picLink,
+                            items[index].uuid,
+                            items[index].busyness,
+                          );
                         }
                       },
                     ),
@@ -222,6 +226,7 @@ class _MyPostsState extends State<MyPosts> {
       body: Column(
         children: [NavBar(), myPosts()],
       ),
+      endDrawer: NavDrawer(),
       bottomNavigationBar: BottomNav(),
     );
   }

@@ -64,7 +64,7 @@ class UserLikedTypeWidget extends StatelessWidget {
             '${info.location}',
             style: TextStyle(
               color: Colors.black,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.normal,
               fontFamily: 'Merriweather-Bold',
               fontSize: 20,
             ),
@@ -95,7 +95,7 @@ class UserLikedTypeWidget extends StatelessWidget {
             '${capitalize(info.neighborhood)}, ${info.location}',
             style: TextStyle(
               color: Colors.black,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.normal,
               fontFamily: 'Merriweather-Bold',
               fontSize: 20,
             ),
@@ -116,7 +116,7 @@ class UserLikedTypeWidget extends StatelessWidget {
       children: [
         _barDisplay(barInfo),
         Icon(
-          Icons.business,
+          Icons.sports_bar,
           color: Colors.red,
         )
       ],
@@ -159,7 +159,7 @@ class UserLikedTypeWidget extends StatelessWidget {
           ],
         ),
         Icon(
-          Icons.branding_watermark,
+          Icons.local_bar,
           color: Colors.red,
         )
       ],

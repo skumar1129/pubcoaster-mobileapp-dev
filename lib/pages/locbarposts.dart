@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/navbarlocation.dart';
+import 'package:NewApp/widget/navdrawer.dart';
 import 'package:NewApp/widget/filterDrawer.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/widget/feedpostcard.dart';
+import 'package:NewApp/pages/searchbusybar.dart';
 import 'package:strings/strings.dart';
 
 class LocBarPosts extends StatefulWidget {
@@ -59,6 +61,11 @@ class _LocBarPostsState extends State<LocBarPosts> {
     return response;
   }
 
+  goToSearchBusyBar() {
+    Navigator.pushReplacementNamed(context, SearchBusyBar.route,
+        arguments: location);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -111,16 +118,33 @@ class _LocBarPostsState extends State<LocBarPosts> {
                     return Expanded(
                         child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Text(
-                            '${capitalize(bar)} in $location',
-                            style: TextStyle(
-                                fontSize: 35,
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
-                                fontFamily: 'Oxygen-Bold'),
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: Text(
+                                  '${capitalize(bar)} in $location',
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.underline,
+                                      fontFamily: 'Oxygen-Bold'),
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                goToSearchBusyBar();
+                              },
+                              icon: Icon(Icons.bar_chart_rounded),
+                              iconSize:
+                                  MediaQuery.of(context).size.height * .075,
+                              tooltip: 'See how busy bars in $location are',
+                              color: Colors.red,
+                            )
+                          ],
                         ),
                         Expanded(
                           child: Scrollbar(
@@ -154,19 +178,21 @@ class _LocBarPostsState extends State<LocBarPosts> {
                                     );
                                   }
                                   return FeedPostCard(
-                                      items[index].bar,
-                                      items[index].location,
-                                      items[index].createdBy,
-                                      items[index].description,
-                                      items[index].rating,
-                                      items[index].createdAt,
-                                      items[index].neighborhood,
-                                      items[index].numComments,
-                                      items[index].numLikes,
-                                      items[index].anonymous,
-                                      items[index].editedAt,
-                                      items[index].picLink,
-                                      items[index].uuid);
+                                    items[index].bar,
+                                    items[index].location,
+                                    items[index].createdBy,
+                                    items[index].description,
+                                    items[index].rating,
+                                    items[index].createdAt,
+                                    items[index].neighborhood,
+                                    items[index].numComments,
+                                    items[index].numLikes,
+                                    items[index].anonymous,
+                                    items[index].editedAt,
+                                    items[index].picLink,
+                                    items[index].uuid,
+                                    items[index].busyness,
+                                  );
                                 }),
                             onRefresh: () {
                               return getLocBarPosts(location, bar);
@@ -201,7 +227,9 @@ class _LocBarPostsState extends State<LocBarPosts> {
                       ],
                     ),
                   );
-                } else if (snapshot.data == null && snapshot.error == null) {
+                } else if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.data == null &&
+                    snapshot.error == null) {
                   return Expanded(
                     child: Column(
                       children: [
@@ -232,6 +260,7 @@ class _LocBarPostsState extends State<LocBarPosts> {
               })
         ],
       ),
+      endDrawer: NavDrawer(),
       bottomNavigationBar: BottomNav(),
     );
   }

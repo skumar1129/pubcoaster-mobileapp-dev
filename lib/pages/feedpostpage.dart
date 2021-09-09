@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:NewApp/services/followerservice.dart';
 import 'package:NewApp/widget/navbarhome.dart';
+import 'package:NewApp/widget/navdrawer.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/feedpostcard.dart';
+import 'package:NewApp/pages/searchbusybarfromfeed.dart';
 
 class FeedPostPage extends StatefulWidget {
   FeedPostPage(this.user);
@@ -54,6 +56,10 @@ class _FeedPostPageState extends State<FeedPostPage> {
       }
     }
     return response[1];
+  }
+
+  goToSearchBusyBar() {
+    Navigator.pushReplacementNamed(context, SearchBusyBarFromFeed.route);
   }
 
   Widget _displayPosts() {
@@ -115,38 +121,55 @@ class _FeedPostPageState extends State<FeedPostPage> {
           return IntrinsicWidth(
             child: CircularProgressIndicator(),
           );
-        } else if (index == totalPosts) {
+        } else if (index == totalPosts!) {
           return Container();
         }
         return FeedPostCard(
-            items[index].bar,
-            items[index].location,
-            items[index].createdBy,
-            items[index].description,
-            items[index].rating,
-            items[index].createdAt,
-            items[index].neighborhood,
-            items[index].numComments,
-            items[index].numLikes,
-            items[index].anonymous,
-            items[index].editedAt,
-            items[index].picLink,
-            items[index].uuid);
+          items[index].bar,
+          items[index].location,
+          items[index].createdBy,
+          items[index].description,
+          items[index].rating,
+          items[index].createdAt,
+          items[index].neighborhood,
+          items[index].numComments,
+          items[index].numLikes,
+          items[index].anonymous,
+          items[index].editedAt,
+          items[index].picLink,
+          items[index].uuid,
+          items[index].busyness,
+        );
       },
     );
   }
 
   Widget _pageTitle() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: Text(
-        'Your Feed',
-        style: TextStyle(
-            fontSize: 35,
-            fontWeight: FontWeight.bold,
-            decoration: TextDecoration.underline,
-            fontFamily: 'Oxygen-Bold'),
-      ),
+    return Row(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Text(
+              'Your Feed',
+              style: TextStyle(
+                  fontSize: 35,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+                  fontFamily: 'Oxygen-Bold'),
+            ),
+          ),
+        ),
+        IconButton(
+          onPressed: () {
+            goToSearchBusyBar();
+          },
+          icon: Icon(Icons.bar_chart_rounded),
+          iconSize: MediaQuery.of(context).size.height * .075,
+          tooltip: 'See how busy bars in different areas are',
+          color: Colors.red,
+        )
+      ],
     );
   }
 
@@ -155,14 +178,29 @@ class _FeedPostPageState extends State<FeedPostPage> {
         child: Column(
       children: [
         SizedBox(height: MediaQuery.of(context).size.height * .1),
-        Padding(
-          padding: const EdgeInsets.only(top: 12),
-          child: Text('No posts on your feed yet',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                  decoration: TextDecoration.underline)),
+        Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: Text('No posts on your feed yet',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                        decoration: TextDecoration.underline)),
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                goToSearchBusyBar();
+              },
+              icon: Icon(Icons.bar_chart_rounded),
+              iconSize: MediaQuery.of(context).size.height * .075,
+              tooltip: 'See how busy bars in different areas are',
+              color: Colors.red,
+            )
+          ],
         ),
         Expanded(
             child: Image(
@@ -214,6 +252,7 @@ class _FeedPostPageState extends State<FeedPostPage> {
           _displayPosts(),
         ],
       ),
+      endDrawer: NavDrawer(),
       bottomNavigationBar: BottomNav(),
     );
   }

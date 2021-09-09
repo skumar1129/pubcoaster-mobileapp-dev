@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:NewApp/widget/textbox.dart';
-import 'dropdown.dart';
 
 class NavBar extends StatefulWidget {
   @override
@@ -33,12 +32,6 @@ class _NavBarState extends State<NavBar> {
         tooltip: 'Search User',
       ),
       backgroundColor: Colors.red,
-      actions: <Widget>[
-        DropDown(),
-        const SizedBox(
-          width: 15,
-        )
-      ],
     );
   }
 }

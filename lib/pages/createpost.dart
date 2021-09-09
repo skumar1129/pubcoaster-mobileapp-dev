@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:flutter/material.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/navbarhome.dart';
+import 'package:NewApp/widget/navdrawer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/pages/locationposts.dart';
@@ -23,6 +24,8 @@ class _CreatePostState extends State<CreatePost> {
   bool anonymous = false;
   String? picLink;
   File? _image;
+  String? locationType;
+  String? busyness;
   bool filePicked = false;
   final postService = new PostService();
 
@@ -160,14 +163,21 @@ class _CreatePostState extends State<CreatePost> {
 
   showLoadingDialog() {
     showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext content) {
-        //getImage()
-        return AlertDialog(
-          backgroundColor: Colors.transparent,
-          content: Center(child: SizedBox(height: MediaQuery.of(context).size.height * .2, width: MediaQuery.of(context).size.height * .2, child: CircularProgressIndicator(backgroundColor: Colors.black, strokeWidth: 10,))));
-    });
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext content) {
+          //getImage()
+          return AlertDialog(
+              backgroundColor: Colors.transparent,
+              content: Center(
+                  child: SizedBox(
+                      height: MediaQuery.of(context).size.height * .2,
+                      width: MediaQuery.of(context).size.height * .2,
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.black,
+                        strokeWidth: 10,
+                      ))));
+        });
   }
 
   submitPost(String? loc, String? bar, String? nbhood, int? rating,
@@ -179,7 +189,9 @@ class _CreatePostState extends State<CreatePost> {
         descrip == "" ||
         rating == null ||
         loc == null ||
-        loc == "") {
+        loc == "" ||
+        busyness == null ||
+        busyness == "") {
       final snackBar = SnackBar(
           content: Text(
               'Please fill out all required info before trying to create a post!!',
@@ -221,7 +233,8 @@ class _CreatePostState extends State<CreatePost> {
                 'rating': rating,
                 'location': loc,
                 'nbhood': nbhood,
-                'picLink': url
+                'picLink': url,
+                'busyness': busyness,
               };
               bool succeed = await postService.addPost(reqBody);
               if (succeed) {
@@ -275,6 +288,7 @@ class _CreatePostState extends State<CreatePost> {
           'rating': rating,
           'location': loc,
           'nbhood': nbhood,
+          'busyness': busyness,
           'picLink': ''
         };
         bool succeed = await postService.addPost(reqBody);
@@ -309,6 +323,76 @@ class _CreatePostState extends State<CreatePost> {
 
   goBack() {
     Navigator.pushReplacementNamed(context, '/mypost');
+  }
+
+  Widget _locationDropdown() {
+    if (locationType == 'City') {
+      return Padding(
+        padding: const EdgeInsets.only(left: 6, right: 6, top: 4),
+        child: DropdownButtonFormField(
+            items: [
+              'Columbus',
+              'Chicago',
+              'New York',
+              'Denver',
+              'Washington DC',
+              'San Francisco',
+              'Orlando',
+              'Phoenix',
+              'Boston',
+              'Los Angeles'
+            ]
+                .map((String value) => DropdownMenuItem<String>(
+                      child: Text(value),
+                      value: value,
+                    ))
+                .toList(),
+            onChanged: (String? value) {
+              if (mounted) {
+                setState(() {
+                  location = value!;
+                });
+              }
+            },
+            hint: Text('City*'),
+            decoration: InputDecoration(focusColor: Colors.black)),
+      );
+    } else if (locationType == 'College') {
+      return Padding(
+        padding: const EdgeInsets.only(left: 6, right: 6, top: 4),
+        child: DropdownButtonFormField(
+            items: [
+              'Ohio State',
+              'University of Michigan',
+              'Michigan State',
+              'Penn State',
+              'University of Illinois',
+              'University of Wisconsin'
+            ]
+                .map((String value) => DropdownMenuItem<String>(
+                      child: Text(value),
+                      value: value,
+                    ))
+                .toList(),
+            onChanged: (String? value) {
+              if (mounted) {
+                setState(() {
+                  location = value!;
+                });
+              }
+            },
+            hint: Text('College*'),
+            decoration: InputDecoration(focusColor: Colors.black)),
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.only(left: 6, right: 6, top: 4),
+        child: DropdownButtonFormField(
+            items: [],
+            hint: Text('Location*'),
+            decoration: InputDecoration(focusColor: Colors.black)),
+      );
+    }
   }
 
   @override
@@ -346,34 +430,28 @@ class _CreatePostState extends State<CreatePost> {
                         padding:
                             const EdgeInsets.only(left: 6, right: 6, top: 4),
                         child: DropdownButtonFormField(
-                            items: [
-                              'Columbus',
-                              'Chicago',
-                              'New York',
-                              'Denver',
-                              'Washington DC',
-                              'San Francisco',
-                              'Orlando',
-                              'Phoenix',
-                              'Boston',
-                              'Los Angeles'
-                            ]
-                                .map((String value) => DropdownMenuItem<String>(
-                                      child: Text(value),
-                                      value: value,
-                                    ))
-                                .toList(),
-                            onChanged: (String? value) {
-                              if (mounted) {
-                                setState(() {
-                                  location = value!;
-                                });
-                              }
-                            },
-                            hint: Text('Location*'),
-                            decoration:
-                                InputDecoration(focusColor: Colors.black)),
+                          items: ['City', 'College']
+                              .map((String value) => DropdownMenuItem<String>(
+                                    child: Text(value),
+                                    value: value,
+                                  ))
+                              .toList(),
+                          onChanged: (String? value) {
+                            if (mounted) {
+                              setState(() {
+                                locationType = value!;
+                              });
+                            }
+                          },
+                          hint: Text('Location Type*'),
+                          decoration: InputDecoration(focusColor: Colors.black),
+                        ),
                       ),
+                      const Divider(
+                        color: Colors.white,
+                        thickness: .5,
+                      ),
+                      _locationDropdown(),
                       const Divider(
                         color: Colors.white,
                         thickness: .5,
@@ -394,6 +472,35 @@ class _CreatePostState extends State<CreatePost> {
                       const Divider(
                         color: Colors.white,
                         thickness: 0.5,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 6, right: 6),
+                        child: DropdownButtonFormField(
+                          items: [
+                            'Dead AF',
+                            'Some Crowd',
+                            'Lively Enough',
+                            'There Are Lines',
+                            'Can’t Move'
+                          ]
+                              .map((String value) => DropdownMenuItem<String>(
+                                    child: Text(value),
+                                    value: value,
+                                  ))
+                              .toList(),
+                          onChanged: (String? value) {
+                            if (mounted) {
+                              setState(() {
+                                busyness = value;
+                              });
+                            }
+                          },
+                          hint: Text('How Busy Would You Say It Is?*'),
+                        ),
+                      ),
+                      const Divider(
+                        color: Colors.white,
+                        thickness: 0.75,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 4, right: 4),
@@ -440,7 +547,7 @@ class _CreatePostState extends State<CreatePost> {
                               });
                             }
                           },
-                          hint: Text('Rating*'),
+                          hint: Text('Experience Rating*'),
                         ),
                       ),
                       const Divider(
@@ -562,6 +669,7 @@ class _CreatePostState extends State<CreatePost> {
           ),
         ],
       ),
+      endDrawer: NavDrawer(),
       bottomNavigationBar: BottomNav(),
     );
   }

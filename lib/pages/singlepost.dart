@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/widget/navbarhome.dart';
+import 'package:NewApp/widget/navdrawer.dart';
 import 'package:NewApp/widget/singlepostcard.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 
@@ -46,10 +47,9 @@ class _SinglePostState extends State<SinglePost> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        children: [SingleChildScrollView(
+      body:
+          ListView(scrollDirection: Axis.vertical, shrinkWrap: true, children: [
+        SingleChildScrollView(
           child: Column(
             children: [
               NavBar(),
@@ -68,25 +68,39 @@ class _SinglePostState extends State<SinglePost> {
                           item.editedAt,
                           item.picLink,
                           item.uuid,
+                          item.busyness,
                           item.description,
                           item.anonymous,
                           item.comments,
                           item.likes,
                           widget.currentUser);
                     } else if (snapshot.hasError) {
-                       return Expanded(
-                          child: Column(
-                            children: [
-                              SizedBox(height: MediaQuery.of(context).size.height * .1),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 12),
-                                child: Text('There was an error getting the post', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-                              ),
-                              Expanded(child: Image(image: AssetImage('assets/img/city_page.jpg'), height: MediaQuery.of(context).size.height * .4)),
-                              SizedBox(height: MediaQuery.of(context).size.height * .14)
-                            ],
-                          ),
-                        ); 
+                      return Expanded(
+                        child: Column(
+                          children: [
+                            SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * .1),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 12),
+                              child: Text('There was an error getting the post',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30)),
+                            ),
+                            Expanded(
+                                child: Image(
+                                    image:
+                                        AssetImage('assets/img/city_page.jpg'),
+                                    height: MediaQuery.of(context).size.height *
+                                        .4)),
+                            SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * .14)
+                          ],
+                        ),
+                      );
                     }
                     return Center(child: CircularProgressIndicator());
                   })
@@ -94,6 +108,7 @@ class _SinglePostState extends State<SinglePost> {
           ),
         ),
       ]),
+      endDrawer: NavDrawer(),
       bottomNavigationBar: BottomNav(),
     );
   }

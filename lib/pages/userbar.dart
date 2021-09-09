@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:strings/strings.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/navbarlocation.dart';
+import 'package:NewApp/widget/navdrawer.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/services/userservice.dart';
 import 'package:NewApp/widget/userprofile.dart';
@@ -159,36 +160,40 @@ class _UserBarState extends State<UserBar> {
                                       fontFamily: 'Oxygen-Bold'),
                                 ),
                                 FeedPostCard(
-                                    items[index].bar,
-                                    items[index].location,
-                                    items[index].createdBy,
-                                    items[index].description,
-                                    items[index].rating,
-                                    items[index].createdAt,
-                                    items[index].neighborhood,
-                                    items[index].numComments,
-                                    items[index].numLikes,
-                                    items[index].anonymous,
-                                    items[index].editedAt,
-                                    items[index].picLink,
-                                    items[index].uuid)
+                                  items[index].bar,
+                                  items[index].location,
+                                  items[index].createdBy,
+                                  items[index].description,
+                                  items[index].rating,
+                                  items[index].createdAt,
+                                  items[index].neighborhood,
+                                  items[index].numComments,
+                                  items[index].numLikes,
+                                  items[index].anonymous,
+                                  items[index].editedAt,
+                                  items[index].picLink,
+                                  items[index].uuid,
+                                  items[index].busyness,
+                                )
                               ],
                             );
                           } else {
                             return FeedPostCard(
-                                items[index].bar,
-                                items[index].location,
-                                items[index].createdBy,
-                                items[index].description,
-                                items[index].rating,
-                                items[index].createdAt,
-                                items[index].neighborhood,
-                                items[index].numComments,
-                                items[index].numLikes,
-                                items[index].anonymous,
-                                items[index].editedAt,
-                                items[index].picLink,
-                                items[index].uuid);
+                              items[index].bar,
+                              items[index].location,
+                              items[index].createdBy,
+                              items[index].description,
+                              items[index].rating,
+                              items[index].createdAt,
+                              items[index].neighborhood,
+                              items[index].numComments,
+                              items[index].numLikes,
+                              items[index].anonymous,
+                              items[index].editedAt,
+                              items[index].picLink,
+                              items[index].uuid,
+                              items[index].busyness,
+                            );
                           }
                         }),
                     onRefresh: () {
@@ -220,7 +225,9 @@ class _UserBarState extends State<UserBar> {
                 ],
               ),
             );
-          } else if (snapshot.data == null && snapshot.error == null) {
+          } else if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.data == null &&
+              snapshot.error == null) {
             return Expanded(
               child: Column(
                 children: [
@@ -270,6 +277,7 @@ class _UserBarState extends State<UserBar> {
           userPosts(),
         ],
       ),
+      endDrawer: NavDrawer(),
       bottomNavigationBar: BottomNav(),
     );
   }

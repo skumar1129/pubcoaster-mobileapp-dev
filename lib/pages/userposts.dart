@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:NewApp/services/postservice.dart';
 import 'package:NewApp/widget/navbarlocation.dart';
+import 'package:NewApp/widget/navdrawer.dart';
 import 'package:NewApp/widget/bottomnav.dart';
 import 'package:NewApp/widget/feedpostcard.dart';
 import 'package:NewApp/services/userservice.dart';
@@ -134,13 +135,7 @@ class _UserPostsState extends State<UserPosts> {
             } else {
               var userInfo = snapshot.data![1];
               return Expanded(
-                child:
-                    // Column(
-                    //   children: [
-                    //     UserProfile(userInfo, widget.myUser, totalPosts),
-                    //     Expanded(
-
-                    Scrollbar(
+                child: Scrollbar(
                   child: RefreshIndicator(
                     child: ListView.builder(
                         physics: AlwaysScrollableScrollPhysics(),
@@ -172,36 +167,40 @@ class _UserPostsState extends State<UserPosts> {
                                 UserProfile(
                                     userInfo, widget.myUser, totalPosts),
                                 FeedPostCard(
-                                    items[index].bar,
-                                    items[index].location,
-                                    items[index].createdBy,
-                                    items[index].description,
-                                    items[index].rating,
-                                    items[index].createdAt,
-                                    items[index].neighborhood,
-                                    items[index].numComments,
-                                    items[index].numLikes,
-                                    items[index].anonymous,
-                                    items[index].editedAt,
-                                    items[index].picLink,
-                                    items[index].uuid)
+                                  items[index].bar,
+                                  items[index].location,
+                                  items[index].createdBy,
+                                  items[index].description,
+                                  items[index].rating,
+                                  items[index].createdAt,
+                                  items[index].neighborhood,
+                                  items[index].numComments,
+                                  items[index].numLikes,
+                                  items[index].anonymous,
+                                  items[index].editedAt,
+                                  items[index].picLink,
+                                  items[index].uuid,
+                                  items[index].busyness,
+                                )
                               ],
                             );
                           } else {
                             return FeedPostCard(
-                                items[index].bar,
-                                items[index].location,
-                                items[index].createdBy,
-                                items[index].description,
-                                items[index].rating,
-                                items[index].createdAt,
-                                items[index].neighborhood,
-                                items[index].numComments,
-                                items[index].numLikes,
-                                items[index].anonymous,
-                                items[index].editedAt,
-                                items[index].picLink,
-                                items[index].uuid);
+                              items[index].bar,
+                              items[index].location,
+                              items[index].createdBy,
+                              items[index].description,
+                              items[index].rating,
+                              items[index].createdAt,
+                              items[index].neighborhood,
+                              items[index].numComments,
+                              items[index].numLikes,
+                              items[index].anonymous,
+                              items[index].editedAt,
+                              items[index].picLink,
+                              items[index].uuid,
+                              items[index].busyness,
+                            );
                           }
                         }),
                     onRefresh: () {
@@ -209,9 +208,6 @@ class _UserPostsState extends State<UserPosts> {
                     },
                   ),
                 ),
-                //     )
-                //   ],
-                // ),
               );
             }
           } else if (snapshot.hasError) {
@@ -259,6 +255,7 @@ class _UserPostsState extends State<UserPosts> {
       body: Column(
         children: [NavBarLoc(), userPosts()],
       ),
+      endDrawer: NavDrawer(),
       bottomNavigationBar: BottomNav(),
     );
   }

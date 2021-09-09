@@ -27,7 +27,7 @@ List<MyPost> parseMyPosts(dataItems) {
 
 class PostService {
   Future<bool> addPost(item) async {
-    var endpoint = Uri.https('${Config.postApiUrl}', '/post');
+    var endpoint = Uri.http('${Config.postApiUrl}', '/post');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     var reqBody = {
       'username': item['username'],
@@ -37,7 +37,8 @@ class PostService {
       'rating': item['rating'],
       'neighborhood': item['nbhood'],
       'description': item['description'],
-      'picLink': item['picLink']
+      'picLink': item['picLink'],
+      'busyness': item['busyness'],
     };
 
     Map<String, String> headers = {
@@ -64,7 +65,7 @@ class PostService {
   }
 
   Future<bool> updatePost(String uuid, item) async {
-    var endpoint = Uri.https('${Config.postApiUrl}', '/post/$uuid');
+    var endpoint = Uri.http('${Config.postApiUrl}', '/post/$uuid');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     var reqBody = {
       'picLink': '',
@@ -98,7 +99,7 @@ class PostService {
   }
 
   Future<bool> deletePost(String uuid) async {
-    var endpoint = Uri.https('${Config.postApiUrl}', '/post/$uuid');
+    var endpoint = Uri.http('${Config.postApiUrl}', '/post/$uuid');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     bool succeed;
     Map<String, String> headers = {
@@ -123,7 +124,7 @@ class PostService {
   }
 
   Future<SinglePost> getPost(String uuid) async {
-    var endpoint = Uri.https('${Config.postApiUrl}', '/post/$uuid');
+    var endpoint = Uri.http('${Config.postApiUrl}', '/post/$uuid');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -148,10 +149,10 @@ class PostService {
       'Authorization': 'Bearer $token'
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
@@ -172,10 +173,10 @@ class PostService {
       'Authorization': 'Bearer $token'
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
@@ -196,10 +197,10 @@ class PostService {
       'Authorization': 'Bearer $token'
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
@@ -220,10 +221,10 @@ class PostService {
       'Authorization': 'Bearer $token'
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
@@ -248,10 +249,10 @@ class PostService {
       'username': user
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
@@ -274,10 +275,10 @@ class PostService {
       'Authorization': 'Bearer $token'
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
@@ -302,10 +303,10 @@ class PostService {
       'Authorization': 'Bearer $token'
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
@@ -330,10 +331,10 @@ class PostService {
       'Authorization': 'Bearer $token'
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {
@@ -358,10 +359,10 @@ class PostService {
       'Authorization': 'Bearer $token'
     };
     var endpoint;
-    endpoint = Uri.https('${Config.postApiUrl}', path);
+    endpoint = Uri.http('${Config.postApiUrl}', path);
     if (page != null && page > 1) {
       var params = {'offset': page.toString()};
-      endpoint = Uri.https('${Config.postApiUrl}', path, params);
+      endpoint = Uri.http('${Config.postApiUrl}', path, params);
     }
     var response;
     try {

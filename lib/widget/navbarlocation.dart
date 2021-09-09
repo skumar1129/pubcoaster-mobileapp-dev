@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dropdown.dart';
 
 class NavBarLoc extends StatelessWidget {
   @override
@@ -15,12 +14,6 @@ class NavBarLoc extends StatelessWidget {
           Scaffold.of(context).openDrawer();
         },
       ),
-      actions: [
-        DropDown(),
-        const SizedBox(
-          width: 15,
-        )
-      ],
       backgroundColor: Colors.red,
     );
   }
