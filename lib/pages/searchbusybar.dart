@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:NewApp/pages/feedback.dart';
 import 'package:NewApp/models/feedbackargs.dart';
 import 'package:NewApp/services/busyservice.dart';
+import 'package:NewApp/pages/locationposts.dart';
 
 class SearchBusyBar extends StatefulWidget {
   final location;
@@ -162,11 +163,25 @@ class _SearchBusyBarState extends State<SearchBusyBar> {
                         fontSize: 18),
                     textAlign: TextAlign.center,
                   ),
-                  FloatingActionButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Icon(Icons.check),
-                    backgroundColor: Colors.red,
-                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      FloatingActionButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Icon(Icons.close),
+                        backgroundColor: Colors.red,
+                        tooltip: 'Close Dialog',
+                      ),
+                      FloatingActionButton(
+                        onPressed: () => Navigator.pushReplacementNamed(
+                            context, LocationPosts.route,
+                            arguments: widget.location),
+                        child: Icon(Icons.check),
+                        backgroundColor: Colors.red,
+                        tooltip: 'Give Feedback',
+                      ),
+                    ],
+                  )
                 ],
               ),
             );
