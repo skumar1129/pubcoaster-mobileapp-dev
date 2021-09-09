@@ -13,7 +13,7 @@ Busyness parseResponse(data) {
 
 class BusyService {
   Future<bool> createBusyBar(body) async {
-    var endpoint = Uri.http('${Config.busyApiUrl}', '/barbusyness');
+    var endpoint = Uri.https('${Config.busyApiUrl}', '/barbusyness');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ class BusyService {
   }
 
   Future<Busyness> getLiveBusyness(body) async {
-    var endpoint = Uri.http('${Config.busyApiUrl}', '/live/barbusyness');
+    var endpoint = Uri.https('${Config.busyApiUrl}', '/live/barbusyness');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ class BusyService {
   }
 
   Future<Busyness> getAverageBusyness(body) async {
-    var endpoint = Uri.http('${Config.busyApiUrl}', '/average/barbusyness');
+    var endpoint = Uri.https('${Config.busyApiUrl}', '/average/barbusyness');
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',

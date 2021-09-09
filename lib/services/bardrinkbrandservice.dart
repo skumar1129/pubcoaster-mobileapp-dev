@@ -48,14 +48,14 @@ class BarDrinkBrandService {
     var params = {
       'user': user,
     };
-    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
+    var endpoint = Uri.https('${Config.bardrinkbrandApiUrl}', path, params);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     if (page != null && page > 1) {
       params = {
         'user': user,
         'offset': page.toString(),
       };
-      endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
+      endpoint = Uri.https('${Config.bardrinkbrandApiUrl}', path, params);
     }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -76,14 +76,14 @@ class BarDrinkBrandService {
     var params = {
       'user': user,
     };
-    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
+    var endpoint = Uri.https('${Config.bardrinkbrandApiUrl}', path, params);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     if (page != null && page > 1) {
       var params = {
         'user': user,
         'offset': page.toString(),
       };
-      endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
+      endpoint = Uri.https('${Config.bardrinkbrandApiUrl}', path, params);
     }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -104,14 +104,14 @@ class BarDrinkBrandService {
     var params = {
       'user': user,
     };
-    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
+    var endpoint = Uri.https('${Config.bardrinkbrandApiUrl}', path, params);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     if (page != null && page > 1) {
       var params = {
         'user': user,
         'offset': page.toString(),
       };
-      endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
+      endpoint = Uri.https('${Config.bardrinkbrandApiUrl}', path, params);
     }
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -138,7 +138,7 @@ class BarDrinkBrandService {
         'offset': page.toString(),
       };
     }
-    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
+    var endpoint = Uri.https('${Config.bardrinkbrandApiUrl}', path, params);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -159,7 +159,7 @@ class BarDrinkBrandService {
     var params = {
       'user': user,
     };
-    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
+    var endpoint = Uri.https('${Config.bardrinkbrandApiUrl}', path, params);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -180,7 +180,7 @@ class BarDrinkBrandService {
     var params = {
       'user': user,
     };
-    var endpoint = Uri.http('${Config.bardrinkbrandApiUrl}', path, params);
+    var endpoint = Uri.https('${Config.bardrinkbrandApiUrl}', path, params);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',

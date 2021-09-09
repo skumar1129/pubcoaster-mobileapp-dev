@@ -13,7 +13,7 @@ class CommentService {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     };
-    var endpoint = Uri.http('${Config.postApiUrl}', path);
+    var endpoint = Uri.https('${Config.postApiUrl}', path);
     var reqBody = {
       'uuid': item['uuid'],
       'createdBy': item['createdBy'],
@@ -42,7 +42,7 @@ class CommentService {
 
   Future<bool> updateComment(String uuid, item) async {
     String path = '/comment/$uuid';
-    var endpoint = Uri.http('${Config.postApiUrl}', path);
+    var endpoint = Uri.https('${Config.postApiUrl}', path);
     var reqBody = {
       'text': item['text'],
     };
@@ -73,7 +73,7 @@ class CommentService {
 
   Future<bool> deleteComment(String uuid) async {
     String path = '/comment/$uuid';
-    var endpoint = Uri.http('${Config.postApiUrl}', path);
+    var endpoint = Uri.https('${Config.postApiUrl}', path);
     var token = await FirebaseAuth.instance.currentUser?.getIdToken();
     Map<String, String> headers = {
       'Content-Type': 'application/json',
