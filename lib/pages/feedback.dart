@@ -21,9 +21,34 @@ class _FeedBackState extends State<FeedBack> {
   String? userLive;
   final busyService = BusyService();
 
+  showLoadingDialog() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext content) {
+        //getImage()
+        return AlertDialog(
+          backgroundColor: Colors.transparent,
+          content: Center(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * .2,
+              width: MediaQuery.of(context).size.height * .2,
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.black,
+                strokeWidth: 10,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   apiCall(body) async {
+    showLoadingDialog();
     bool succeed = await busyService.createBusyBar(body);
     if (succeed) {
+      Navigator.of(context).pop();
       final snackBar = SnackBar(
           content: Text('Successfully submitted',
               textAlign: TextAlign.center,
@@ -36,6 +61,7 @@ class _FeedBackState extends State<FeedBack> {
       Navigator.pushReplacementNamed(context, LocationPosts.route,
           arguments: widget.location);
     } else {
+      Navigator.of(context).pop();
       final snackBar = SnackBar(
           content: Text('Error: failed to submit',
               textAlign: TextAlign.center,
