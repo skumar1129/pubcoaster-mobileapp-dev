@@ -104,6 +104,13 @@ class _SearchBusyBarFromFeedState extends State<SearchBusyBarFromFeed> {
             var liveTime = data[1];
             var averageTime = data[0];
             return AlertDialog(
+              contentPadding: EdgeInsets.zero,
+              insetPadding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * .1,
+                left: MediaQuery.of(context).size.height * .1,
+                right: MediaQuery.of(context).size.height * .1,
+                bottom: MediaQuery.of(context).size.height * .2,
+              ),
               title: Text(
                 'Busyness Level for $barName in $location',
                 style: TextStyle(
@@ -304,14 +311,13 @@ class _SearchBusyBarFromFeedState extends State<SearchBusyBarFromFeed> {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 8, bottom: 0),
-              child: Center(
-                child: Text(
-                  'Search how busy bars in different areas are',
-                  style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline),
-                ),
+              child: Text(
+                'Search how busy bars in different areas are',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline),
               ),
             ),
             const Divider(
@@ -404,7 +410,7 @@ class _SearchBusyBarFromFeedState extends State<SearchBusyBarFromFeed> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'See what We say',
+                'See what WE say',
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

@@ -76,27 +76,25 @@ class _FeedBackState extends State<FeedBack> {
     if (widget.neighborhood == null) {
       return Padding(
         padding: const EdgeInsets.only(top: 8, bottom: 0),
-        child: Center(
-          child: Text(
-            'Tell us about how busy ${widget.bar} in ${widget.location} was',
-            style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline),
-          ),
+        child: Text(
+          'Tell us about how busy ${widget.bar} in ${widget.location} was',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              decoration: TextDecoration.underline),
         ),
       );
     } else {
       return Padding(
         padding: const EdgeInsets.only(top: 8, bottom: 0),
-        child: Center(
-          child: Text(
-            'Tell us about ${widget.bar} in ${widget.neighborhood}, ${widget.location} was',
-            style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline),
-          ),
+        child: Text(
+          'Tell us about ${widget.bar} in ${widget.neighborhood}, ${widget.location} was',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              decoration: TextDecoration.underline),
         ),
       );
     }
